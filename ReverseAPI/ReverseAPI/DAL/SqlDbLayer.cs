@@ -1,5 +1,5 @@
-﻿using ReverseAPI.Models;
-using System;
+﻿using Microsoft.EntityFrameworkCore;
+using ReverseAPI.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -12,53 +12,80 @@ namespace ReverseAPI.DAL
         // Clients
         public async Task<IEnumerable<Client>> GetClients()
         {
-            throw new NotImplementedException();
+            return await _context.Clients.ToListAsync();
         }
 
         public async Task<Client> GetClient(int? id)
         {
-            throw new NotImplementedException();
+            var clients = await _context.Clients.ToListAsync();
+
+            return clients.Find(s => s.IdClient == id);
         }
 
         public async Task<Client> AddClient(Client newClient)
         {
-            throw new NotImplementedException();
+            _context.Clients.Add(newClient);
+            await _context.SaveChangesAsync();
+
+            return newClient;
         }
 
         public async Task<Client> UpdateClient(Client clientToEdit)
         {
-            throw new NotImplementedException();
+            _context.Update(clientToEdit);
+            await _context.SaveChangesAsync();
+
+            return clientToEdit;
         }
 
         public async Task<Client> DeleteClient(int? id)
         {
-            throw new NotImplementedException();
+            var clientToDelete = await _context.Clients.FindAsync(id);
+            _context.Clients.Remove(clientToDelete);
+            await _context.SaveChangesAsync();
+
+            _context.Remove(clientToDelete);
+
+            return clientToDelete;
         }
 
         // Suppliers
         public async Task<IEnumerable<Supplier>> GetSuppliers()
         {
-            throw new NotImplementedException();
+            return await _context.Suppliers.ToListAsync();
         }
 
         public async Task<Supplier> GetSupplier(int? id)
         {
-            throw new NotImplementedException();
+            return await _context.Suppliers.FindAsync(id);
         }
 
         public async Task<Supplier> AddSupplier(Supplier newSupplier)
         {
-            throw new NotImplementedException();
+            await _context.Suppliers.AddAsync(newSupplier);
+
+            await _context.SaveChangesAsync();
+
+            return newSupplier;
         }
 
         public async Task<Supplier> UpdateSupplier(Supplier supplierToEdit)
         {
-            throw new NotImplementedException();
+            _context.Update(supplierToEdit);
+            await _context.SaveChangesAsync();
+
+            return supplierToEdit;
         }
 
         public async Task<Supplier> DeleteSupplier(int? id)
         {
-            throw new NotImplementedException();
+            var supplierToDelete = await _context.Suppliers.FindAsync(id);
+
+            _context.Suppliers.Remove(supplierToDelete);
+
+            await _context.SaveChangesAsync();
+
+            return supplierToDelete;
         }
 
     }

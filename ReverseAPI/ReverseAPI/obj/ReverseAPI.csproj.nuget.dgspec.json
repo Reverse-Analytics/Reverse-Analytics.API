@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\khido\\source\\repos\\Reverse-Analytics\\Revrse-API\\ReverseAPI\\ReverseAPI\\ReverseAPI.csproj": {}
+    "C:\\Users\\khido\\source\\repos\\Reverse-Analytics\\Reverse-API\\ReverseAPI\\ReverseAPI\\ReverseAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\khido\\source\\repos\\Reverse-Analytics\\Revrse-API\\ReverseAPI\\ReverseAPI\\ReverseAPI.csproj": {
+    "C:\\Users\\khido\\source\\repos\\Reverse-Analytics\\Reverse-API\\ReverseAPI\\ReverseAPI\\ReverseAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\khido\\source\\repos\\Reverse-Analytics\\Revrse-API\\ReverseAPI\\ReverseAPI\\ReverseAPI.csproj",
+        "projectUniqueName": "C:\\Users\\khido\\source\\repos\\Reverse-Analytics\\Reverse-API\\ReverseAPI\\ReverseAPI\\ReverseAPI.csproj",
         "projectName": "ReverseAPI",
-        "projectPath": "C:\\Users\\khido\\source\\repos\\Reverse-Analytics\\Revrse-API\\ReverseAPI\\ReverseAPI\\ReverseAPI.csproj",
+        "projectPath": "C:\\Users\\khido\\source\\repos\\Reverse-Analytics\\Reverse-API\\ReverseAPI\\ReverseAPI\\ReverseAPI.csproj",
         "packagesPath": "C:\\Users\\khido\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\khido\\source\\repos\\Reverse-Analytics\\Revrse-API\\ReverseAPI\\ReverseAPI\\obj\\",
+        "outputPath": "C:\\Users\\khido\\source\\repos\\Reverse-Analytics\\Reverse-API\\ReverseAPI\\ReverseAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"
@@ -44,6 +44,20 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.4, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[5.6.3, )"

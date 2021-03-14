@@ -27,7 +27,7 @@ namespace ReverseAPI.DAL
         {
             var clients = await _context.Clients.ToListAsync();
 
-            return clients.Find(s => s.IdClient == id);
+            return clients.Find(s => s.ClientId == id);
         }
 
         public async Task<Client> AddClient(Client newClient)

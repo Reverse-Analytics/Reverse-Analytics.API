@@ -56,7 +56,7 @@ namespace ReverseAPI.Controllers
 
             int g = 0;
 
-            return CreatedAtAction(nameof(Get), new { id = newSupplier.IdSupplier }, newSupplier);
+            return CreatedAtAction(nameof(Get), new { id = newSupplier.SupplierId }, newSupplier);
         }
 
         // GET: SuppliersController/Edit/5
@@ -66,7 +66,7 @@ namespace ReverseAPI.Controllers
         {
             int g = 0;
 
-            var supplier = await _context.GetSupplier(supplierToUpdate.IdSupplier);
+            var supplier = await _context.GetSupplier(supplierToUpdate.SupplierId);
 
             if (supplier == null) return NotFound();
 

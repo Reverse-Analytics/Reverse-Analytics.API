@@ -56,7 +56,7 @@ namespace ReverseAPI.Controllers
 
             int g = 0;
 
-            return CreatedAtAction(nameof(Get), new { id = newClient.IdClient }, newClient);
+            return CreatedAtAction(nameof(Get), new { id = newClient.ClientId }, newClient);
         }
 
         [HttpPut("{id}")]
@@ -64,7 +64,7 @@ namespace ReverseAPI.Controllers
         {
             int g = 0;
 
-            var client = await _context.GetClient(clientToUpdate.IdClient);
+            var client = await _context.GetClient(clientToUpdate.ClientId);
 
             if (client == null) return NotFound();
 

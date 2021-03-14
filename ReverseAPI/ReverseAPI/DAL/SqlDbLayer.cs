@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ReverseAPI.Models;
+using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,16 +11,16 @@ namespace ReverseAPI.DAL
     public class SqlDbLayer : IDbLayer
     {
         private readonly MainContext _context;
-        
+
         public SqlDbLayer(MainContext context)
         {
             _context = context;
         }
 
-        // Clients
+        #region Clients
         public async Task<List<Client>> GetClients()
         {
-            var clients = await _context.Clients.ToListAsync();            
+            var clients = await _context.Clients.ToListAsync();
 
             return clients;
         }
@@ -60,7 +62,9 @@ namespace ReverseAPI.DAL
             return clientToDelete;
         }
 
-        // Suppliers
+        #endregion
+
+        #region Suppliers
         public async Task<IEnumerable<Supplier>> GetSuppliers()
         {
             return await _context.Suppliers.ToListAsync();
@@ -98,6 +102,72 @@ namespace ReverseAPI.DAL
 
             return supplierToDelete;
         }
+
+        #endregion
+
+        #region Products
+
+        public async Task<IEnumerable<Product>> GetProducts()
+        {
+            return await _context.Products.ToListAsync();
+        }
+
+        public async Task<Product> GetProduct(int? id)
+        {
+            return await _context.Products.FindAsync(id);
+        }
+
+        public async Task<Product> AddProduct(Product newProduct)
+        {
+            try
+            {
+                _context.Products.Add(newProduct);
+
+                await _context.SaveChangesAsync();
+            }
+            catch(DbException e)
+            {
+                throw new Exception($"Cannot add new product, {e.Message}");
+            }
+
+            return newProduct;
+        }
+
+        public async Task<Product> UpdateProduct(Product productToUpdate)
+        {
+            try
+            {
+                _context.Products.Update(productToUpdate);
+                await _context.SaveChangesAsync();
+            }
+            catch(DbException e)
+            {
+                throw new Exception($"Cannot update product with id: {productToUpdate.ProductId}, {e.Message}");
+            }
+
+            return productToUpdate;
+        }
+
+        public async Task<Product> DeleteProduct(int? id)
+        {
+            try
+            {
+                var product = _context.Products.Find(id);
+
+                if (product == null) return null;
+
+                _context.Products.Remove(product);
+                await _context.SaveChangesAsync();
+            }
+            catch(DbException e)
+            {
+                throw new Exception($"Cannot delete product with id: {id}, {e.Message}");
+            }
+
+            return null;
+        }
+
+        #endregion
 
     }
 }

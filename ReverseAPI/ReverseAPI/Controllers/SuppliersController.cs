@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ReverseAPI.DAL;
+using ReverseAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,81 +9,87 @@ using System.Threading.Tasks;
 
 namespace ReverseAPI.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class SuppliersController : Controller
     {
-        // GET: SuppliersController
-        public ActionResult Index()
+        private readonly IDbLayer _context;
+        public SuppliersController(IDbLayer context)
         {
-            return View();
+            _context = context;
+        }
+
+        // GET: SuppliersController
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Supplier>>> Get()
+        {
+            try
+            {
+                var suppliers = await _context.GetSuppliers();
+
+                return Ok(suppliers);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
         }
 
         // GET: SuppliersController/Details/5
-        public ActionResult Details(int id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Supplier>> Get(int id)
         {
-            return View();
+            var client = await _context.GetSupplier(id);
+
+            int g = 0;
+
+            if (client == null) return NotFound();
+
+            return Ok(client);
         }
 
         // GET: SuppliersController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: SuppliersController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult<Supplier>> Create(Supplier newSupplier)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            await _context.AddSupplier(newSupplier);
+
+            int g = 0;
+
+            return CreatedAtAction(nameof(Get), new { id = newSupplier.IdSupplier }, newSupplier);
         }
 
         // GET: SuppliersController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
+        [HttpPut("{id}")]
 
-        // POST: SuppliersController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Update(Supplier supplierToUpdate)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            int g = 0;
+
+            var supplier = await _context.GetSupplier(supplierToUpdate.IdSupplier);
+
+            if (supplier == null) return NotFound();
+
+            supplier.FullName = supplierToUpdate.FullName;
+
+            await _context.UpdateSupplier(supplier);
+
+            return NoContent();
         }
 
         // GET: SuppliersController/Delete/5
-        public ActionResult Delete(int id)
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
-        }
+            var supplier = await _context.GetSupplier(id);
 
-        // POST: SuppliersController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            int g = 0;
+
+            if (supplier == null) return NotFound();
+
+            await _context.DeleteSupplier(id);
+
+            return NoContent();
         }
     }
 }

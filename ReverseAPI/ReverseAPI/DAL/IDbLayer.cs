@@ -7,7 +7,7 @@ namespace ReverseAPI.DAL
     public interface IDbLayer
     {
         // Client
-        public Task<IEnumerable<Client>> GetClients();
+        public Task<List<Client>> GetClients();
         public Task<Client> GetClient(int? id);
         public Task<Client> AddClient(Client newCLient);
         public Task<Client> UpdateClient(Client clientToEdit);

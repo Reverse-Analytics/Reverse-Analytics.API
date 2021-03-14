@@ -20,11 +20,13 @@ namespace ReverseAPI.Controllers
 
         // GET: api/[controller]
         [HttpGet]
-        public ActionResult<IEnumerable<Client>> GetClients()
+        public async Task<ActionResult<List<Client>>> GetClients()
         {
             try
             {
-                var clients = _context.GetClients();
+                var clients = Task.Run(() => _context.GetClients());
+
+                await Task.WhenAll(clients);
 
                 return Ok(clients);
             }

@@ -1,18 +1,28 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ReverseAPI.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ReverseAPI.DAL
 {
     public class SqlDbLayer : IDbLayer
     {
-        public readonly MainContext _context;
+        private readonly MainContext _context;
         
-        // Clients
-        public async Task<IEnumerable<Client>> GetClients()
+        public SqlDbLayer(MainContext context)
         {
-            return await _context.Clients.ToListAsync();
+            _context = context;
+        }
+
+        // Clients
+        public async Task<List<Client>> GetClients()
+        {
+            var clients = await _context.Clients.ToListAsync();
+
+            int g = 0;
+
+            return clients;
         }
 
         public async Task<Client> GetClient(int? id)

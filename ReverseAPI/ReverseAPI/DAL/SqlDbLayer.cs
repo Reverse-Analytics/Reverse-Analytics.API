@@ -18,9 +18,7 @@ namespace ReverseAPI.DAL
         // Clients
         public async Task<List<Client>> GetClients()
         {
-            var clients = await _context.Clients.ToListAsync();
-
-            int g = 0;
+            var clients = await _context.Clients.ToListAsync();            
 
             return clients;
         }
@@ -34,6 +32,7 @@ namespace ReverseAPI.DAL
 
         public async Task<Client> AddClient(Client newClient)
         {
+            int g = 0;
             _context.Clients.Add(newClient);
             await _context.SaveChangesAsync();
 
@@ -42,8 +41,10 @@ namespace ReverseAPI.DAL
 
         public async Task<Client> UpdateClient(Client clientToEdit)
         {
-            _context.Update(clientToEdit);
+            _context.Entry(clientToEdit).State = EntityState.Modified;
             await _context.SaveChangesAsync();
+            /*_context.Clients.Update(clientToEdit);
+            await _context.SaveChangesAsync();*/
 
             return clientToEdit;
         }

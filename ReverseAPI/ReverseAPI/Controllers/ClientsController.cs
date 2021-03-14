@@ -20,13 +20,13 @@ namespace ReverseAPI.Controllers
 
         // GET: api/[controller]
         [HttpGet]
-        public async Task<ActionResult<List<Client>>> GetClients()
+        public async Task<ActionResult<IEnumerable<Client>>> Get()
         {
             try
             {
-                var clients = Task.Run(() => _context.GetClients());
+                var clients = await _context.GetClients();
 
-                await Task.WhenAll(clients);
+                int g = 0;
 
                 return Ok(clients);
             }
@@ -36,40 +36,52 @@ namespace ReverseAPI.Controllers
             }
         }
 
-        [HttpGet("{id:length(24)}", Name = "GetClient")]
+        // GET: api/Clients/5
+        [HttpGet("{id}")]
         public async Task<ActionResult<Client>> Get(int id)
         {
             var client = await _context.GetClient(id);
 
+            int g = 0;
+
             if (client == null) return NotFound();
 
-            return client;
+            return Ok(client);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Client>> AddClient(Client newClient)
+        public async Task<ActionResult<Client>> Create(Client newClient)
         {
             await _context.AddClient(newClient);
 
-            return CreatedAtAction("GetClient", new { id = newClient.IdClient }, newClient);
+            int g = 0;
+
+            return CreatedAtAction(nameof(Get), new { id = newClient.IdClient }, newClient);
         }
 
-        [HttpPut("{id:length(24)}")]
-        public async Task<ActionResult<Client>> Update(Client clientToUpdate)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Client clientToUpdate)
         {
+            int g = 0;
+
             var client = await _context.GetClient(clientToUpdate.IdClient);
 
             if (client == null) return NotFound();
 
-            await _context.UpdateClient(clientToUpdate);
+            client.FullName = clientToUpdate.FullName;
+            client.Discount = clientToUpdate.Discount;
+
+            await _context.UpdateClient(client);
 
             return NoContent();
         }
 
-        [HttpDelete("{id:length(24)}")]
-        public async Task<ActionResult<Client>> Delete(int id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
             var client = await _context.GetClient(id);
+
+            int g = 0;
 
             if (client == null) return NotFound();
 

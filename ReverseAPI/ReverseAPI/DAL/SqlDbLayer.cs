@@ -170,7 +170,7 @@ namespace ReverseAPI.DAL
         #endregion
 
         #region Purchase
-        public async Task<IEnumerable<Purchase>> Get()
+        public async Task<IEnumerable<Purchase>> GetPurchases()
         {
             return await _context.Purchases.ToListAsync();
         }
@@ -265,6 +265,22 @@ namespace ReverseAPI.DAL
             catch (DbException e)
             {
                 throw new Exception($"Cannot find supply with given id {id}, {e.Message}");
+            }
+        }
+
+        public async Task<Supply> AddSupply(Supply newSupply)
+        {
+            try
+            {
+                _context.Supplies.Add(newSupply);
+
+                await _context.SaveChangesAsync();
+
+                return newSupply;
+            }
+            catch(DbException e)
+            {
+                throw new Exception($"Cannot add supply: {newSupply}, {e.Message}");
             }
         }
 

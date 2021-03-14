@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ReverseAPI.Models
 {
@@ -14,6 +11,7 @@ namespace ReverseAPI.Models
         public DateTime SupplyDate { get; set; }
         public decimal Payment { get; set; }
         public decimal Income { get; set; }
+        public decimal TotalIncome { get; set; }
         public int SupplierId { get; set; }
         public int ProductId { get; set; }
 

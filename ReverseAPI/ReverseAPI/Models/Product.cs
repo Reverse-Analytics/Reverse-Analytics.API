@@ -12,5 +12,6 @@ namespace ReverseAPI.Models
         public decimal Price { get; set; }
 
         public ICollection<Supply> Supplies { get; set; }
+        public ICollection<Purchase> Purchases { get; set; }
     }
 }

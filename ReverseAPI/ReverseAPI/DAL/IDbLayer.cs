@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace ReverseAPI.DAL
 {
-    interface IDbLayer
+    public interface IDbLayer
     {
         // Client
         public Task<IEnumerable<Client>> GetClients();

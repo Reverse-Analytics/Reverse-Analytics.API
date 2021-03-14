@@ -25,6 +25,8 @@ namespace ReverseAPI
 
             services.AddDbContext<MainContext>(option => 
                 option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<IDbLayer, SqlDbLayer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

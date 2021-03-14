@@ -242,5 +242,65 @@ namespace ReverseAPI.DAL
             }
         }
         #endregion
+
+        #region Supply
+        public async Task<IEnumerable<Supply>> GetSupplies()
+        {
+            try
+            {
+                return await _context.Supplies.ToListAsync();
+            }
+            catch (DbException e)
+            {
+                throw new Exception($"Cannot retrieve supplies, {e.Message}");
+            }
+        }
+
+        public async Task<Supply> GetSupply(int? id)
+        {
+            try
+            {
+                return await _context.Supplies.FindAsync(id);
+            }
+            catch (DbException e)
+            {
+                throw new Exception($"Cannot find supply with given id {id}, {e.Message}");
+            }
+        }
+
+        public async Task<Supply> UpdateSupply(Supply supplyToUpdate)
+        {
+            try
+            {
+                _context.Supplies.Update(supplyToUpdate);
+                await _context.SaveChangesAsync();
+
+                return supplyToUpdate;
+            }
+            catch (DbException e)
+            {
+                throw new Exception($"Cannot update supply with id: {supplyToUpdate.SupplyId}, {e.Message}");
+            }
+        }
+
+        public async Task<Supply> DeleteSupply(int? id)
+        {
+            try
+            {
+                var supply = _context.Supplies.Find(id);
+
+                if (supply == null) return null;
+
+                _context.Supplies.Remove(supply);
+                await _context.SaveChangesAsync();
+
+                return supply;
+            }
+            catch(DbException e)
+            {
+                throw new Exception($"Cannot delete supply with id: {id}, {e.Message}");
+            }
+        }
+        #endregion
     }
 }

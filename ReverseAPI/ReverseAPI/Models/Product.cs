@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace ReverseAPI.Models
@@ -9,5 +10,7 @@ namespace ReverseAPI.Models
         public int ProductId { get; set; }
         public string ProductName { get; set; }
         public decimal Price { get; set; }
+
+        public ICollection<Supply> Supplies { get; set; }
     }
 }

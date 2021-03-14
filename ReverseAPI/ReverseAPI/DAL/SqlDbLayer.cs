@@ -169,5 +169,78 @@ namespace ReverseAPI.DAL
 
         #endregion
 
+        #region Purchase
+        public async Task<IEnumerable<Purchase>> Get()
+        {
+            return await _context.Purchases.ToListAsync();
+        }
+
+        public async Task<Purchase> GetPurchase(int? id)
+        {
+            try
+            {
+                var purchase = await _context.Purchases.FindAsync(id);
+
+                if (purchase == null) return null;
+
+                return purchase;
+            }
+            catch(DbException e)
+            {
+                throw new Exception($"Cannot find purchase with given id {id}, {e.Message}");
+            }
+        }
+
+        public async Task<Purchase> AddPurchase(Purchase newPurchase)
+        {
+            try
+            {
+                _context.Purchases.Add(newPurchase);
+
+                await _context.SaveChangesAsync();
+
+                return newPurchase;
+            }
+            catch(DbException e)
+            {
+                throw new Exception($"Cannot add purchase with id: {newPurchase.PurchaseId}, {e.Message}");
+            }
+        }
+
+        public async Task<Purchase> UpdatePurchase(Purchase purchaseToUpdate)
+        {
+            try
+            {
+                _context.Purchases.Update(purchaseToUpdate);
+
+                await _context.SaveChangesAsync();
+
+                return purchaseToUpdate;
+            }
+            catch (DbException e)
+            {
+                throw new Exception($"Cannot update purchase with given id {purchaseToUpdate.PurchaseId}, {e.Message}");
+            }
+        }
+
+        public async Task<Purchase> DeletePurchase(int? id)
+        {
+            try
+            {
+                var purchase = _context.Purchases.Find(id);
+
+                if (purchase == null) return null;
+
+                _context.Purchases.Remove(purchase);
+                await _context.SaveChangesAsync();
+
+                return purchase;
+            }
+            catch (DbException e)
+            {
+                throw new Exception($"Cannot delete purchase with given id {id}, {e.Message}");
+            }
+        }
+        #endregion
     }
 }

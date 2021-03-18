@@ -14,5 +14,6 @@ namespace ReverseAPI.DAL
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Sale> Sales { get; set; }
         public virtual DbSet<Supply> Supplies { get; set; }
+        public virtual DbSet<Payment> Payments { get; set; }
     }
 }

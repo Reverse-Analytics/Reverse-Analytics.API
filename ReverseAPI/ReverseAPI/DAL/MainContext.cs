@@ -12,7 +12,7 @@ namespace ReverseAPI.DAL
         public virtual DbSet<Client> Clients { get; set; }
         public virtual DbSet<Supplier> Suppliers { get; set; }
         public virtual DbSet<Product> Products { get; set; }
-        public virtual DbSet<Purchase> Purchases { get; set; }
+        public virtual DbSet<Sale> Sales { get; set; }
         public virtual DbSet<Supply> Supplies { get; set; }
     }
 }

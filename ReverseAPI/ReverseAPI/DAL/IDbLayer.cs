@@ -28,11 +28,11 @@ namespace ReverseAPI.DAL
         public Task<Product> DeleteProduct(int? id);
 
         // Purchases
-        public Task<IEnumerable<Purchase>> GetPurchases();
-        public Task<Purchase> GetPurchase(int? id);
-        public Task<Purchase> AddPurchase(Purchase newPurchase);
-        public Task<Purchase> UpdatePurchase(Purchase purchaseToUpdate);
-        public Task<Purchase> DeletePurchase(int? id);
+        public Task<IEnumerable<Sale>> GetSales();
+        public Task<Sale> GetSale(int? id);
+        public Task<Sale> AddSale(Sale newSale);
+        public Task<Sale> UpdateSale(Sale saleToUpdate);
+        public Task<Sale> DeleteSale(int? id);
 
         // Supplies
         public Task<IEnumerable<Supply>> GetSupplies();

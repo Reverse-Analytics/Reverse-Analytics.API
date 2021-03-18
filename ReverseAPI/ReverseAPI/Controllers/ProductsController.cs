@@ -70,7 +70,7 @@ namespace ReverseAPI.Controllers
             if (product == null) return NotFound();
 
             product.ProductName = productToUpdate.ProductName;
-            product.Price = productToUpdate.Price;
+            product.SalePrice = productToUpdate.SalePrice;
 
             await _context.UpdateProduct(product);
 

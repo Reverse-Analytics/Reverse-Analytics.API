@@ -3,7 +3,6 @@ using ReverseAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ReverseAPI.DAL
@@ -169,17 +168,17 @@ namespace ReverseAPI.DAL
 
         #endregion
 
-        #region Purchase
-        public async Task<IEnumerable<Purchase>> GetPurchases()
+        #region Sale
+        public async Task<IEnumerable<Sale>> GetSales()
         {
-            return await _context.Purchases.ToListAsync();
+            return await _context.Sales.ToListAsync();
         }
 
-        public async Task<Purchase> GetPurchase(int? id)
+        public async Task<Sale> GetSale(int? id)
         {
             try
             {
-                var purchase = await _context.Purchases.FindAsync(id);
+                var purchase = await _context.Sales.FindAsync(id);
 
                 if (purchase == null) return null;
 
@@ -191,11 +190,11 @@ namespace ReverseAPI.DAL
             }
         }
 
-        public async Task<Purchase> AddPurchase(Purchase newPurchase)
+        public async Task<Sale> AddSale(Sale newPurchase)
         {
             try
             {
-                _context.Purchases.Add(newPurchase);
+                _context.Sales.Add(newPurchase);
 
                 await _context.SaveChangesAsync();
 
@@ -203,15 +202,15 @@ namespace ReverseAPI.DAL
             }
             catch(DbException e)
             {
-                throw new Exception($"Cannot add purchase with id: {newPurchase.PurchaseId}, {e.Message}");
+                throw new Exception($"Cannot add purchase with id: {newPurchase.SaleId}, {e.Message}");
             }
         }
 
-        public async Task<Purchase> UpdatePurchase(Purchase purchaseToUpdate)
+        public async Task<Sale> UpdateSale(Sale purchaseToUpdate)
         {
             try
             {
-                _context.Purchases.Update(purchaseToUpdate);
+                _context.Sales.Update(purchaseToUpdate);
 
                 await _context.SaveChangesAsync();
 
@@ -219,19 +218,19 @@ namespace ReverseAPI.DAL
             }
             catch (DbException e)
             {
-                throw new Exception($"Cannot update purchase with given id {purchaseToUpdate.PurchaseId}, {e.Message}");
+                throw new Exception($"Cannot update purchase with given id {purchaseToUpdate.SaleId}, {e.Message}");
             }
         }
 
-        public async Task<Purchase> DeletePurchase(int? id)
+        public async Task<Sale> DeleteSale(int? id)
         {
             try
             {
-                var purchase = _context.Purchases.Find(id);
+                var purchase = _context.Sales.Find(id);
 
                 if (purchase == null) return null;
 
-                _context.Purchases.Remove(purchase);
+                _context.Sales.Remove(purchase);
                 await _context.SaveChangesAsync();
 
                 return purchase;

@@ -12,6 +12,7 @@ namespace ReverseAPI.Models
         public string Address { get; set; }
         public double Discount { get; set; }
 
-        public ICollection<Purchase> Puchases { get; set; }
+        public ICollection<Sale> Sales { get; set; }
+        public ICollection<Payment> Payments { get; set; }
     }
 }

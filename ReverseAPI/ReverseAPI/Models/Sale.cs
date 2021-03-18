@@ -16,7 +16,7 @@ namespace ReverseAPI.Models
         public decimal CardPayment { get; set; }
         public DateTime SaleDate { get; set; }
 
-        [ForeignKey("ClientId")]
+        [ForeignKey("ProductId")]
         public Product Product { get; set; }
         [ForeignKey("ClientId")]
         public Client Client { get; set; }

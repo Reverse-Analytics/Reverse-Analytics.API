@@ -351,7 +351,10 @@ namespace ReverseAPI.DAL
         {
             try
             {
-                await _context.Payments.AddAsync(newPayment);
+                _context.Payments.Add(newPayment);
+
+                await _context.SaveChangesAsync();
+
 
                 return newPayment;
             }
@@ -373,7 +376,7 @@ namespace ReverseAPI.DAL
             }
             catch(Exception e)
             {
-                throw new Exception($"Cannot update payment with id: {paymentToUpdate.PaymentId}, {e.Message}");
+                throw new Exception($"Cannot update payment with id: {paymentToUpdate.PaymentId}, {e.Message}: \n {e.InnerException}");
             }
         }
 

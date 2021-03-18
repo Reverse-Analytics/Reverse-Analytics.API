@@ -57,7 +57,7 @@ namespace ReverseAPI.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPost]
         public async Task<ActionResult<Payment>> Add(Payment newPayment)
         {
             try
@@ -74,7 +74,7 @@ namespace ReverseAPI.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPut]
         public async Task<ActionResult<Payment>> Update(Payment paymentToUpdate)
         {
             try

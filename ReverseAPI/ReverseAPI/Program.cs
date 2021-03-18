@@ -15,6 +15,7 @@ namespace ReverseAPI
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseUrls("http://localhost:44330");
                 });
     }
 }

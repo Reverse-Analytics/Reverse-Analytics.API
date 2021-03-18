@@ -317,5 +317,85 @@ namespace ReverseAPI.DAL
             }
         }
         #endregion
+
+        #region Payment
+        public async Task<IEnumerable<Payment>> GetPayments()
+        {
+            try
+            {
+                return await _context.Payments.ToListAsync();
+            }
+            catch(Exception e)
+            {
+                throw new Exception($"Cannot retrieve payments: {e.Message}");
+            }
+        }
+
+        public async Task<Payment> GetPayment(int? id)
+        {
+            try
+            {
+                var payment = await _context.Payments.FindAsync(id);
+
+                int g = 0;
+
+                return payment;
+            }
+            catch(Exception e)
+            {
+                throw new Exception($"Cannot retrieve payment with id: {id}, {e.Message}");
+            }
+        }
+
+        public async Task<Payment> AddPayment(Payment newPayment)
+        {
+            try
+            {
+                await _context.Payments.AddAsync(newPayment);
+
+                return newPayment;
+            }
+            catch(Exception e)
+            {
+                throw new Exception($"Cannot add new payment, {e.Message}");
+            }
+        }
+
+        public async Task<Payment> UpdatePayment(Payment paymentToUpdate)
+        {
+            try
+            {
+                _context.Payments.Update(paymentToUpdate);
+
+                await _context.SaveChangesAsync();
+
+                return paymentToUpdate;
+            }
+            catch(Exception e)
+            {
+                throw new Exception($"Cannot update payment with id: {paymentToUpdate.PaymentId}, {e.Message}");
+            }
+        }
+
+        public async Task<Payment> DeletePayment(int? id)
+        {
+            try
+            {
+                var payment = _context.Payments.Find(id);
+
+                if (payment == null) throw new Exception($"There is no payment with given id {id}");
+
+                _context.Payments.Remove(payment);
+                
+                await _context.SaveChangesAsync();
+
+                return payment;
+            }
+            catch(Exception e)
+            {
+                throw new Exception($"Cannot delete payment with id: {id}, {e.Message}");
+            }
+        }
+        #endregion
     }
 }

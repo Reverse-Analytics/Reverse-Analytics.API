@@ -40,5 +40,12 @@ namespace ReverseAPI.DAL
         public Task<Supply> AddSupply(Supply newSupply);
         public Task<Supply> UpdateSupply(Supply supplyToUpdate);
         public Task<Supply> DeleteSupply(int? id);
+
+        // Payments
+        public Task<IEnumerable<Payment>> GetPayments();
+        public Task<Payment> GetPayment(int? id);
+        public Task<Payment> AddPayment(Payment newPayment);
+        public Task<Payment> UpdatePayment(Payment paymentToUpdate);
+        public Task<Payment> DeletePayment(int? id);
     }
 }

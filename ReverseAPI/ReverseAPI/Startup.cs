@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ReverseAPI.DAL;
+using Infrastructure.Models;
 
 namespace ReverseAPI
 {
@@ -14,7 +15,7 @@ namespace ReverseAPI
         {
             Configuration = configuration;
         }
-
+        
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.

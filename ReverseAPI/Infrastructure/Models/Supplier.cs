@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace ReverseAPI.Models
+namespace Infrastructure.Models
 {
     public class Supplier
     {

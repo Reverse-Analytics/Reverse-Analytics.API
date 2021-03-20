@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ReverseAPI.DAL;
-using ReverseAPI.Models;
+using Infrastructure.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ReverseAPI.Controllers
@@ -41,7 +39,7 @@ namespace ReverseAPI.Controllers
         {
             var client = await _context.GetSupplier(id);
 
-            int g = 0;
+            // int g = 0;
 
             if (client == null) return NotFound();
 
@@ -54,7 +52,7 @@ namespace ReverseAPI.Controllers
         {
             await _context.AddSupplier(newSupplier);
 
-            int g = 0;
+            // int g = 0;
 
             return CreatedAtAction(nameof(Get), new { id = newSupplier.SupplierId }, newSupplier);
         }
@@ -64,7 +62,7 @@ namespace ReverseAPI.Controllers
 
         public async Task<ActionResult> Update(Supplier supplierToUpdate)
         {
-            int g = 0;
+            // int g = 0;
 
             var supplier = await _context.GetSupplier(supplierToUpdate.SupplierId);
 
@@ -83,7 +81,7 @@ namespace ReverseAPI.Controllers
         {
             var supplier = await _context.GetSupplier(id);
 
-            int g = 0;
+            // int g = 0;
 
             if (supplier == null) return NotFound();
 

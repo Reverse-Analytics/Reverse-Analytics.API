@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ReverseAPI.DAL;
-using ReverseAPI.Models;
+using Infrastructure.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -26,7 +26,7 @@ namespace ReverseAPI.Controllers
             {
                 var payments = await _context.GetSales();
 
-                // int g = 0;
+                // // int g = 0;
 
                 return Ok(payments);
             }
@@ -43,7 +43,7 @@ namespace ReverseAPI.Controllers
             {
                 var sale = await _context.GetSale(id);
 
-                // int g = 0;
+                // // int g = 0;
 
                 if (sale == null) return NotFound();
 
@@ -62,7 +62,7 @@ namespace ReverseAPI.Controllers
             {
                 var sale = await _context.AddSale(newSale);
 
-                // int g = 0;
+                // // int g = 0;
 
                 return CreatedAtAction(nameof(Get), new { id = sale.SaleId }, newSale);
             }
@@ -79,7 +79,7 @@ namespace ReverseAPI.Controllers
             {
                 var sale = await _context.UpdateSale(saleToUpdate);
 
-                // int g = 0;
+                // // int g = 0;
 
                 return Ok(sale);
             }
@@ -96,7 +96,7 @@ namespace ReverseAPI.Controllers
             {
                 var sale = await _context.DeleteSale(id);
 
-                // int g = 0;
+                // // int g = 0;
 
                 return Ok(sale);
             }

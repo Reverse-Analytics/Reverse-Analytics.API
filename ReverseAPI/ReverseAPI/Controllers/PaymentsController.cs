@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ReverseAPI.DAL;
-using ReverseAPI.Models;
+using Infrastructure.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +28,7 @@ namespace ReverseAPI.Controllers
             {
                 var payments = await _context.GetPayments();
 
-                // int g = 0;
+                // // int g = 0;
 
                 return Ok(payments);
             }
@@ -45,7 +45,7 @@ namespace ReverseAPI.Controllers
             {
                 var payment = await _context.GetPayment(id);
 
-                // int g = 0;
+                // // int g = 0;
 
                 if (payment == null) return NotFound();
 
@@ -64,7 +64,7 @@ namespace ReverseAPI.Controllers
             {
                 var payment = await _context.AddPayment(newPayment);
 
-                // int g = 0;
+                // // int g = 0;
 
                 return CreatedAtAction(nameof(Get), new { id = payment.PaymentId }, newPayment);
             }
@@ -81,7 +81,7 @@ namespace ReverseAPI.Controllers
             {
                 var payment = await _context.UpdatePayment(paymentToUpdate);
 
-                // int g = 0;
+                // // int g = 0;
 
                 return Ok(payment);
             }
@@ -98,7 +98,7 @@ namespace ReverseAPI.Controllers
             {
                 var payment = await _context.DeletePayment(id);
 
-                // int g = 0;
+                // // int g = 0;
 
                 return Ok(payment);
             }

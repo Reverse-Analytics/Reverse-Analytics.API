@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ReverseAPI.Models;
+using Infrastructure.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -33,7 +33,7 @@ namespace ReverseAPI.DAL
 
         public async Task<Client> AddClient(Client newClient)
         {
-            int g = 0;
+            // int g = 0;
             _context.Clients.Add(newClient);
             await _context.SaveChangesAsync();
 
@@ -337,7 +337,7 @@ namespace ReverseAPI.DAL
             {
                 var payment = await _context.Payments.FindAsync(id);
 
-                int g = 0;
+                // int g = 0;
 
                 return payment;
             }

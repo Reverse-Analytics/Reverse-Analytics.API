@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ReverseAPI.DAL;
-using ReverseAPI.Models;
+using Infrastructure.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -26,7 +26,7 @@ namespace ReverseAPI.Controllers
             {
                 var clients = await _context.GetClients();
 
-                int g = 0;
+                // int g = 0;
 
                 return Ok(clients);
             }
@@ -42,7 +42,7 @@ namespace ReverseAPI.Controllers
         {
             var client = await _context.GetClient(id);
 
-            int g = 0;
+            // // int g = 0;
 
             if (client == null) return NotFound();
 
@@ -54,7 +54,7 @@ namespace ReverseAPI.Controllers
         {
             await _context.AddClient(newClient);
 
-            int g = 0;
+            // int g = 0;
 
             return CreatedAtAction(nameof(Get), new { id = newClient.ClientId }, newClient);
         }
@@ -62,7 +62,7 @@ namespace ReverseAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Client clientToUpdate)
         {
-            int g = 0;
+            // int g = 0;
 
             var client = await _context.GetClient(clientToUpdate.ClientId);
 
@@ -81,7 +81,7 @@ namespace ReverseAPI.Controllers
         {
             var client = await _context.GetClient(id);
 
-            int g = 0;
+            // int g = 0;
 
             if (client == null) return NotFound();
 

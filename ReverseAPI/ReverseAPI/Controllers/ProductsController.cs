@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ReverseAPI.DAL;
-using ReverseAPI.Models;
+using Infrastructure.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -40,7 +40,7 @@ namespace ReverseAPI.Controllers
         {
             var product = await _context.GetProduct(id);
 
-            int g = 0;
+            // int g = 0;
 
             if (product == null) return NotFound();
 
@@ -53,7 +53,7 @@ namespace ReverseAPI.Controllers
         {
             await _context.AddProduct(newProduct);
 
-            int g = 0;
+            // int g = 0;
 
             return CreatedAtAction(nameof(Get), new { id = newProduct.ProductId }, newProduct);
         }
@@ -63,7 +63,7 @@ namespace ReverseAPI.Controllers
 
         public async Task<ActionResult> Update(Product productToUpdate)
         {
-            int g = 0;
+            // int g = 0;
 
             var product = await _context.GetProduct(productToUpdate.ProductId);
 
@@ -83,7 +83,7 @@ namespace ReverseAPI.Controllers
         {
             var product = await _context.GetProduct(id);
 
-            int g = 0;
+            // int g = 0;
 
             if (product == null) return NotFound();
 

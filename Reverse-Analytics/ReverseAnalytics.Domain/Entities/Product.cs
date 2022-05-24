@@ -13,11 +13,13 @@ namespace ReverseAnalytics.Domain.Entities
         public int CategoryId { get; set; }
         public virtual ProductCategory Category { get; set; }
 
-        public virtual ICollection<OrderDetails> OrderDetails { get; set; }
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+        public virtual ICollection<PurchaseDetail> PurchaseDetails { get; set; }
 
         public Product()
         {
-            OrderDetails = new List<OrderDetails>();
+            OrderDetails = new List<OrderDetail>();
+            PurchaseDetails = new List<PurchaseDetail>();
         }
     }
 }

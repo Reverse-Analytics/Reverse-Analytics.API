@@ -9,7 +9,7 @@ namespace ReverseAnalytics.Domain.Entities
         public string? Address { get; set; }
         public string? CompanyName { get; set; }
 
-        public ICollection<Order> Orders { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
 
         public Customer(string firstName, string lastName, string address, string? companyName)
         {

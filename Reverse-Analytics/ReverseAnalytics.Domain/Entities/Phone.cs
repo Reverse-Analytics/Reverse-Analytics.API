@@ -8,7 +8,7 @@ namespace ReverseAnalytics.Domain.Entities
         public string PhoneNumber { get; set; }
 
         public int ContactDetailsId { get; set; }
-        public ContactDetails ContactDetails { get; set; }
+        public virtual ContactDetails ContactDetails { get; set; }
 
         public Phone(string phoneNumber)
         {

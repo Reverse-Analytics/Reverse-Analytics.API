@@ -15,11 +15,11 @@ namespace ReverseAnalytics.Domain.Entities
         public int CustomerId { get; set; }
         public virtual Customer Customer { get; set; }
 
-        public virtual ICollection<OrderDetails> OrderDetails { get; set; }
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
 
         public Order()
         {
-            OrderDetails = new List<OrderDetails>();
+            OrderDetails = new List<OrderDetail>();
         }
     }
 }

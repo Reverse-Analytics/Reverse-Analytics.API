@@ -4,9 +4,9 @@ using ReverseAnalytics.Domain.Entities;
 
 namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
 {
-    public class OrderDetailsConfiguration : IEntityTypeConfiguration<OrderDetails>
+    public class OrderDetailsConfiguration : IEntityTypeConfiguration<OrderDetail>
     {
-        public void Configure(EntityTypeBuilder<OrderDetails> builder)
+        public void Configure(EntityTypeBuilder<OrderDetail> builder)
         {
             builder.ToTable("Order_Detail");
 

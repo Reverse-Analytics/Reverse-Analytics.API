@@ -20,6 +20,9 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
             builder.HasMany(p => p.OrderDetails)
                 .WithOne(od => od.Product)
                 .HasForeignKey(od => od.ProductId);
+            builder.HasMany(p => p.PurchaseDetails)
+                .WithOne(pd => pd.Product)
+                .HasForeignKey(pd => pd.ProductId);
 
             builder.Property(p => p.ProductName)
                 .HasMaxLength(250)

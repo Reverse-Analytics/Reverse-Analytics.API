@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ReverseAnalytics.Infrastructure.Migrations
+namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
 {
     public partial class InitialCreate : Migration
     {
@@ -35,8 +35,8 @@ namespace ReverseAnalytics.Infrastructure.Migrations
                     ProductName = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
                     Volume = table.Column<double>(type: "REAL", nullable: false),
                     Weight = table.Column<double>(type: "REAL", nullable: false),
-                    PurchasePrice = table.Column<decimal>(type: "TEXT", nullable: false),
-                    SalePrice = table.Column<decimal>(type: "TEXT", nullable: false),
+                    PurchasePrice = table.Column<decimal>(type: "money", nullable: false),
+                    SalePrice = table.Column<decimal>(type: "money", nullable: false),
                     CategoryId = table.Column<int>(type: "INTEGER", nullable: false),
                     Created = table.Column<DateTime>(type: "TEXT", nullable: false),
                     CreatedBy = table.Column<string>(type: "TEXT", nullable: true),

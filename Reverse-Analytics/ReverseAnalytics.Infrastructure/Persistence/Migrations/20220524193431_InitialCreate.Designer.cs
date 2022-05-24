@@ -8,10 +8,10 @@ using ReverseAnalytics.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace ReverseAnalytics.Infrastructure.Migrations
+namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220524191544_InitialCreate")]
+    [Migration("20220524193431_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,10 +46,10 @@ namespace ReverseAnalytics.Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("PurchasePrice")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("money");
 
                     b.Property<decimal>("SalePrice")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("money");
 
                     b.Property<double>("Volume")
                         .HasColumnType("REAL");

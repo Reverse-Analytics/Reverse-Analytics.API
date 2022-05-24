@@ -17,9 +17,17 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
                 .HasForeignKey(p => p.CategoryId)
                 .HasConstraintName("Category_FK");
 
+            builder.HasMany(p => p.OrderDetails)
+                .WithOne(od => od.Product)
+                .HasForeignKey(od => od.ProductId);
+
             builder.Property(p => p.ProductName)
                 .HasMaxLength(250)
                 .IsRequired();
+            builder.Property(p => p.PurchasePrice)
+                .HasColumnType("money");
+            builder.Property(p => p.SalePrice)
+                .HasColumnType("money");
         }
     }
 }

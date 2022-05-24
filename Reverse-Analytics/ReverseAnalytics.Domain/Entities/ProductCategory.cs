@@ -1,5 +1,4 @@
 ﻿using ReverseAnalytics.Domain.Common;
-using System.Collections.Generic;
 
 namespace ReverseAnalytics.Domain.Entities
 {
@@ -7,10 +6,11 @@ namespace ReverseAnalytics.Domain.Entities
     {
         public string CategoryName { get; set; }
 
-        public ICollection<Product> Products { get; set; }
+        public virtual ICollection<Product> Products { get; set; }
 
-        public ProductCategory()
+        public ProductCategory(string categoryName)
         {
+            CategoryName = categoryName;
             Products = new List<Product>();
         }
     }

@@ -29,17 +29,15 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Interceptors
             {
                 if (entry.State == EntityState.Added)
                 {
-                    // TODO provide implementation for changedBy
-                    //entry.Entity.CreatedBy 
-                    //TODO separate this to individual service
+                    // TODO implement createdBy && createdDate in a separate service
+                    // entry.Entity.CreatedBy
                     entry.Entity.Created = DateTime.Now;
                 }
 
                 if (entry.State == EntityState.Added || entry.State == EntityState.Modified || entry.HasChangedOwnedEntities())
                 {
-                    // TODO provide implementation for changedBy
-                    //entry.Entity.LastModifiedBy =
-                    //TODO separate this to individual service
+                    // TODO implement createdBy && createdDate in a separate service
+                    // entry.Entity.CreatedBy
                     entry.Entity.LastModified = DateTime.Now;
                 }
             }

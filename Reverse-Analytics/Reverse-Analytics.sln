@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32505.173
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReverseAnalytics.Api", "Reverse-Analytics.Api\ReverseAnalytics.Api.csproj", "{AFA0E6D9-9E5E-494E-9CF1-1DFA64548DE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReverseAnalytics.Api", "Reverse-Analytics.Api\ReverseAnalytics.Api.csproj", "{AFA0E6D9-9E5E-494E-9CF1-1DFA64548DE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReverseAnalytics.Domain", "ReverseAnalytics.Domain\ReverseAnalytics.Domain.csproj", "{E071E653-9FEC-4882-80AD-AB9FB917EC76}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReverseAnalytics.Domain", "ReverseAnalytics.Domain\ReverseAnalytics.Domain.csproj", "{DB9201EC-2CAC-4E36-BB1C-E25966E7B417}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReverseAnalytics.Infrastructure", "ReverseAnalytics.Infrastructure\ReverseAnalytics.Infrastructure.csproj", "{90DEB7DA-C134-499C-A7A8-105C092BE714}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReverseAnalytics.Infrastructure", "ReverseAnalytics.Infrastructure\ReverseAnalytics.Infrastructure.csproj", "{1F92F8F0-A90D-490E-8DDF-642C6F179E04}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +19,14 @@ Global
 		{AFA0E6D9-9E5E-494E-9CF1-1DFA64548DE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFA0E6D9-9E5E-494E-9CF1-1DFA64548DE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AFA0E6D9-9E5E-494E-9CF1-1DFA64548DE1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E071E653-9FEC-4882-80AD-AB9FB917EC76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E071E653-9FEC-4882-80AD-AB9FB917EC76}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E071E653-9FEC-4882-80AD-AB9FB917EC76}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E071E653-9FEC-4882-80AD-AB9FB917EC76}.Release|Any CPU.Build.0 = Release|Any CPU
-		{90DEB7DA-C134-499C-A7A8-105C092BE714}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{90DEB7DA-C134-499C-A7A8-105C092BE714}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{90DEB7DA-C134-499C-A7A8-105C092BE714}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{90DEB7DA-C134-499C-A7A8-105C092BE714}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB9201EC-2CAC-4E36-BB1C-E25966E7B417}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB9201EC-2CAC-4E36-BB1C-E25966E7B417}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB9201EC-2CAC-4E36-BB1C-E25966E7B417}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB9201EC-2CAC-4E36-BB1C-E25966E7B417}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F92F8F0-A90D-490E-8DDF-642C6F179E04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F92F8F0-A90D-490E-8DDF-642C6F179E04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F92F8F0-A90D-490E-8DDF-642C6F179E04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F92F8F0-A90D-490E-8DDF-642C6F179E04}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

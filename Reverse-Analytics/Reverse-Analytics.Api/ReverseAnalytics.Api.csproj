@@ -29,4 +29,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ReverseAnalytics.Infrastructure\ReverseAnalytics.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,11 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ReverseAnalytics.Domain.Entities;
 using ReverseAnalytics.Infrastructure.Persistence.Interceptors;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReverseAnalytics.Infrastructure.Persistence
 {
@@ -13,7 +9,12 @@ namespace ReverseAnalytics.Infrastructure.Persistence
     {
         private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
 
-        public ApplicationDbContext(AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor)
+        public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<ProductCategory> ProductCategories { get; set; }
+
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, 
+                                    AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor)
+            : base(options)
         {
             _auditableEntitySaveChangesInterceptor = auditableEntitySaveChangesInterceptor;
         }
@@ -25,7 +26,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
 
             base.OnModelCreating(modelBuilder);
         }

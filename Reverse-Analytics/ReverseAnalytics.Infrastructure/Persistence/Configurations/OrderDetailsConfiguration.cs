@@ -4,7 +4,7 @@ using ReverseAnalytics.Domain.Entities;
 
 namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
 {
-    public class OrderDetailsConfiguration : IEntityTypeConfiguration<OrderDetail>
+    internal class OrderDetailsConfiguration : IEntityTypeConfiguration<OrderDetail>
     {
         public void Configure(EntityTypeBuilder<OrderDetail> builder)
         {

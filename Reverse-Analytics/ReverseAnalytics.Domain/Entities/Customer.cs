@@ -2,22 +2,13 @@
 
 namespace ReverseAnalytics.Domain.Entities
 {
-    public class Customer : BaseAuditableEntity
+    public class Customer : Person
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string? Address { get; set; }
-        public string? CompanyName { get; set; }
-
         public virtual ICollection<Order> Orders { get; set; }
 
         public Customer(string firstName, string lastName, string address, string? companyName)
+            : base(firstName, lastName, address, companyName)
         {
-            FirstName = firstName;
-            LastName = lastName;
-            Address = address;
-            CompanyName = companyName;
-
             Orders = new List<Order>();
         }
     }

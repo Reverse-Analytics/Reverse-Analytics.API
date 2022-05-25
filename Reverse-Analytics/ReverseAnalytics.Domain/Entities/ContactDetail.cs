@@ -2,18 +2,15 @@
 
 namespace ReverseAnalytics.Domain.Entities
 {
-    public class ContactDetails : BaseAuditableEntity
+    public class ContactDetail : BaseAuditableEntity
     {
-        public int CustomerId { get; set; }
-        public virtual Customer Customer { get; set; }
-
-        public int SupplierId { get; set; }
-        public virtual Supplier Supplier { get; set; }
+        public int PersonId { get; set; }
+        public Person Person { get; set; }
 
         public virtual ICollection<Email> Emails { get; set; }
         public virtual ICollection<Phone> Phones { get; set; }
 
-        public ContactDetails()
+        public ContactDetail()
         {
             Emails = new List<Email>();
             Phones = new List<Phone>();

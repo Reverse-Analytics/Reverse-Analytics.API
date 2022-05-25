@@ -10,24 +10,9 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
         {
             builder.ToTable("Supplier");
 
-            builder.HasKey(s => s.Id);
-
             builder.HasMany(s => s.Purchases)
                 .WithOne(p => p.Supplier)
                 .HasForeignKey(p => p.SupplierId);
-
-            builder.Property(c => c.FirstName)
-                .HasMaxLength(150)
-                .IsRequired();
-            builder.Property(c => c.LastName)
-                .HasMaxLength(200)
-                .IsRequired();
-            builder.Property(c => c.CompanyName)
-                .HasMaxLength(250)
-                .IsRequired(false);
-            builder.Property(c => c.Address)
-                .HasMaxLength(250)
-                .IsRequired(false);
         }
     }
 }

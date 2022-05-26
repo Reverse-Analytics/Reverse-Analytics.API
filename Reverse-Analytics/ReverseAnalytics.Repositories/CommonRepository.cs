@@ -5,9 +5,9 @@ namespace ReverseAnalytics.Repositories
 {
     public class CommonRepository : ICommonRepository
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        private IProductCategoryRepository _productCategoryRepository;
+        private readonly IProductCategoryRepository _productCategoryRepository;
         public IProductCategoryRepository ProductCategoryRepository => _productCategoryRepository ?? new ProductCategoryRepository(_context);
 
         public CommonRepository(ApplicationDbContext context)

@@ -4,21 +4,21 @@ using ReverseAnalytics.Infrastructure.Persistence;
 
 namespace ReverseAnalytics.Repositories
 {
-    public class BaseRepository<T> : IBaseRepository<T> where T : class
+    public abstract class BaseRepository<T> : IBaseRepository<T> where T : class
     {
         protected readonly ApplicationDbContext _context;
 
-        public BaseRepository(ApplicationDbContext context)
+        protected BaseRepository(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public IEnumerable<T> FindAll()
+        public IEnumerable<T> FindAllAsync()
         {
             return _context.Set<T>().AsNoTracking();
         }
 
-        public async Task<T?> FindById(int id)
+        public async Task<T?> FindByIdAsync(int id)
         {
             return await _context.Set<T>().FindAsync(id);
         }
@@ -43,7 +43,7 @@ namespace ReverseAnalytics.Repositories
             return (await _context.SaveChangesAsync() >= 0);
         }
 
-        public async Task<bool> EntityExists(int id)
+        public async Task<bool> EntityExistsAsync(int id)
         {
             return await _context.Set<T>().FindAsync(id) != null;
         }

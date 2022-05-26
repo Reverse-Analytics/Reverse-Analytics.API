@@ -38,14 +38,14 @@ namespace ReverseAnalytics.Repositories
             return categoryToCreate;
         }
 
-        public void DeleteProductCategory(ProductCategory categoryToDelete)
-        {
-            Delete(categoryToDelete);
-        }
-
         public void UpdateProductCategory(ProductCategory categoryToUpdate)
         {
             Update(categoryToUpdate);
+        }
+
+        public void DeleteProductCategory(ProductCategory categoryToDelete)
+        {
+            Delete(categoryToDelete);
         }
     }
 }

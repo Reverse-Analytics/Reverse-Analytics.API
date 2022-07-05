@@ -31,6 +31,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ReverseAnalytics.Infrastructure\ReverseAnalytics.Infrastructure.csproj" />
+    <ProjectReference Include="..\ReverseAnalytics.Repositories\ReverseAnalytics.Repositories.csproj" />
+    <ProjectReference Include="..\ReverseAnalytics.Services\ReverseAnalytics.Services.csproj" />
   </ItemGroup>
 
 </Project>

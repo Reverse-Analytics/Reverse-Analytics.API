@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ReverseAnalytics.Domain.Interfaces.Repositories;
 using ReverseAnalytics.Infrastructure.Persistence;
 using ReverseAnalytics.Infrastructure.Persistence.Interceptors;
+using ReverseAnalytics.Repositories;
 
 namespace Reverse_Analytics.Api.Extensions
 {
@@ -8,6 +10,10 @@ namespace Reverse_Analytics.Api.Extensions
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddScoped<ICommonRepository, CommonRepository>();
+            services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
+
+
             services.AddScoped<AuditableEntitySaveChangesInterceptor>();
 
 #if DEBUG

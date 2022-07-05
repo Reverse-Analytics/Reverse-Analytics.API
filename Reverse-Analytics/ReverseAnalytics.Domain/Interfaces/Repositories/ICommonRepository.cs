@@ -2,6 +2,6 @@
 {
     public interface ICommonRepository
     {
-        public IProductCategoryRepository ProductCategoryRepository { get; }
+        public IProductCategoryRepository ProductCategory { get; }
     }
 }

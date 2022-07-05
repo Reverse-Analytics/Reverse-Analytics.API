@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+
 using ReverseAnalytics.Domain.DTOs.ProductCategory;
 using ReverseAnalytics.Domain.Entities;
 using ReverseAnalytics.Domain.Exceptions;
@@ -9,25 +10,24 @@ namespace ReverseAnalytics.Services
 {
     public class ProductCategoryService : IProductCategoryService
     {
-        private readonly IProductCategoryRepository _repository;
+        private readonly ICommonRepository _repository;
         private readonly IMapper _mapper;
 
-        public ProductCategoryService(IProductCategoryRepository repository, IMapper mapper)
+        public ProductCategoryService(ICommonRepository repository, IMapper mapper)
         {
-            _repository = repository
-                ?? throw new ArgumentNullException(nameof(repository));
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             _mapper = mapper
                 ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<IEnumerable<ProductCategoryDto>> GetAllProductCategoriesAsync(string? searchString)
+        public async Task<IEnumerable<ProductCategoryDto>?> GetAllProductCategoriesAsync(string? searchString)
         {
             try
             {
-                var productCategories = await _repository.FindAllProductCategoriesAsync(searchString);
+                var productCategories = await _repository.ProductCategory.FindAllProductCategoriesAsync(searchString);
 
                 if (productCategories is null)
-                    throw new NotFoundException("No product categories found.");
+                    return null;
 
                 var productCategoriesDto = _mapper.Map<IEnumerable<ProductCategoryDto>>(productCategories);
 
@@ -54,7 +54,7 @@ namespace ReverseAnalytics.Services
         {
             try
             {
-                var productCategory = await _repository.FindProductCategoryByIdAsync(id);
+                var productCategory = await _repository.ProductCategory.FindByIdAsync(id);
 
                 if (productCategory is null)
                     throw new NotFoundException($"Could not find ProductCategory with id: {id}");
@@ -92,8 +92,8 @@ namespace ReverseAnalytics.Services
                 if (productCategoryEntity is null)
                     throw new AutoMapperMappingException("There was an error mapping ProductCategoryForCreate DTO to ProductCategory Entity.");
 
-                _repository.Create(productCategoryEntity);
-                await _repository.SaveChangesAsync();
+                _repository.ProductCategory.Create(productCategoryEntity);
+                await _repository.ProductCategory.SaveChangesAsync();
 
                 var productCategoryDto = _mapper.Map<ProductCategoryDto>(productCategoryEntity);
 
@@ -128,8 +128,8 @@ namespace ReverseAnalytics.Services
                 if (productCategoryEntity is null)
                     throw new AutoMapperMappingException("There was an error mapping ProductCategoryForUpdate DTO to Product Category Entity.");
 
-                _repository.Update(productCategoryEntity);
-                await _repository.SaveChangesAsync();
+                _repository.ProductCategory.Update(productCategoryEntity);
+                await _repository.ProductCategory.SaveChangesAsync();
             }
             catch (ArgumentNullException ex)
             {
@@ -149,13 +149,13 @@ namespace ReverseAnalytics.Services
         {
             try
             {
-                var productCategoryEntity = _mapper.Map<ProductCategory>(productCategoryId);
+                var productCategory = await _repository.ProductCategory.FindByIdAsync(productCategoryId);
 
-                if (productCategoryEntity is null)
+                if (productCategory is null)
                     throw new NotFoundException($"Could not find Product Category with id: {productCategoryId}");
 
-                _repository.Delete(productCategoryEntity);
-                await _repository.SaveChangesAsync();
+                _repository.ProductCategory.Delete(productCategory);
+                await _repository.ProductCategory.SaveChangesAsync();
             }
             catch(NotFoundException ex)
             {

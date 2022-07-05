@@ -2,7 +2,7 @@
 using ReverseAnalytics.Domain.DTOs.ProductCategory;
 using ReverseAnalytics.Domain.Entities;
 
-namespace ReverseAnalytics.Domain.Mappers
+namespace ReverseAnalytics.Domain.Profiles
 {
     public class ProductCategoryProfile : Profile
     {

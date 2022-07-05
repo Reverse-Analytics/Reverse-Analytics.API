@@ -1,14 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ReverseAnalytics.Domain.Exceptions;
 using ReverseAnalytics.Domain.Interfaces.Repositories;
 using ReverseAnalytics.Infrastructure.Persistence;
 
 namespace ReverseAnalytics.Repositories
 {
-    public abstract class BaseRepository<T> : IBaseRepository<T> where T : class
+    public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {
         protected readonly ApplicationDbContext _context;
 
-        protected BaseRepository(ApplicationDbContext context)
+        protected RepositoryBase(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -23,9 +24,9 @@ namespace ReverseAnalytics.Repositories
             return await _context.Set<T>().FindAsync(id);
         }
 
-        public void Create(T entity)
+        public T Create(T entity)
         {
-            _context.Set<T>().Add(entity);
+            return _context.Set<T>().Add(entity).Entity;
         }
 
         public void Update(T entity)
@@ -36,6 +37,18 @@ namespace ReverseAnalytics.Repositories
         public void Delete(T entity)
         {
             _context.Set<T>().Remove(entity);
+        }
+
+        public void Delete(int id)
+        {
+            var entity = _context.Set<T>().Find(id);
+
+            if(entity != null)
+            {
+                Delete(entity);
+            }
+
+            throw new NotFoundException($"There is no entity type {typeof(T)} with id: {id}");
         }
 
         public async Task<bool> SaveChangesAsync()

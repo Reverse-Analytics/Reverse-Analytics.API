@@ -5,7 +5,7 @@ using ReverseAnalytics.Infrastructure.Persistence;
 
 namespace ReverseAnalytics.Repositories
 {
-    public class ProductCategoryRepository : BaseRepository<ProductCategory>, IProductCategoryRepository
+    public class ProductCategoryRepository : RepositoryBase<ProductCategory>, IProductCategoryRepository
     {
         public ProductCategoryRepository(ApplicationDbContext context)
             : base(context)
@@ -14,9 +14,7 @@ namespace ReverseAnalytics.Repositories
 
         public async Task<List<ProductCategory>> FindAllProductCategoriesAsync(string? searchString)
         {
-            var productCategories = _context.ProductCategories
-                .Include(pc => pc.Products)
-                .AsQueryable();
+            var productCategories = _context.ProductCategories.AsQueryable();
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -24,28 +22,6 @@ namespace ReverseAnalytics.Repositories
             }
 
             return await productCategories.ToListAsync();
-        }
-
-        public async Task<ProductCategory?> FindProductCategoryByIdAsync(int id)
-        {
-            return await FindByIdAsync(id);
-        }
-
-        public ProductCategory CreateProductCategory(ProductCategory categoryToCreate)
-        {
-            Create(categoryToCreate);
-
-            return categoryToCreate;
-        }
-
-        public void UpdateProductCategory(ProductCategory categoryToUpdate)
-        {
-            Update(categoryToUpdate);
-        }
-
-        public void DeleteProductCategory(ProductCategory categoryToDelete)
-        {
-            Delete(categoryToDelete);
         }
     }
 }

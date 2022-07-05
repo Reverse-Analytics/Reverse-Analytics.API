@@ -1,11 +1,9 @@
-using Microsoft.EntityFrameworkCore;
 using Reverse_Analytics.Api.Extensions;
-using ReverseAnalytics.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfrastructureServices(builder.Configuration);
-
+builder.Services.RegisterDependencyInjection();
 // Add services to the container.
 
 builder.Services.AddControllers();

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ReverseAnalytics.Domain.DTOs.ProductCategory;
+using ReverseAnalytics.Domain.Exceptions;
 using ReverseAnalytics.Domain.Interfaces.Services;
 
 namespace Reverse_Analytics.Api.Controllers
@@ -19,15 +20,14 @@ namespace Reverse_Analytics.Api.Controllers
 
         #region Actions
 
-        // GET: api/<ProductCategoryController>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductCategoryDto>>> GetCategories(string? searchQuery)
         {
             try
             {
-                var categories = await _productCategoryService.GetAllProductCategoriesAsync(searchQuery);
+                var categories = await _productCategoryService.GetProductCategoriesAsync(searchQuery);
 
-                if (categories is null || !categories.Any())
+                if (categories is null)
                 {
                     return NotFound("No categories were found.");
                 }
@@ -42,7 +42,6 @@ namespace Reverse_Analytics.Api.Controllers
             }
         }
 
-        // GET api/<ProductCategoryController>/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductCategoryDto>> GetCategory(int id)
         {
@@ -65,7 +64,6 @@ namespace Reverse_Analytics.Api.Controllers
             }
         }
 
-        // POST api/<ProductCategoryController>
         [HttpPost]
         public async Task<ActionResult<ProductCategoryDto>> Post(ProductCategoryForCreateDto categoryToCreate)
         {
@@ -93,7 +91,6 @@ namespace Reverse_Analytics.Api.Controllers
             }
         }
 
-        // PUT api/<ProductCategoryController>/5
         [HttpPut("{id}")]
         public async Task<ActionResult<ProductCategoryForUpdateDto>> Put(int id, ProductCategoryForUpdateDto categoryToUpdate)
         {
@@ -101,22 +98,28 @@ namespace Reverse_Analytics.Api.Controllers
             {
                 if (categoryToUpdate is null)
                 {
-                    return BadRequest("Catogory cannot be null.");
+                    return BadRequest("Product Catogory cannot be null.");
                 }
 
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest("Product category object is invalid for updating.");
+                    return BadRequest("Product Category object is invalid for updating.");
                 }
 
                 if (categoryToUpdate.Id != id)
                 {
-                    return BadRequest($"Category id: {categoryToUpdate.Id} does not match with route id: {id}.");
+                    return BadRequest($"Product Category id: {categoryToUpdate.Id} does not match with route id: {id}.");
                 }
 
                 await _productCategoryService.UpdateProductCategoryAsync(categoryToUpdate);
 
                 return NoContent();
+            }
+            catch(NotFoundException ex)
+            {
+                _logger.LogError($"Unable to find Product Category with id: {id}.", ex.Message);
+
+                return NotFound($"Product category with id: {id} does not exist.");
             }
             catch (Exception ex)
             {
@@ -126,7 +129,6 @@ namespace Reverse_Analytics.Api.Controllers
             }
         }
 
-        // DELETE api/<ProductCategoryController>/5
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
@@ -135,6 +137,12 @@ namespace Reverse_Analytics.Api.Controllers
                 await _productCategoryService.DeleteProductCategoryAsync(id);
 
                 return NoContent();
+            }
+            catch(NotFoundException ex)
+            {
+                _logger.LogError($"Error deleting Product Category with id: {id}.", ex.Message);
+
+                return NotFound($"Product category with id: {id} does not exist.");
             }
             catch (Exception ex)
             {

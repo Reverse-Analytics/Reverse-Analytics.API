@@ -3,5 +3,6 @@
     public interface ICommonRepository
     {
         public IProductCategoryRepository ProductCategory { get; }
+        public IProductRepository Product { get; }
     }
 }

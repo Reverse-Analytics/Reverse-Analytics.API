@@ -20,7 +20,41 @@ namespace ReverseAnalytics.Services
                 ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<IEnumerable<ProductCategoryDto>?> GetAllProductCategoriesAsync(string? searchString)
+        public async Task<IEnumerable<ProductCategoryDto>?> GetProductCategoriesAsync()
+        {
+            try
+            {
+                var productCategories = await _repository.ProductCategory.FindAllAsync();
+
+                if(productCategories is null)
+                {
+                    return null;
+                }
+
+                var productCategoriesDto = _mapper.Map<IEnumerable<ProductCategoryDto>?>(productCategories);
+
+                if (productCategoriesDto is null)
+                {
+                    throw new AutoMapperMappingException($"Could not map {typeof(ProductCategory)} Entities to {typeof(ProductCategoryDto)}.");
+                }
+
+                return productCategoriesDto;
+            }
+            catch (NotFoundException ex)
+            {
+                throw ex;
+            }
+            catch (AutoMapperMappingException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("There was an error retrieving product categories.", ex);
+            }
+        }
+
+        public async Task<IEnumerable<ProductCategoryDto>?> GetProductCategoriesAsync(string? searchString)
         {
             try
             {
@@ -29,10 +63,12 @@ namespace ReverseAnalytics.Services
                 if (productCategories is null)
                     return null;
 
-                var productCategoriesDto = _mapper.Map<IEnumerable<ProductCategoryDto>>(productCategories);
+                var productCategoriesDto = _mapper.Map<IEnumerable<ProductCategoryDto>?>(productCategories);
 
                 if (productCategoriesDto is null)
-                    throw new AutoMapperMappingException("Could not map ProductCategory Entities to ProductCategory DTOs.");
+                {
+                    throw new AutoMapperMappingException($"Could not map {typeof(Product)} Entities to {typeof(ProductCategoryDto)}.");
+                }
 
                 return productCategoriesDto;
             }
@@ -57,12 +93,16 @@ namespace ReverseAnalytics.Services
                 var productCategory = await _repository.ProductCategory.FindByIdAsync(id);
 
                 if (productCategory is null)
-                    throw new NotFoundException($"Could not find ProductCategory with id: {id}");
+                {
+                    return null;
+                }
 
                 var productCategoryDto = _mapper.Map<ProductCategoryDto>(productCategory);
 
                 if (productCategoryDto is null)
-                    throw new AutoMapperMappingException("Could not map ProductCategory Entity to ProductCategory DTO.");
+                {
+                    throw new AutoMapperMappingException($"Could not map {typeof(ProductCategory)} Entity to {typeof(ProductCategoryDto)}.");
+                }
 
                 return productCategoryDto;
             }
@@ -85,12 +125,16 @@ namespace ReverseAnalytics.Services
             try
             {
                 if (productCategoryToCreate is null)
+                {
                     throw new ArgumentNullException(nameof(productCategoryToCreate));
+                }
 
                 var productCategoryEntity = _mapper.Map<ProductCategory>(productCategoryToCreate);
 
                 if (productCategoryEntity is null)
-                    throw new AutoMapperMappingException("There was an error mapping ProductCategoryForCreate DTO to ProductCategory Entity.");
+                {
+                    throw new AutoMapperMappingException($"Could not map {typeof(ProductCategoryForCreateDto)} to {typeof(ProductCategory)}.");
+                }
 
                 _repository.ProductCategory.Create(productCategoryEntity);
                 await _repository.ProductCategory.SaveChangesAsync();
@@ -98,7 +142,9 @@ namespace ReverseAnalytics.Services
                 var productCategoryDto = _mapper.Map<ProductCategoryDto>(productCategoryEntity);
 
                 if(productCategoryDto is null)
-                    throw new AutoMapperMappingException("There was an error mapping ProductCategory Entity to  ProductCategoryForCreate DTO.");
+                {
+                    throw new AutoMapperMappingException($"Could not map {typeof(ProductCategory)} Entity to {typeof(ProductCategoryDto)}.");
+                }
 
                 return productCategoryDto;
             }
@@ -121,12 +167,16 @@ namespace ReverseAnalytics.Services
             try
             {
                 if (productCategoryToUpdate is null)
+                {
                     throw new ArgumentNullException(nameof(productCategoryToUpdate));
+                }
 
                 var productCategoryEntity = _mapper.Map<ProductCategory>(productCategoryToUpdate);
 
                 if (productCategoryEntity is null)
-                    throw new AutoMapperMappingException("There was an error mapping ProductCategoryForUpdate DTO to Product Category Entity.");
+                {
+                    throw new AutoMapperMappingException($"Could not map {typeof(ProductCategory)} Entity to {typeof(ProductCategoryDto)}.");
+                }
 
                 _repository.ProductCategory.Update(productCategoryEntity);
                 await _repository.ProductCategory.SaveChangesAsync();
@@ -136,6 +186,10 @@ namespace ReverseAnalytics.Services
                 throw ex;
             }
             catch (AutoMapperMappingException ex)
+            {
+                throw ex;
+            }
+            catch (NotFoundException ex)
             {
                 throw ex;
             }
@@ -149,12 +203,7 @@ namespace ReverseAnalytics.Services
         {
             try
             {
-                var productCategory = await _repository.ProductCategory.FindByIdAsync(productCategoryId);
-
-                if (productCategory is null)
-                    throw new NotFoundException($"Could not find Product Category with id: {productCategoryId}");
-
-                _repository.ProductCategory.Delete(productCategory);
+                _repository.ProductCategory.Delete(productCategoryId);
                 await _repository.ProductCategory.SaveChangesAsync();
             }
             catch(NotFoundException ex)

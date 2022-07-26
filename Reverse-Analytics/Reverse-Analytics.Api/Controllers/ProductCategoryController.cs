@@ -74,6 +74,11 @@ namespace Reverse_Analytics.Api.Controllers
                     return BadRequest("Product category cannot be null.");
                 }
 
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Product category is not valid for creation.");
+                }
+
                 var category = await _productCategoryService.CreateProductCategoryAsync(categoryToCreate);
 
                 if (category is null)
@@ -92,7 +97,7 @@ namespace Reverse_Analytics.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<ProductCategoryForUpdateDto>> Put(int id, ProductCategoryForUpdateDto categoryToUpdate)
+        public async Task<ActionResult> Put(int id, ProductCategoryForUpdateDto categoryToUpdate)
         {
             try
             {
@@ -103,7 +108,7 @@ namespace Reverse_Analytics.Api.Controllers
 
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest("Product Category object is invalid for updating.");
+                    return BadRequest("Product Category is not valid for updating.");
                 }
 
                 if (categoryToUpdate.Id != id)
@@ -125,7 +130,7 @@ namespace Reverse_Analytics.Api.Controllers
             {
                 _logger.LogError($"Error updating product category with id: {id}.", ex.Message);
 
-                return StatusCode(500, $"There was an error updating product category with id: {id}.");
+                return StatusCode(500, $"Unkown error has occured while updating the Product Category.");
             }
         }
 

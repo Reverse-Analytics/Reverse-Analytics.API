@@ -2,7 +2,7 @@
 {
     public class ProductForUpdateDto
     {
-        public int Id { get; private set; }
+        public int Id { get; set; }
         public string ProductName { get; set; }
         public double Volume { get; set; }
         public double Weight { get; set; }

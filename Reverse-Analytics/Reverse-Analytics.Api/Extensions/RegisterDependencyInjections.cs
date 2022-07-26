@@ -8,6 +8,7 @@ namespace Reverse_Analytics.Api.Extensions
         public static void RegisterDependencyInjection(this IServiceCollection services)
         {
             services.AddScoped<IProductCategoryService, ProductCategoryService>();
+            services.AddScoped<IProductService, ProductService>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }

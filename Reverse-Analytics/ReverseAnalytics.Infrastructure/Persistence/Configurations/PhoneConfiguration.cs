@@ -12,11 +12,6 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
 
             builder.HasKey(p => p.Id);
 
-            builder.HasOne(p => p.ContactDetail)
-                .WithMany(cd => cd.Phones)
-                .HasForeignKey(p => p.ContactDetailId)
-                .HasConstraintName("Contact_Detail_FK");
-
             builder.Property(p => p.PhoneNumber)
                 .HasMaxLength(13)
                 .IsRequired();

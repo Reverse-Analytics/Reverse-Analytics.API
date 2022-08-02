@@ -7,9 +7,6 @@ namespace ReverseAnalytics.Domain.Entities
         public bool? IsPrimary { get; set; }
         public string PhoneNumber { get; set; }
 
-        public int ContactDetailId { get; set; }
-        public virtual ContactDetail ContactDetail { get; set; }
-
         public Phone(string phoneNumber)
         {
             PhoneNumber = phoneNumber;

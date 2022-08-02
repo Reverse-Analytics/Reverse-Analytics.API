@@ -9,8 +9,6 @@ namespace ReverseAnalytics.Domain.Entities
         public string? Address { get; set; }
         public string? CompanyName { get; set; }
 
-        public virtual ContactDetail ContactDetails { get; set; }
-
         public Person(string firstName, string lastName, string? address, string? companyName)
         {
             FirstName = firstName;

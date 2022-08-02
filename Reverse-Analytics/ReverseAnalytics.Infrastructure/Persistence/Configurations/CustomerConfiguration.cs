@@ -13,6 +13,9 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
             builder.HasMany(c => c.Orders)
                 .WithOne(o => o.Customer)
                 .HasForeignKey(o => o.CustomerId);
+            builder.HasMany(c => c.CustomerAddresses)
+                .WithOne(ca => ca.Customer)
+                .HasForeignKey(ca => ca.CustomerId);
         }
     }
 }

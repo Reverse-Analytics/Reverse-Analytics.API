@@ -19,6 +19,9 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
             builder.HasMany(c => c.CustomerPhones)
                 .WithOne(cp => cp.Customer)
                 .HasForeignKey(cp => cp.CustomerId);
+            builder.HasMany(c => c.CustomerDebts)
+                .WithOne(cd => cd.Customer)
+                .HasForeignKey(cd => cd.CustomerId);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReverseAnalytics.Infrastructure.Persistence;
 
@@ -10,9 +11,10 @@ using ReverseAnalytics.Infrastructure.Persistence;
 namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220802102722_Add_Customer_Debt")]
+    partial class Add_Customer_Debt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.5");
@@ -415,31 +417,6 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                     b.ToTable("Purchase_Detail", (string)null);
                 });
 
-            modelBuilder.Entity("ReverseAnalytics.Domain.Entities.SupplierDebt", b =>
-                {
-                    b.Property<int>("SupplierDebtId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("money");
-
-                    b.Property<DateTime>("DebtDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("DueDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("SupplierId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("SupplierDebtId");
-
-                    b.HasIndex("SupplierId");
-
-                    b.ToTable("SupplierDebt");
-                });
-
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.SupplierPhone", b =>
                 {
                     b.Property<int>("SupplierId")
@@ -612,18 +589,6 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                     b.Navigation("Purchase");
                 });
 
-            modelBuilder.Entity("ReverseAnalytics.Domain.Entities.SupplierDebt", b =>
-                {
-                    b.HasOne("ReverseAnalytics.Domain.Entities.Supplier", "Supplier")
-                        .WithMany("SupplierDebts")
-                        .HasForeignKey("SupplierId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("Supplier_FK");
-
-                    b.Navigation("Supplier");
-                });
-
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.SupplierPhone", b =>
                 {
                     b.HasOne("ReverseAnalytics.Domain.Entities.Supplier", "Supplier")
@@ -700,8 +665,6 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Supplier", b =>
                 {
                     b.Navigation("Purchases");
-
-                    b.Navigation("SupplierDebts");
 
                     b.Navigation("SupplierPhones");
                 });

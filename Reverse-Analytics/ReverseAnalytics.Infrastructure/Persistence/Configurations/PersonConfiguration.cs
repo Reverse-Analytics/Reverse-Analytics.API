@@ -21,9 +21,6 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
             builder.Property(p => p.CompanyName)
                 .HasMaxLength(250)
                 .IsRequired(false);
-            builder.Property(p => p.Address)
-                .HasMaxLength(250)
-                .IsRequired(false);
         }
     }
 }

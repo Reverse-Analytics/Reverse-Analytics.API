@@ -4,5 +4,6 @@
     {
         public IProductCategoryRepository ProductCategory { get; }
         public IProductRepository Product { get; }
+        public ICityRepository City { get; }
     }
 }

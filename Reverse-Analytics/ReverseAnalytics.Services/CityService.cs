@@ -18,7 +18,7 @@ namespace ReverseAnalytics.Services
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<IEnumerable<CityDto>?> GetAllCities(string? searchString)
+        public async Task<IEnumerable<CityDto>?> GetAllCitiesAsync(string? searchString)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace ReverseAnalytics.Services
             }
         }
         
-        public async Task<CityDto?> GetCityById(int id)
+        public async Task<CityDto?> GetCityByIdAsync(int id)
         {
             try
             {
@@ -86,7 +86,7 @@ namespace ReverseAnalytics.Services
             }
         }
 
-        public async Task<CityDto?> CreateCity(CityForCreateDto cityToCreate)
+        public async Task<CityDto?> CreateCityAsync(CityForCreateDto cityToCreate)
         {
             try
             {

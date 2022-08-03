@@ -1,4 +1,5 @@
-﻿using ReverseAnalytics.Domain.Entities;
+﻿using ReverseAnalytics.Domain.DTOs.Address;
+using ReverseAnalytics.Domain.Entities;
 
 namespace ReverseAnalytics.Domain.DTOs.City
 {
@@ -7,6 +8,6 @@ namespace ReverseAnalytics.Domain.DTOs.City
         public int Id { get; set; }
         public string CityName { get; set; }
 
-        public ICollection<Address> Addresses { get; set; }
+        public ICollection<AddressDto> Addresses { get; set; }
     }
 }

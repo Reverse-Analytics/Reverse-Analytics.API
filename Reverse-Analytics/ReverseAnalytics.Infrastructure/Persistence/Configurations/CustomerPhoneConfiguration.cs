@@ -10,7 +10,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
         {
             builder.ToTable("Customer_Phone");
 
-            builder.HasKey(cp => cp.CustomerPhoneId);
+            builder.HasKey(cp => cp.Id);
 
             builder.HasOne(cp => cp.Customer)
                 .WithMany(c => c.CustomerPhones)

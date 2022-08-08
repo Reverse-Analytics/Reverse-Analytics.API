@@ -7,7 +7,7 @@ using ReverseAnalytics.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
+namespace ReverseAnalytics.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -19,7 +19,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Address", b =>
                 {
-                    b.Property<int>("AddressId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -29,16 +29,28 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                     b.Property<int>("CityId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("AddressId");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("CityId");
 
-                    b.ToTable("Address");
+                    b.ToTable("Address", (string)null);
                 });
 
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.City", b =>
                 {
-                    b.Property<int>("CityId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -55,7 +67,70 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("City", (string)null);
+                });
+
+            modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Customer", b =>
+                {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CompanyName")
+                        .HasMaxLength(250)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Customer", (string)null);
+                });
+
+            modelBuilder.Entity("ReverseAnalytics.Domain.Entities.CustomerAddress", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AddressId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("CustomerId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("LastModified")
@@ -64,40 +139,29 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("CityId");
-
-                    b.ToTable("City");
-                });
-
-            modelBuilder.Entity("ReverseAnalytics.Domain.Entities.CustomerAddress", b =>
-                {
-                    b.Property<int>("CustomerAddressId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("AddressId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("CustomerAddressId");
+                    b.HasKey("Id");
 
                     b.HasIndex("AddressId");
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("CustomerAddress");
+                    b.ToTable("Customer_City", (string)null);
                 });
 
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.CustomerDebt", b =>
                 {
-                    b.Property<int>("CustomerDebtId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("money");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("CustomerId")
                         .HasColumnType("INTEGER");
@@ -108,18 +172,30 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("CustomerDebtId");
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("CustomerDebt");
+                    b.ToTable("Customer_Debt", (string)null);
                 });
 
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.CustomerPhone", b =>
                 {
-                    b.Property<int>("CustomerPhoneId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("CustomerId")
                         .HasColumnType("INTEGER");
@@ -129,16 +205,22 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                         .HasColumnType("INTEGER")
                         .HasDefaultValue(false);
 
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasMaxLength(13)
                         .HasColumnType("TEXT");
 
-                    b.HasKey("CustomerPhoneId");
+                    b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("CustomerPhone");
+                    b.ToTable("Customer_Phone", (string)null);
                 });
 
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Order", b =>
@@ -229,43 +311,6 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("Order_Detail", (string)null);
-                });
-
-            modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Person", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("CompanyName")
-                        .HasMaxLength(250)
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Person", (string)null);
                 });
 
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Product", b =>
@@ -426,14 +471,57 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                     b.ToTable("Purchase_Detail", (string)null);
                 });
 
+            modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Supplier", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CompanyName")
+                        .HasMaxLength(250)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Supplier", (string)null);
+                });
+
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.SupplierDebt", b =>
                 {
-                    b.Property<int>("SupplierDebtId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("money");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DebtDate")
                         .HasColumnType("TEXT");
@@ -441,51 +529,58 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("SupplierId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("SupplierDebtId");
+                    b.HasKey("Id");
 
                     b.HasIndex("SupplierId");
 
-                    b.ToTable("SupplierDebt");
+                    b.ToTable("Supplier_Debt", (string)null);
                 });
 
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.SupplierPhone", b =>
                 {
-                    b.Property<int>("SupplierId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("IsPrimary")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER")
                         .HasDefaultValue(false);
 
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasMaxLength(13)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("SupplierPhoneId")
+                    b.Property<int>("SupplierId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("SupplierId");
+                    b.HasKey("Id");
 
-                    b.ToTable("SupplierPhone");
-                });
+                    b.HasIndex("SupplierId");
 
-            modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Customer", b =>
-                {
-                    b.HasBaseType("ReverseAnalytics.Domain.Entities.Person");
-
-                    b.ToTable("Customer", (string)null);
-                });
-
-            modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Supplier", b =>
-                {
-                    b.HasBaseType("ReverseAnalytics.Domain.Entities.Person");
-
-                    b.ToTable("Supplier", (string)null);
+                    b.ToTable("Supplier_Phone", (string)null);
                 });
 
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Address", b =>
@@ -647,24 +742,6 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                     b.Navigation("Supplier");
                 });
 
-            modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Customer", b =>
-                {
-                    b.HasOne("ReverseAnalytics.Domain.Entities.Person", null)
-                        .WithOne()
-                        .HasForeignKey("ReverseAnalytics.Domain.Entities.Customer", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Supplier", b =>
-                {
-                    b.HasOne("ReverseAnalytics.Domain.Entities.Person", null)
-                        .WithOne()
-                        .HasForeignKey("ReverseAnalytics.Domain.Entities.Supplier", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Address", b =>
                 {
                     b.Navigation("CustomerAddresses");
@@ -673,6 +750,17 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.City", b =>
                 {
                     b.Navigation("Addresses");
+                });
+
+            modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Customer", b =>
+                {
+                    b.Navigation("CustomerAddresses");
+
+                    b.Navigation("CustomerDebts");
+
+                    b.Navigation("CustomerPhones");
+
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Order", b =>
@@ -695,17 +783,6 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Purchase", b =>
                 {
                     b.Navigation("PurchaseDetails");
-                });
-
-            modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Customer", b =>
-                {
-                    b.Navigation("CustomerAddresses");
-
-                    b.Navigation("CustomerDebts");
-
-                    b.Navigation("CustomerPhones");
-
-                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Supplier", b =>

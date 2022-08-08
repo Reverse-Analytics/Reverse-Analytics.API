@@ -1,8 +1,9 @@
-﻿namespace ReverseAnalytics.Domain.Entities
+﻿using ReverseAnalytics.Domain.Common;
+
+namespace ReverseAnalytics.Domain.Entities
 {
-    public class Address
+    public class Address : BaseAuditableEntity
     {
-        public int AddressId { get; set; }
         public string AddressDetails { get; set; }
 
         public int CityId { get; set; }

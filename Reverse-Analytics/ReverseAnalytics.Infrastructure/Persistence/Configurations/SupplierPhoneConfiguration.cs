@@ -10,8 +10,6 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
         {
             builder.ToTable("Supplier_Phone");
 
-            builder.HasKey(sp => sp.SupplierId);
-
             builder.HasOne(sp => sp.Supplier)
                 .WithMany(s => s.SupplierPhones)
                 .HasForeignKey(sp => sp.SupplierId)

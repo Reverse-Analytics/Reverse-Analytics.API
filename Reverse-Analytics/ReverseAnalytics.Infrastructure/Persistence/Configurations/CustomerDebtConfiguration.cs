@@ -9,7 +9,8 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
         public void Configure(EntityTypeBuilder<CustomerDebt> builder)
         {
             builder.ToTable("Customer_Debt");
-            builder.HasKey(cd => cd.CustomerDebtId);
+
+            builder.HasKey(cd => cd.Id);
 
             builder.HasOne(cd => cd.Customer)
                 .WithMany(c => c.CustomerDebts)

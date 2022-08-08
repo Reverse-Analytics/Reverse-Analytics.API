@@ -10,7 +10,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
         {
             builder.ToTable("Supplier_Debt");
 
-            builder.HasKey(sd => sd.SupplierDebtId);
+            builder.HasKey(sd => sd.Id);
 
             builder.HasOne(sd => sd.Supplier)
                 .WithMany(s => s.SupplierDebts)

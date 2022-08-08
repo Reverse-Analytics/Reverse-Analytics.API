@@ -1,8 +1,9 @@
-﻿namespace ReverseAnalytics.Domain.Entities
+﻿using ReverseAnalytics.Domain.Common;
+
+namespace ReverseAnalytics.Domain.Entities
 {
-    public class CustomerPhone
+    public class CustomerPhone : BaseAuditableEntity
     {
-        public int CustomerPhoneId { get; set; }
         public string PhoneNumber { get; set; }
         public bool IsPrimary { get; set; }
 

@@ -1,8 +1,9 @@
-﻿namespace ReverseAnalytics.Domain.Entities
+﻿using ReverseAnalytics.Domain.Common;
+
+namespace ReverseAnalytics.Domain.Entities
 {
-    public class CustomerDebt
+    public class CustomerDebt : BaseAuditableEntity
     {
-        public int CustomerDebtId { get; set; }
         public decimal Amount { get; set; }
         public DateTime DebtDate { get; set; }
         public DateTime DueDate { get; set; }

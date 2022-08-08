@@ -27,7 +27,7 @@ namespace Reverse_Analytics.Api.Controllers
             {
                 var cities = await _service.GetAllCitiesAsync(searchString);
 
-                if(cities is null)
+                if(cities is null || cities.Count() < 1)
                 {
                     return Ok("No cities were found.");
                 }
@@ -36,6 +36,7 @@ namespace Reverse_Analytics.Api.Controllers
             }
             catch(Exception ex)
             {
+                _logger.LogError($"Exception while retrieving cities.", ex);
                 return StatusCode(500, "There was an error retrieving customers. Please, try again later.");
             }
         }

@@ -13,6 +13,7 @@ namespace Reverse_Analytics.Api.Extensions
             services.AddScoped<ICommonRepository, CommonRepository>();
             services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<ICityRepository, CityRepository>();
 
 
             services.AddScoped<AuditableEntitySaveChangesInterceptor>();

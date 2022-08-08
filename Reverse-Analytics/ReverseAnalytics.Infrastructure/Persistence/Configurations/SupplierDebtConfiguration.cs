@@ -8,6 +8,8 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<SupplierDebt> builder)
         {
+            builder.ToTable("Supplier_Debt");
+
             builder.HasKey(sd => sd.SupplierDebtId);
 
             builder.HasOne(sd => sd.Supplier)

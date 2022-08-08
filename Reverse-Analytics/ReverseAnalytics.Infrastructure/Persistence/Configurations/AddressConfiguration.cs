@@ -8,6 +8,8 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Address> builder)
         {
+            builder.ToTable("Address");
+
             builder.HasKey(a => a.AddressId);
 
             builder.HasOne(a => a.City)

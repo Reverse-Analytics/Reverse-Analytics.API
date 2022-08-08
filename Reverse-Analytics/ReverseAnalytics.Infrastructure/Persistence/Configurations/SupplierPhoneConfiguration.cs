@@ -8,6 +8,8 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<SupplierPhone> builder)
         {
+            builder.ToTable("Supplier_Phone");
+
             builder.HasKey(sp => sp.SupplierId);
 
             builder.HasOne(sp => sp.Supplier)

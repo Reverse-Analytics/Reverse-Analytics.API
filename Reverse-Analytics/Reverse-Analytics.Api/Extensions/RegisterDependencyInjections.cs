@@ -9,6 +9,7 @@ namespace Reverse_Analytics.Api.Extensions
         {
             services.AddScoped<IProductCategoryService, ProductCategoryService>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<ICityService, CityService>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }

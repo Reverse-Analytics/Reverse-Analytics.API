@@ -15,6 +15,7 @@ namespace ReverseAnalytics.Repositories
         public async Task<IEnumerable<City>> FindAllCitiesAsync(string? searchString)
         {
             var cities = _context.Cities.AsQueryable();
+            var query = cities.ToQueryString();
 
             if (!string.IsNullOrEmpty(searchString))
             {

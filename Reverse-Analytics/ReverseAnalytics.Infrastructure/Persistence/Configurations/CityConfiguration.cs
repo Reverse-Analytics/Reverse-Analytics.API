@@ -12,7 +12,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
 
             builder.HasKey(c => c.Id);
 
-            builder.HasMany(c => c.Addresses)
+            builder.HasMany(c => c.CustomerAddresses)
                 .WithOne(a => a.City);
 
             builder.Property(c => c.CityName)

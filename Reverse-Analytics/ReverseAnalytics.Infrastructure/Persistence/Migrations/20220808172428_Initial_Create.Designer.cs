@@ -2,51 +2,22 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReverseAnalytics.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace ReverseAnalytics.Infrastructure.Migrations
+namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220808172428_Initial_Create")]
+    partial class Initial_Create
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.5");
-
-            modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Address", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("AddressDetails")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("CityId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CityId");
-
-                    b.ToTable("Address", (string)null);
-                });
 
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.City", b =>
                 {
@@ -121,7 +92,11 @@ namespace ReverseAnalytics.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("AddressId")
+                    b.Property<string>("AddressDetails")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("CityId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("Created")
@@ -141,7 +116,7 @@ namespace ReverseAnalytics.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId");
+                    b.HasIndex("CityId");
 
                     b.HasIndex("CustomerId");
 
@@ -583,26 +558,14 @@ namespace ReverseAnalytics.Infrastructure.Migrations
                     b.ToTable("Supplier_Phone", (string)null);
                 });
 
-            modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Address", b =>
+            modelBuilder.Entity("ReverseAnalytics.Domain.Entities.CustomerAddress", b =>
                 {
                     b.HasOne("ReverseAnalytics.Domain.Entities.City", "City")
-                        .WithMany("Addresses")
+                        .WithMany("CustomerAddresses")
                         .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("City_FK");
-
-                    b.Navigation("City");
-                });
-
-            modelBuilder.Entity("ReverseAnalytics.Domain.Entities.CustomerAddress", b =>
-                {
-                    b.HasOne("ReverseAnalytics.Domain.Entities.Address", "Address")
-                        .WithMany("CustomerAddresses")
-                        .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("Address_FK");
 
                     b.HasOne("ReverseAnalytics.Domain.Entities.Customer", "Customer")
                         .WithMany("CustomerAddresses")
@@ -611,7 +574,7 @@ namespace ReverseAnalytics.Infrastructure.Migrations
                         .IsRequired()
                         .HasConstraintName("Customer_FK");
 
-                    b.Navigation("Address");
+                    b.Navigation("City");
 
                     b.Navigation("Customer");
                 });
@@ -742,14 +705,9 @@ namespace ReverseAnalytics.Infrastructure.Migrations
                     b.Navigation("Supplier");
                 });
 
-            modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Address", b =>
-                {
-                    b.Navigation("CustomerAddresses");
-                });
-
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.City", b =>
                 {
-                    b.Navigation("Addresses");
+                    b.Navigation("CustomerAddresses");
                 });
 
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Customer", b =>

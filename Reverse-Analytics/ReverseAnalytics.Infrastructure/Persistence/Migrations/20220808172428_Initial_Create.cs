@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ReverseAnalytics.Infrastructure.Migrations
+namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
 {
     public partial class Initial_Create : Migration
     {
@@ -82,13 +82,14 @@ namespace ReverseAnalytics.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Address",
+                name: "Customer_City",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    AddressDetails = table.Column<string>(type: "TEXT", nullable: true),
+                    AddressDetails = table.Column<string>(type: "TEXT", nullable: false),
                     CityId = table.Column<int>(type: "INTEGER", nullable: false),
+                    CustomerId = table.Column<int>(type: "INTEGER", nullable: false),
                     Created = table.Column<DateTime>(type: "TEXT", nullable: false),
                     CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
                     LastModified = table.Column<DateTime>(type: "TEXT", nullable: true),
@@ -96,11 +97,17 @@ namespace ReverseAnalytics.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Address", x => x.Id);
+                    table.PrimaryKey("PK_Customer_City", x => x.Id);
                     table.ForeignKey(
                         name: "City_FK",
                         column: x => x.CityId,
                         principalTable: "City",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "Customer_FK",
+                        column: x => x.CustomerId,
+                        principalTable: "Customer",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -293,36 +300,6 @@ namespace ReverseAnalytics.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Customer_City",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    CustomerId = table.Column<int>(type: "INTEGER", nullable: false),
-                    AddressId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Created = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "TEXT", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Customer_City", x => x.Id);
-                    table.ForeignKey(
-                        name: "Address_FK",
-                        column: x => x.AddressId,
-                        principalTable: "Address",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "Customer_FK",
-                        column: x => x.CustomerId,
-                        principalTable: "Customer",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Order_Detail",
                 columns: table => new
                 {
@@ -389,14 +366,9 @@ namespace ReverseAnalytics.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Address_CityId",
-                table: "Address",
-                column: "CityId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Customer_City_AddressId",
+                name: "IX_Customer_City_CityId",
                 table: "Customer_City",
-                column: "AddressId");
+                column: "CityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Customer_City_CustomerId",
@@ -483,7 +455,7 @@ namespace ReverseAnalytics.Infrastructure.Migrations
                 name: "Supplier_Phone");
 
             migrationBuilder.DropTable(
-                name: "Address");
+                name: "City");
 
             migrationBuilder.DropTable(
                 name: "Order");
@@ -493,9 +465,6 @@ namespace ReverseAnalytics.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Purchase");
-
-            migrationBuilder.DropTable(
-                name: "City");
 
             migrationBuilder.DropTable(
                 name: "Customer");

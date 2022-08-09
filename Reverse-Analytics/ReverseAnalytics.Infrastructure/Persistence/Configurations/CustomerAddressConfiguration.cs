@@ -12,14 +12,14 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
 
             builder.HasKey(ca => ca.Id);
 
+            builder.HasOne(ca => ca.City)
+                .WithMany(c => c.CustomerAddresses)
+                .HasForeignKey(ca => ca.CityId)
+                .HasConstraintName("City_FK");
             builder.HasOne(ca => ca.Customer)
                 .WithMany(c => c.CustomerAddresses)
                 .HasForeignKey(ca => ca.CustomerId)
                 .HasConstraintName("Customer_FK");
-            builder.HasOne(ca => ca.Address)
-                .WithMany(a => a.CustomerAddresses)
-                .HasForeignKey(ca => ca.AddressId)
-                .HasConstraintName("Address_FK");
         }
     }
 }

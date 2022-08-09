@@ -6,6 +6,6 @@ namespace ReverseAnalytics.Domain.Entities
     {
         public string CityName { get; set; }
 
-        public ICollection<Address> Addresses { get; set; }
+        public ICollection<CustomerAddress> CustomerAddresses { get; set; }
     }
 }

@@ -16,6 +16,9 @@ namespace ReverseAnalytics.Repositories
         private readonly ICityRepository _cityRepository;
         public ICityRepository City => _cityRepository ?? new CityRepository(_context);
 
+        private readonly ICustomerRepository _customerRepository;
+        public ICustomerRepository Customer => _customerRepository ?? new CustomerRepository(_context);
+
         public CommonRepository(ApplicationDbContext context)
         {
             _context = context ?? throw new ArgumentNullException("Parameter context cannot be null.");

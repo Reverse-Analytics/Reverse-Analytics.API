@@ -7,12 +7,12 @@ namespace Reverse_Analytics.Api.Controllers
 {
     [Route("api/cities")]
     [ApiController]
-    public class CityController : ControllerBase
+    public class CitiesController : ControllerBase
     {
-        private readonly ILogger<CityController> _logger;
+        private readonly ILogger<CitiesController> _logger;
         private readonly ICityService _service;
 
-        public CityController(ILogger<CityController> logger, ICityService service)
+        public CitiesController(ILogger<CitiesController> logger, ICityService service)
         {
             _logger = logger;
             _service = service;
@@ -118,6 +118,11 @@ namespace Reverse_Analytics.Api.Controllers
 
                 return NoContent();
             }
+            catch(NotFoundException ex)
+            {
+                _logger.LogError($"City with id: {id} was not found while updating.", ex.Message);
+                return NotFound($"City with id: {id} does not exist.");
+            }
             catch(Exception ex)
             {
                 _logger.LogError($"Error updating city with id: {id}", ex);
@@ -134,7 +139,13 @@ namespace Reverse_Analytics.Api.Controllers
 
                 return NoContent();
             }
-            catch(Exception ex)
+            catch (NotFoundException ex)
+            {
+                _logger.LogError($"City with id: {id} was not found while deleting.", ex.Message);
+
+                return NotFound($"Product category with id: {id} does not exist.");
+            }
+            catch (Exception ex)
             {
                 _logger.LogError($"Error deleting city with id: {id}.", ex);
                 return StatusCode(500, $"There was an error deleting city with id: {id}. Please, try again later.");

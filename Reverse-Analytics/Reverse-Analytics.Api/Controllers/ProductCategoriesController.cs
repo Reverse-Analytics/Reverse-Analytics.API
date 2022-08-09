@@ -7,12 +7,12 @@ namespace Reverse_Analytics.Api.Controllers
 {
     [Route("api/categories")]
     [ApiController]
-    public class ProductCategoryController : ControllerBase
+    public class ProductCategoriesController : ControllerBase
     {
-        private readonly ILogger<ProductCategoryController> _logger;
+        private readonly ILogger<ProductCategoriesController> _logger;
         private readonly IProductCategoryService _productCategoryService;
 
-        public ProductCategoryController(ILogger<ProductCategoryController> logger, IProductCategoryService productCategoryService)
+        public ProductCategoriesController(ILogger<ProductCategoriesController> logger, IProductCategoryService productCategoryService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger), "Logger cannot be null.");
             _productCategoryService = productCategoryService;

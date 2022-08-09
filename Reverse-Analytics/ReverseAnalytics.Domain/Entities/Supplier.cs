@@ -12,6 +12,10 @@ namespace ReverseAnalytics.Domain.Entities
         public virtual ICollection<SupplierDebt> SupplierDebts { get; set; }
         public virtual ICollection<SupplierPhone> SupplierPhones { get; set; }
 
+        public Supplier()
+        {
+        }
+
         public Supplier(string firstName, string lastName, string? companyName)
         {
             FirstName = firstName;

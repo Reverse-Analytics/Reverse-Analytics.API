@@ -7,7 +7,7 @@ using ReverseAnalytics.Domain.Interfaces.Services;
 
 namespace ReverseAnalytics.Services
 {
-    internal class CustomerService : ICustomerService
+    public class CustomerService : ICustomerService
     {
         private readonly ICommonRepository _repository;
         private readonly IMapper _mapper;

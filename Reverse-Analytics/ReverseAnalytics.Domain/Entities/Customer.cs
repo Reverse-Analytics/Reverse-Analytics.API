@@ -13,6 +13,10 @@ namespace ReverseAnalytics.Domain.Entities
         public virtual ICollection<CustomerPhone> CustomerPhones { get; set; }
         public virtual ICollection<CustomerAddress> CustomerAddresses { get; set; }
 
+        public Customer()
+        {
+        }
+
         public Customer(string firstName, string lastName, string? companyName)
         {
             Orders = new List<Order>();

@@ -2,7 +2,6 @@
 using ReverseAnalytics.Domain.DTOs.Product;
 using ReverseAnalytics.Domain.Entities;
 using ReverseAnalytics.Domain.Exceptions;
-using ReverseAnalytics.Domain.Interfaces.Repositories;
 using ReverseAnalytics.Domain.Interfaces.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -11,12 +10,12 @@ namespace Reverse_Analytics.Api.Controllers
 {
     [Route("api/Products")]
     [ApiController] 
-    public class ProductController : ControllerBase
+    public class ProductsController : ControllerBase
     {
         private readonly IProductService _service;
-        private readonly ILogger<ProductController> _logger;
+        private readonly ILogger<ProductsController> _logger;
 
-        public ProductController(ILogger<ProductController> logger, IProductService service)
+        public ProductsController(ILogger<ProductsController> logger, IProductService service)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _service = service ?? throw new ArgumentNullException(nameof(service));

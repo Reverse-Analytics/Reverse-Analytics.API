@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ReverseAnalytics.Domain.DTOs.Customer;
 using ReverseAnalytics.Domain.Exceptions;
 using ReverseAnalytics.Domain.Interfaces.Services;

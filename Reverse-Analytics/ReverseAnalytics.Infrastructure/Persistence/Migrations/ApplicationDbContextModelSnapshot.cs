@@ -94,7 +94,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("CityId")
+                    b.Property<int?>("CityId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("Created")
@@ -561,8 +561,6 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                     b.HasOne("ReverseAnalytics.Domain.Entities.City", "City")
                         .WithMany("CustomerAddresses")
                         .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
                         .HasConstraintName("City_FK");
 
                     b.HasOne("ReverseAnalytics.Domain.Entities.Customer", "Customer")

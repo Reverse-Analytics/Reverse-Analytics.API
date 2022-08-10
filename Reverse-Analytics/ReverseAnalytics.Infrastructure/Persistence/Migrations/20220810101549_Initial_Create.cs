@@ -88,7 +88,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     AddressDetails = table.Column<string>(type: "TEXT", nullable: false),
-                    CityId = table.Column<int>(type: "INTEGER", nullable: false),
+                    CityId = table.Column<int>(type: "INTEGER", nullable: true),
                     CustomerId = table.Column<int>(type: "INTEGER", nullable: false),
                     Created = table.Column<DateTime>(type: "TEXT", nullable: false),
                     CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
@@ -102,8 +102,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                         name: "City_FK",
                         column: x => x.CityId,
                         principalTable: "City",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "Customer_FK",
                         column: x => x.CustomerId,

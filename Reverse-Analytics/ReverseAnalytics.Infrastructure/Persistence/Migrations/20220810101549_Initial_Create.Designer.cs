@@ -11,7 +11,7 @@ using ReverseAnalytics.Infrastructure.Persistence;
 namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220808172428_Initial_Create")]
+    [Migration("20220810101549_Initial_Create")]
     partial class Initial_Create
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -96,7 +96,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("CityId")
+                    b.Property<int?>("CityId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("Created")
@@ -563,8 +563,6 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                     b.HasOne("ReverseAnalytics.Domain.Entities.City", "City")
                         .WithMany("CustomerAddresses")
                         .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
                         .HasConstraintName("City_FK");
 
                     b.HasOne("ReverseAnalytics.Domain.Entities.Customer", "Customer")

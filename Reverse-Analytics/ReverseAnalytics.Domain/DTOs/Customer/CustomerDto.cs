@@ -9,7 +9,7 @@ namespace ReverseAnalytics.Domain.DTOs.Customer
         public string LastName { get; set; }
         public string? CompanyName { get; set; }
 
-        public ICollection<CustomerAddress> CustomerAddresses { get; set; }
+        public ICollection<Entities.CustomerAddress> CustomerAddresses { get; set; }
         public ICollection<CustomerPhone> CustomerPhones { get; set; }
         public ICollection<CustomerDebt> CustomerDebts { get; set; }
         public ICollection<Order> Orders { get; set; }

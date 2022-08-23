@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ReverseAnalytics.Domain.DTOs.Customer;
+using ReverseAnalytics.Domain.DTOs.CustomerAddress;
 using ReverseAnalytics.Domain.Entities;
 using ReverseAnalytics.Domain.Exceptions;
 using ReverseAnalytics.Domain.Interfaces.Repositories;
@@ -32,7 +33,7 @@ namespace ReverseAnalytics.Services
 
                 if(customerDtos is null)
                 {
-                    throw new AutoMapperMappingException($"Could not map {typeof(Customer)} entities to type {typeof(CustomerDto)}");
+                    throw new AutoMapperMappingException($"Could not map {typeof(Customer)} entities to type {typeof(CustomerDto)}.");
                 }
 
                 return customerDtos;

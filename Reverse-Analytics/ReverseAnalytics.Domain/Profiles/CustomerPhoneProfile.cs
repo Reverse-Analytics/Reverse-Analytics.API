@@ -10,7 +10,7 @@ namespace ReverseAnalytics.Domain.Profiles
         {
             CreateMap<CustomerPhone, CustomerPhoneDto>();
             CreateMap<CustomerPhoneDto, CustomerPhone>();
-            CreateMap<CustomerPhoneForUpdate, CustomerPhone>();
+            CreateMap<CustomerPhoneForCreate, CustomerPhone>();
             CreateMap<CustomerPhoneForUpdate, CustomerPhone>();
         }
     }

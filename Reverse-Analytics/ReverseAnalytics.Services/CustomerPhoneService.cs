@@ -168,15 +168,15 @@ namespace ReverseAnalytics.Services
                     throw new ArgumentNullException(nameof(customerPhoneToUpdate));
                 }
 
-                var customerEntity = _mapper.Map<Customer>(customerPhoneToUpdate);
+                var customerEntity = _mapper.Map<CustomerPhone>(customerPhoneToUpdate);
 
                 if (customerEntity is null)
                 {
                     throw new AutoMapperMappingException($"Could not map {typeof(CustomerPhoneForUpdate)} to type {typeof(CustomerPhone)}.");
                 }
 
-                _repository.Customer.Update(customerEntity);
-                await _repository.Customer.SaveChangesAsync();
+                _repository.CustomerPhone.Update(customerEntity);
+                await _repository.CustomerPhone.SaveChangesAsync();
             }
             catch (ArgumentNullException ex)
             {
@@ -196,11 +196,11 @@ namespace ReverseAnalytics.Services
             }
         }
         
-        public async Task DeleteCustomerPhoneAsync(int customerId)
+        public async Task DeleteCustomerPhoneAsync(int phoneId)
         {
             try
             {
-                _repository.CustomerPhone.Delete(customerId);
+                _repository.CustomerPhone.Delete(phoneId);
                 await _repository.CustomerPhone.SaveChangesAsync();
             }
             catch (Exception ex)

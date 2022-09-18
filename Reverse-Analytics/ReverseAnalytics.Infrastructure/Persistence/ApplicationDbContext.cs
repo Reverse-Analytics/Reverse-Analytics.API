@@ -12,6 +12,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductCategory> ProductCategories { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
+        public virtual DbSet<CustomerPhone> CustomerPhones { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, 
                                     AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor)

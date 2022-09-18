@@ -11,6 +11,7 @@ namespace ReverseAnalytics.Services
     {
         private readonly ICommonRepository _repository;
         private readonly IMapper _mapper;
+
         public CustomerService(ICommonRepository repository, IMapper mapper)
         {
             _repository = repository;
@@ -36,10 +37,6 @@ namespace ReverseAnalytics.Services
                 }
 
                 return customerDtos;
-            }
-            catch(NotFoundException ex)
-            {
-                throw ex;
             }
             catch(AutoMapperMappingException ex)
             {
@@ -71,11 +68,11 @@ namespace ReverseAnalytics.Services
 
                 return customerDto;
             }
-            catch(NotFoundException ex)
+            catch(AutoMapperMappingException ex)
             {
                 throw ex;
             }
-            catch(AutoMapperMappingException ex)
+            catch(NotFoundException ex)
             {
                 throw ex;
             }
@@ -127,19 +124,6 @@ namespace ReverseAnalytics.Services
             }
         }
 
-        public async Task DeleteCustomerAsync(int id)
-        {
-            try
-            {
-                _repository.Customer.Delete(id);
-                await _repository.Customer.SaveChangesAsync();
-            }
-            catch(Exception ex)
-            {
-                throw new Exception($"There was an error deleting Customer with id: {id}", ex);
-            }
-        }
-
         public async Task UpdateCustomerAsync(CustomerForUpdateDto customerToUpdate)
         {
             try
@@ -176,5 +160,23 @@ namespace ReverseAnalytics.Services
                 throw new Exception("There was an error updating Customer.", ex);
             }
         }
+
+        public async Task DeleteCustomerAsync(int id)
+        {
+            try
+            {
+                _repository.Customer.Delete(id);
+                await _repository.Customer.SaveChangesAsync();
+            }
+            catch(NotFoundException ex)
+            {
+                throw ex;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception($"There was an error deleting Customer with id: {id}", ex);
+            }
+        }
+
     }
 }

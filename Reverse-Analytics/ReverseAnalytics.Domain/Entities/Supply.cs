@@ -2,7 +2,7 @@
 
 namespace ReverseAnalytics.Domain.Entities
 {
-    public class Purchase : BaseAuditableEntity
+    public class Supply : BaseAuditableEntity
     {
         public DateTime? PurchaseDate { get; set; }
         public decimal TotalDue { get; set; }
@@ -13,11 +13,11 @@ namespace ReverseAnalytics.Domain.Entities
         public int SupplierId { get; set; }
         public virtual Supplier Supplier { get; set; }
 
-        public virtual ICollection<PurchaseDetail> PurchaseDetails { get; set; }
+        public virtual ICollection<SupplyDetail> SupplyDetails { get; set; }
 
-        public Purchase()
+        public Supply()
         {
-            PurchaseDetails = new List<PurchaseDetail>();
+            SupplyDetails = new List<SupplyDetail>();
         }
     }
 }

@@ -8,7 +8,7 @@ namespace ReverseAnalytics.Domain.Entities
         public string LastName { get; set; }
         public string? CompanyName { get; set; }
 
-        public virtual ICollection<Purchase> Purchases { get; set; }
+        public virtual ICollection<Supply> Supplies { get; set; }
         public virtual ICollection<SupplierDebt> SupplierDebts { get; set; }
         public virtual ICollection<SupplierPhone> SupplierPhones { get; set; }
 
@@ -22,7 +22,7 @@ namespace ReverseAnalytics.Domain.Entities
             LastName = lastName;
             CompanyName = companyName;
 
-            Purchases = new List<Purchase>();
+            Supplies = new List<Supply>();
             SupplierDebts = new List<SupplierDebt>();
             SupplierPhones = new List<SupplierPhone>();
         }

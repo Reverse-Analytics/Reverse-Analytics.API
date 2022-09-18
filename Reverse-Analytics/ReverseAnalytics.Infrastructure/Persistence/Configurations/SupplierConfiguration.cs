@@ -22,7 +22,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
                 .HasMaxLength(250)
                 .IsRequired(false);
 
-            builder.HasMany(s => s.Purchases)
+            builder.HasMany(s => s.Supplies)
                 .WithOne(p => p.Supplier)
                 .HasForeignKey(p => p.SupplierId);
             builder.HasMany(s => s.SupplierDebts)

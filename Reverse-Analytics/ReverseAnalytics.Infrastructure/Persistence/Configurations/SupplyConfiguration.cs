@@ -4,22 +4,21 @@ using ReverseAnalytics.Domain.Entities;
 
 namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
 {
-    internal class PurchaseConfiguration : IEntityTypeConfiguration<Purchase>
+    internal class SupplyConfiguration : IEntityTypeConfiguration<Supply>
     {
-        public void Configure(EntityTypeBuilder<Purchase> builder)
+        public void Configure(EntityTypeBuilder<Supply> builder)
         {
-            builder.ToTable("Purchase");
+            builder.ToTable("Supply");
 
             builder.HasKey(p => p.Id);
 
             builder.HasOne(p => p.Supplier)
-                .WithMany(s => s.Purchases)
-                .HasForeignKey(p => p.SupplierId)
-                .HasConstraintName("Supplier_FK");
+                .WithMany(s => s.Supplies)
+                .HasForeignKey(p => p.SupplierId);
 
-            builder.HasMany(p => p.PurchaseDetails)
-                .WithOne(pd => pd.Purchase)
-                .HasForeignKey(pd => pd.PurchaseId);
+            builder.HasMany(p => p.SupplyDetails)
+                .WithOne(pd => pd.Supply)
+                .HasForeignKey(pd => pd.SupplyId);
 
             builder.Property(p => p.TotalDue)
                 .HasColumnType("money")

@@ -14,12 +14,12 @@ namespace ReverseAnalytics.Domain.Entities
         public virtual ProductCategory Category { get; set; }
 
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
-        public virtual ICollection<PurchaseDetail> PurchaseDetails { get; set; }
+        public virtual ICollection<SupplyDetail> PurchaseDetails { get; set; }
 
         public Product()
         {
             OrderDetails = new List<OrderDetail>();
-            PurchaseDetails = new List<PurchaseDetail>();
+            PurchaseDetails = new List<SupplyDetail>();
         }
     }
 }

@@ -8,18 +8,16 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<CustomerAddress> builder)
         {
-            builder.ToTable("Customer_City");
+            builder.ToTable("Customer_Address");
 
             builder.HasKey(ca => ca.Id);
 
             builder.HasOne(ca => ca.City)
                 .WithMany(c => c.CustomerAddresses)
-                .HasForeignKey(ca => ca.CityId)
-                .HasConstraintName("City_FK");
+                .HasForeignKey(ca => ca.CityId);
             builder.HasOne(ca => ca.Customer)
                 .WithMany(c => c.CustomerAddresses)
-                .HasForeignKey(ca => ca.CustomerId)
-                .HasConstraintName("Customer_FK");
+                .HasForeignKey(ca => ca.CustomerId);
         }
     }
 }

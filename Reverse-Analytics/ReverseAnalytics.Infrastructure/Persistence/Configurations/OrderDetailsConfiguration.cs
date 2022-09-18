@@ -14,12 +14,10 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
 
             builder.HasOne(od => od.Order)
                 .WithMany(o => o.OrderDetails)
-                .HasForeignKey(od => od.OrderId)
-                .HasConstraintName("Order_FK");
+                .HasForeignKey(od => od.OrderId);
             builder.HasOne(od => od.Product)
                 .WithMany(p => p.OrderDetails)
-                .HasForeignKey(od => od.ProductId)
-                .HasConstraintName("Product_FK");
+                .HasForeignKey(od => od.ProductId);
 
             builder.Property(od => od.Quantity)
                 .IsRequired();

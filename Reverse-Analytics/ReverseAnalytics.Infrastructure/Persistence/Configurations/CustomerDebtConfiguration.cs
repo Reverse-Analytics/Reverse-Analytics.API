@@ -14,8 +14,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
 
             builder.HasOne(cd => cd.Customer)
                 .WithMany(c => c.CustomerDebts)
-                .HasForeignKey(cd => cd.CustomerId)
-                .HasConstraintName("Customer_FK");
+                .HasForeignKey(cd => cd.CustomerId);
 
             builder.Property(cd => cd.Amount)
                 .IsRequired()

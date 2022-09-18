@@ -14,8 +14,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
 
             builder.HasOne(p => p.Category)
                 .WithMany(pc => pc.Products)
-                .HasForeignKey(p => p.CategoryId)
-                .HasConstraintName("Category_FK");
+                .HasForeignKey(p => p.CategoryId);
 
             builder.HasMany(p => p.OrderDetails)
                 .WithOne(od => od.Product)

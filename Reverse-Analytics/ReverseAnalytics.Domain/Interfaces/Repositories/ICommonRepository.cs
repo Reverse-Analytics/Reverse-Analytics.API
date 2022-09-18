@@ -4,8 +4,6 @@
     {
         public IProductCategoryRepository ProductCategory { get; }
         public IProductRepository Product { get; }
-        public ICityRepository City { get; }
         public ICustomerRepository Customer { get; }
-        public ICustomerAddressRepository CustomerAddress { get; }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using ReverseAnalytics.Domain.DTOs.Customer;
-using ReverseAnalytics.Domain.DTOs.CustomerAddress;
 using ReverseAnalytics.Domain.Entities;
 using ReverseAnalytics.Domain.Exceptions;
 using ReverseAnalytics.Domain.Interfaces.Repositories;

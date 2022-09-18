@@ -9,12 +9,12 @@ namespace Reverse_Analytics.Api.Controllers
     [ApiController]
     public class CustomersController : Controller
     {
-        private readonly ICustomerService _service;
+        private readonly ICustomerService _customerService;
         private readonly ILogger<CustomersController> _logger;
 
-        public CustomersController(ICustomerService service, ILogger<CustomersController> logger)
+        public CustomersController(ICustomerService customerService, ILogger<CustomersController> logger)
         {
-            _service = service;
+            _customerService = customerService;
             _logger = logger;
         }
 
@@ -23,7 +23,7 @@ namespace Reverse_Analytics.Api.Controllers
         {
             try
             {
-                var customers = await _service.GetAllCustomerAsync(searchString);
+                var customers = await _customerService.GetAllCustomerAsync(searchString);
 
                 if(customers is null || !customers.Any())
                 {
@@ -44,7 +44,7 @@ namespace Reverse_Analytics.Api.Controllers
         {
             try
             {
-                var customer = await _service.GetCustomerByIdAsync(id);
+                var customer = await _customerService.GetCustomerByIdAsync(id);
 
                 if(customer is null)
                 {
@@ -81,7 +81,7 @@ namespace Reverse_Analytics.Api.Controllers
                     return BadRequest("Customer to create is not valid.");
                 }
 
-                var createdCustomer = await _service.CreateCustomerAsync(customerToCreate);
+                var createdCustomer = await _customerService.CreateCustomerAsync(customerToCreate);
 
                 if(createdCustomer is null)
                 {
@@ -117,7 +117,7 @@ namespace Reverse_Analytics.Api.Controllers
                     return BadRequest($"Customer id: {id}, does not match with route id: {id}.");
                 }
 
-                await _service.UpdateCustomerAsync(customerToUpdate);
+                await _customerService.UpdateCustomerAsync(customerToUpdate);
 
                 return NoContent();
             }
@@ -138,7 +138,7 @@ namespace Reverse_Analytics.Api.Controllers
         {
             try
             {
-                await _service.DeleteCustomerAsync(id);
+                await _customerService.DeleteCustomerAsync(id);
 
                 return NoContent();
             }

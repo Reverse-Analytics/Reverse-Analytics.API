@@ -248,6 +248,11 @@ namespace Reverse_Analytics.Api.Controllers
                 await _customerPhoneSerivce.DeleteCustomerPhoneAsync(phoneId);
                 return NoContent();
             }
+            catch(NotFoundException ex)
+            {
+                _logger.LogError($"Customer phone with customer id: {customerId}, phone id: {phoneId} was not found while deleting.", ex.Message);
+                return NotFound($"Customer phone with id: {phoneId} was not found.");
+            }
             catch(Exception ex)
             {
                 _logger.LogError($"Error while deleting phone for customer with id: {customerId} and phone id: {phoneId}.", ex.Message);

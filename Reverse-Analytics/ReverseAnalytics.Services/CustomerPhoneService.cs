@@ -203,6 +203,10 @@ namespace ReverseAnalytics.Services
                 _repository.CustomerPhone.Delete(phoneId);
                 await _repository.CustomerPhone.SaveChangesAsync();
             }
+            catch(NotFoundException ex)
+            {
+                throw ex;
+            }
             catch (Exception ex)
             {
                 throw new Exception($"There was an error deleting Customer Phone with id: {phoneId}.", ex);

@@ -7,6 +7,8 @@ Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
     .WriteTo.Console()
     .WriteTo.File("logs/logs.txt", rollingInterval: RollingInterval.Day)
+    .WriteTo.File("logs/error_logs.txt", Serilog.Events.LogEventLevel.Error, rollingInterval: RollingInterval.Day)
+    .WriteTo.File("logs/error_logs.txt", Serilog.Events.LogEventLevel.Fatal, rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);

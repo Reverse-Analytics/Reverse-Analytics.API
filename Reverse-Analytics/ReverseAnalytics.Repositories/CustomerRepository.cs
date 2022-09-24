@@ -14,7 +14,7 @@ namespace ReverseAnalytics.Repositories
 
         public async Task<IEnumerable<Customer>> FindAllCustomers(string? searchString, int pageNumber, int pageSize)
         {
-            var customers = _context.Customers.AsQueryable();
+            var customers = _context.Customers.Include(c => c.CustomerPhones).AsQueryable();
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -24,8 +24,8 @@ namespace ReverseAnalytics.Repositories
                                                  (c.CompanyName != null && c.CompanyName.Contains(searchString)));
             }
 
-            customers = customers.OrderBy(s => s.FirstName)
-                .ThenBy(x => x.LastName);
+            customers = customers.OrderBy(c => c.FirstName)
+                .ThenBy(c => c.LastName);
 
             customers = customers.Skip(pageSize * (pageNumber - 1))
                 .Take(pageSize);

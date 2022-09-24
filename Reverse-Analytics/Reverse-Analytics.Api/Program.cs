@@ -1,5 +1,7 @@
 using Reverse_Analytics.Api.Extensions;
 using Serilog;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
@@ -9,13 +11,24 @@ Log.Logger = new LoggerConfiguration()
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Host.UseSerilog();
+
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.RegisterDependencyInjection();
 // Add services to the container.
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddControllers(options =>
+{
+    options.ReturnHttpNotAcceptable = true;
+})
+    .AddNewtonsoftJson(options =>
+    {
+        // Use the default property (Pascal) casing
+        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
+    })
+    .AddXmlDataContractSerializerFormatters();
+
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();

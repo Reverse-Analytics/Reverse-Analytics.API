@@ -1,4 +1,4 @@
-﻿using ReverseAnalytics.Domain.DTOs.Customer;
+﻿using ReverseAnalytics.Domain.DTOs.CustomerPhoneDto;
 
 namespace ReverseAnalytics.Domain.DTOs.CustomerPhone
 {
@@ -9,6 +9,5 @@ namespace ReverseAnalytics.Domain.DTOs.CustomerPhone
         public bool IsPrimary { get; set; }
 
         public int CustomerId { get; set; }
-        public CustomerDto Customer { get; set; }
     }
 }

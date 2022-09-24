@@ -1,4 +1,4 @@
-﻿using ReverseAnalytics.Domain.DTOs.Customer;
+﻿using ReverseAnalytics.Domain.DTOs.CustomerPhoneDto;
 
 namespace ReverseAnalytics.Domain.Interfaces.Services
 {

@@ -1,4 +1,4 @@
-﻿namespace ReverseAnalytics.Domain.DTOs.Customer
+﻿namespace ReverseAnalytics.Domain.DTOs.CustomerPhoneDto
 {
     public class CustomerForCreateDto
     {

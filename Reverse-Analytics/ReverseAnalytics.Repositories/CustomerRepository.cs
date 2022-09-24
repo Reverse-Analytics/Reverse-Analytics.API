@@ -12,7 +12,7 @@ namespace ReverseAnalytics.Repositories
         {
         }
 
-        public async Task<IEnumerable<Customer>> FindAllCustomers(string? searchString)
+        public async Task<IEnumerable<Customer>> FindAllCustomers(string? searchString, int pageNumber, int pageSize)
         {
             var customers = _context.Customers.AsQueryable();
 
@@ -23,6 +23,12 @@ namespace ReverseAnalytics.Repositories
                                                  (c.Address != null && c.Address.Contains(searchString)) ||
                                                  (c.CompanyName != null && c.CompanyName.Contains(searchString)));
             }
+
+            customers = customers.OrderBy(s => s.FirstName)
+                .ThenBy(x => x.LastName);
+
+            customers = customers.Skip(pageSize * (pageNumber - 1))
+                .Take(pageSize);
 
             return await customers.ToListAsync();
         }

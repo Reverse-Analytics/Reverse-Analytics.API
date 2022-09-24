@@ -18,11 +18,11 @@ namespace ReverseAnalytics.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<CustomerDto>?> GetAllCustomerAsync(string? searchString)
+        public async Task<IEnumerable<CustomerDto>?> GetAllCustomerAsync(string? searchString, int pageNumber, int pageSize)
         {
             try
             {
-                var customers = await _repository.Customer.FindAllCustomers(searchString);
+                var customers = await _repository.Customer.FindAllCustomers(searchString, pageNumber, pageSize);
 
                 if(customers is null)
                 {

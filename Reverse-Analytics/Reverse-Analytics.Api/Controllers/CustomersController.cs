@@ -13,6 +13,7 @@ namespace Reverse_Analytics.Api.Controllers
         private readonly ICustomerService _customerService;
         private readonly ICustomerPhoneService _customerPhoneSerivce;
         private readonly ILogger<CustomersController> _logger;
+        private const int pageSize = 15;
 
         public CustomersController(ICustomerService customerService, ICustomerPhoneService customerPhoneService, ILogger<CustomersController> logger)
         {
@@ -22,11 +23,11 @@ namespace Reverse_Analytics.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CustomerDto>>> GetCustomersAsync(string? searchString)
+        public async Task<ActionResult<IEnumerable<CustomerDto>>> GetCustomersAsync(string? searchString, int pageNumber = 1, int pageSize = pageSize)
         {
             try
             {
-                var customers = await _customerService.GetAllCustomerAsync(searchString);
+                var customers = await _customerService.GetAllCustomerAsync(searchString, pageNumber, pageSize);
 
                 if (customers is null || !customers.Any())
                 {

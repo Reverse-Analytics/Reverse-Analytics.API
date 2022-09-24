@@ -11,7 +11,7 @@ using ReverseAnalytics.Infrastructure.Persistence;
 namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220918151820_Initial_Create")]
+    [Migration("20220924173509_Initial_Create")]
     partial class Initial_Create
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -250,10 +250,10 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("PurchasePrice")
+                    b.Property<decimal>("SalePrice")
                         .HasColumnType("money");
 
-                    b.Property<decimal>("SalePrice")
+                    b.Property<decimal>("SupplyPrice")
                         .HasColumnType("money");
 
                     b.Property<double>("Volume")
@@ -421,7 +421,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal?>("Debt")
+                    b.Property<decimal?>("DebtAmount")
                         .HasColumnType("money");
 
                     b.Property<DateTime?>("LastModified")
@@ -430,7 +430,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("PaidAmount")
+                    b.Property<decimal>("PaymentAmount")
                         .HasColumnType("money");
 
                     b.Property<DateTime?>("PurchaseDate")

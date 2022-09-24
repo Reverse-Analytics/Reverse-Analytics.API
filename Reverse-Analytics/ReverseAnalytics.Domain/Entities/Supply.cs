@@ -6,8 +6,8 @@ namespace ReverseAnalytics.Domain.Entities
     {
         public DateTime? PurchaseDate { get; set; }
         public decimal TotalDue { get; set; }
-        public decimal PaidAmount { get; set; }
-        public decimal? Debt { get; set; }
+        public decimal PaymentAmount { get; set; }
+        public decimal? DebtAmount { get; set; }
         public string? ReceivedBy { get; set; }
 
         public int SupplierId { get; set; }

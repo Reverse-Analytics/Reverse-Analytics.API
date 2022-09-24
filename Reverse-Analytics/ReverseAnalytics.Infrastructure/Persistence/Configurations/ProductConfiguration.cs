@@ -26,7 +26,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
             builder.Property(p => p.ProductName)
                 .HasMaxLength(250)
                 .IsRequired();
-            builder.Property(p => p.PurchasePrice)
+            builder.Property(p => p.SupplyPrice)
                 .HasColumnType("money");
             builder.Property(p => p.SalePrice)
                 .HasColumnType("money");

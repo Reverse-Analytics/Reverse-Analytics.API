@@ -19,7 +19,9 @@ namespace ReverseAnalytics.Repositories
             if (!string.IsNullOrEmpty(searchString))
             {
                 customers = customers.Where(c => c.FirstName.Contains(searchString) ||
-                                                 c.LastName.Contains(searchString));
+                                                 c.LastName.Contains(searchString) ||
+                                                 (c.Address != null && c.Address.Contains(searchString)) ||
+                                                 (c.CompanyName != null && c.CompanyName.Contains(searchString)));
             }
 
             return await customers.ToListAsync();

@@ -19,7 +19,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence
             : base(options)
         {
             _auditableEntitySaveChangesInterceptor = auditableEntitySaveChangesInterceptor;
-            Database.EnsureCreated();
+            // Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

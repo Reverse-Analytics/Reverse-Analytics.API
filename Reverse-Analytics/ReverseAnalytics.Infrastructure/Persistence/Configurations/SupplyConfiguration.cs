@@ -23,10 +23,10 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
             builder.Property(p => p.TotalDue)
                 .HasColumnType("money")
                 .IsRequired();
-            builder.Property(p => p.PaidAmount)
+            builder.Property(p => p.PaymentAmount)
                 .HasColumnType("money")
                 .IsRequired();
-            builder.Property(p => p.Debt)
+            builder.Property(p => p.DebtAmount)
                 .HasColumnType("money")
                 .IsRequired(false);
             builder.Property(p => p.ReceivedBy)

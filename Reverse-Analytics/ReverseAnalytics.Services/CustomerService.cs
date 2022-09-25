@@ -56,7 +56,7 @@ namespace ReverseAnalytics.Services
 
                 if(customer is null)
                 {
-                    return null;
+                    throw new NotFoundException($"Customer with id: {id} was not found.");
                 }
 
                 var customerDto = _mapper.Map<CustomerDto>(customer);
@@ -68,11 +68,11 @@ namespace ReverseAnalytics.Services
 
                 return customerDto;
             }
-            catch(AutoMapperMappingException ex)
+            catch(NotFoundException ex)
             {
                 throw ex;
             }
-            catch(NotFoundException ex)
+            catch(AutoMapperMappingException ex)
             {
                 throw ex;
             }

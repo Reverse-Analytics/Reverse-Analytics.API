@@ -18,6 +18,36 @@ namespace ReverseAnalytics.Services
             _mapper = mapper;
         }
 
+        public async Task<IEnumerable<CustomerDebtDto>?> GetAllCustomerDebtsAsync()
+        {
+            try
+            {
+                var customerDebts = await _repository.FindAllAsync();
+
+                if (customerDebts is null)
+                {
+                    return null;
+                }
+
+                var customerDebtDtos = _mapper.Map<IEnumerable<CustomerDebtDto>>(customerDebts);
+
+                if (customerDebtDtos is null)
+                {
+                    throw new AutoMapperMappingException($"Could not map {typeof(CustomerDebt)} to type {typeof(CustomerDebtDto)}.");
+                }
+
+                return customerDebtDtos;
+            }
+            catch(AutoMapperMappingException ex)
+            {
+                throw ex;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception("There was an error retrieving Customer Debts.", ex);
+            }
+        }
+
         public async Task<CustomerDebtDto?> GetCustomerDebtByIdAsync(int id)
         {
             try
@@ -49,36 +79,6 @@ namespace ReverseAnalytics.Services
             catch(Exception ex)
             {
                 throw new Exception($"There wasn error retrieving Customer Debt with id: {id}.", ex);
-            }
-        }
-
-        public async Task<IEnumerable<CustomerDebtDto>?> GetCustomerDebtsAsync()
-        {
-            try
-            {
-                var customerDebts = await _repository.FindAllAsync();
-
-                if (customerDebts is null)
-                {
-                    return null;
-                }
-
-                var customerDebtDtos = _mapper.Map<IEnumerable<CustomerDebtDto>>(customerDebts);
-
-                if (customerDebtDtos is null)
-                {
-                    throw new AutoMapperMappingException($"Could not map {typeof(CustomerDebt)} to type {typeof(CustomerDebtDto)}.");
-                }
-
-                return customerDebtDtos;
-            }
-            catch(AutoMapperMappingException ex)
-            {
-                throw ex;
-            }
-            catch(Exception ex)
-            {
-                throw new Exception("There was an error retrieving all Customer Debts.", ex);
             }
         }
 

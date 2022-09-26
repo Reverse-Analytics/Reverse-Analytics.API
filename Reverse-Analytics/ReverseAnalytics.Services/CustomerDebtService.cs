@@ -48,6 +48,36 @@ namespace ReverseAnalytics.Services
             }
         }
 
+        public async Task<IEnumerable<CustomerDebtDto>?> GetAllByCustomerId(int id)
+        {
+            try
+            {
+                var debts = await _repository.FindAllByCustomerId(id);
+
+                if (debts is null)
+                {
+                    return null;
+                }
+
+                var debtDtos = _mapper.Map<IEnumerable<CustomerDebtDto>>(debts);
+
+                if (debtDtos is null)
+                {
+                    throw new Exception($"Could not map {typeof(CustomerDebt)} to type {typeof(CustomerDebtDto)}.");
+                }
+
+                return debtDtos;
+            }
+            catch(AutoMapperMappingException ex)
+            {
+                throw ex;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception($"There was an error retrieving Debts for Customer with id: {id}.", ex);
+            }
+        }
+
         public async Task<CustomerDebtDto?> GetCustomerDebtByIdAsync(int id)
         {
             try

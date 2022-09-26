@@ -1,4 +1,5 @@
-﻿using ReverseAnalytics.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using ReverseAnalytics.Domain.Entities;
 using ReverseAnalytics.Domain.Interfaces.Repositories;
 using ReverseAnalytics.Infrastructure.Persistence;
 
@@ -9,6 +10,17 @@ namespace ReverseAnalytics.Repositories
         public CustomerDebtRepository(ApplicationDbContext context)
             : base(context)
         {
+        }
+
+        public async Task<IEnumerable<CustomerDebt>> FindAllByCustomerId(int customerId)
+        {
+            var debts = await _context.CustomerDebts
+                .Where(cd => cd.CustomerId == customerId)
+                .AsNoTracking()
+                .OrderByDescending(cd => cd.Amount)
+                .ToListAsync();
+
+            return debts;
         }
     }
 }

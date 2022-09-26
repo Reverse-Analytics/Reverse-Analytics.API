@@ -292,7 +292,7 @@ namespace Reverse_Analytics.Api.Controllers
             catch(Exception ex)
             {
                 _logger.LogError("Error while retrieving Debts for Customer with id: {id}.", ex.Message);
-                return StatusCode(500, "There was an error retrieving Debts for Customer with id: {id}. Please, try again later.");
+                return StatusCode(500, $"There was an error retrieving Debts for Customer with id: {customerId}. Please, try again later.");
             }
         }
 
@@ -328,8 +328,8 @@ namespace Reverse_Analytics.Api.Controllers
             }
         }
 
-        [HttpPut("{customerId}/debts/debtId")]
-        public async Task<ActionResult> UpdateCustomerDebtAsync([FromBody] CustomerDebtForUpdate customerDebtToUpdate, int debtId)
+        [HttpPut("{customerId}/debts/{debtId}")]
+        public async Task<ActionResult> UpdateCustomerDebtAsync([FromBody] CustomerDebtForUpdate customerDebtToUpdate, int customerId, int debtId)
         {
             try
             {
@@ -365,8 +365,8 @@ namespace Reverse_Analytics.Api.Controllers
             }
         }
 
-        [HttpDelete("{customerId}/debts/debtId")]
-        public async Task<ActionResult> DeleteCustomerDebtAsync(int debtId)
+        [HttpDelete("{customerId}/debts/{debtId}")]
+        public async Task<ActionResult> DeleteCustomerDebtAsync(int customerId, int debtId)
         {
             try
             {

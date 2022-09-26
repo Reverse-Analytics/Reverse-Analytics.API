@@ -25,7 +25,6 @@ namespace Reverse_Analytics.Api.Extensions
             }
             catch (Exception ex)
             {
-
             }
 
             return app;
@@ -34,7 +33,8 @@ namespace Reverse_Analytics.Api.Extensions
 
     internal class DbSeeder
     {
-        private static Faker _faker = new Faker();
+        private static readonly Faker _faker = new();
+        private static readonly Random _random = new();
 
         public static void Initialize(ApplicationDbContext context)
         {
@@ -42,6 +42,7 @@ namespace Reverse_Analytics.Api.Extensions
             {
                 CreateCustomers(context);
                 CreateCustomerPhones(context);
+                CreateCustomerDebts(context);
             }
             catch (Exception)
             {
@@ -51,7 +52,7 @@ namespace Reverse_Analytics.Api.Extensions
         private static void CreateCustomers(ApplicationDbContext context)
         {
             // Customers
-            List<Customer> customers = new List<Customer>();
+            List<Customer> customers = new();
 
             for(int i = 0; i < 500; i++)
             {
@@ -72,11 +73,13 @@ namespace Reverse_Analytics.Api.Extensions
         private static void CreateCustomerPhones(ApplicationDbContext context)
         {
             var customers = context.Customers.ToList();
-            List<CustomerPhone> customerPhones = new List<CustomerPhone>();
+            List<CustomerPhone> customerPhones = new();
 
             foreach(var customer in customers)
             {
-                for(int i = 0; i < 3; i++)
+                int numberOfPhones = _random.Next(0, 5);
+
+                for(int i = 0; i < numberOfPhones; i++)
                 {
                     customerPhones.Add(
                         new CustomerPhone()
@@ -88,6 +91,32 @@ namespace Reverse_Analytics.Api.Extensions
             }
 
             context.CustomerPhones.AddRange(customerPhones);
+            context.SaveChanges();
+        }
+
+        private static void CreateCustomerDebts(ApplicationDbContext context)
+        {
+            var customers = context.Customers.ToList();
+            List<CustomerDebt> customerDebts = new();
+
+            foreach(var customer in customers)
+            {
+                int numberOfDebts = _random.Next(0, 10);
+
+                for(int i = 0; i < numberOfDebts; i++)
+                {
+                    customerDebts.Add(
+                        new CustomerDebt()
+                        {
+                            CustomerId = customer.Id,
+                            Amount = _faker.Finance.Amount(),
+                            DebtDate = _faker.Date.Between(DateTime.Now.AddMonths(-12), DateTime.Now),
+                            DueDate = _faker.Date.Between(DateTime.Now.AddMonths(2), DateTime.Now.AddMonths(12))
+                        });
+                }
+            }
+
+            context.CustomerDebts.AddRange(customerDebts);
             context.SaveChanges();
         }
     }

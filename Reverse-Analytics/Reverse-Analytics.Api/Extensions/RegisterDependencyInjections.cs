@@ -11,6 +11,7 @@ namespace Reverse_Analytics.Api.Extensions
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<ICustomerPhoneService, CustomerPhoneService>();
+            services.AddScoped<ICustomerDebtService, CustomerDebtService>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }

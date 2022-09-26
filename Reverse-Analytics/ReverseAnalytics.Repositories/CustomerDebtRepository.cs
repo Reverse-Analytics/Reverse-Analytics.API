@@ -17,7 +17,7 @@ namespace ReverseAnalytics.Repositories
             var debts = await _context.CustomerDebts
                 .Where(cd => cd.CustomerId == customerId)
                 .AsNoTracking()
-                .OrderByDescending(cd => cd.Amount)
+                .OrderByDescending(cd => cd.Id)
                 .ToListAsync();
 
             return debts;

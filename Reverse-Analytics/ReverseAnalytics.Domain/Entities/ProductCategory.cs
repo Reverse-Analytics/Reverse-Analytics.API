@@ -8,6 +8,12 @@ namespace ReverseAnalytics.Domain.Entities
 
         public virtual ICollection<Product> Products { get; set; }
 
+        public ProductCategory()
+        {
+            CategoryName = String.Empty;
+            Products = new List<Product>();
+        }
+
         public ProductCategory(string categoryName)
         {
             CategoryName = categoryName;

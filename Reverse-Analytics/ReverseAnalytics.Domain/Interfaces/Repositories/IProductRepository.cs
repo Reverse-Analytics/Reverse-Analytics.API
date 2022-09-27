@@ -4,6 +4,6 @@ namespace ReverseAnalytics.Domain.Interfaces.Repositories
 {
     public interface IProductRepository : IRepositoryBase<Product>
     {
-        Task<IEnumerable<Product>> FindAllProductsAsync(string? searchString);
+        Task<IEnumerable<Product>> FindAllProductsAsync(string? searchString, int? categoryId, int pageSize, int pageNumber);
     }
 }

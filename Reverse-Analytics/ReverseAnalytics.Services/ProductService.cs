@@ -52,11 +52,11 @@ namespace ReverseAnalytics.Services
             }
         }
 
-        public async Task<IEnumerable<ProductDto>?> GetProductsAsync(string? searchString)
+        public async Task<IEnumerable<ProductDto>?> GetProductsAsync(string? searchString, int? categoryId, int pageSize, int pageNumber)
         {
             try
             {
-                var products = await _repository.Product.FindAllProductsAsync(searchString);
+                var products = await _repository.Product.FindAllProductsAsync(searchString, categoryId, pageSize, pageNumber);
 
                 if (products is null)
                 {

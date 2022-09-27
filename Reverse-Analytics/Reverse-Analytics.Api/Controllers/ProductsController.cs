@@ -14,6 +14,7 @@ namespace Reverse_Analytics.Api.Controllers
     {
         private readonly IProductService _service;
         private readonly ILogger<ProductsController> _logger;
+        const int pageSize = 20;
 
         public ProductsController(ILogger<ProductsController> logger, IProductService service)
         {
@@ -22,11 +23,11 @@ namespace Reverse_Analytics.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts(string? searchString)
+        public async Task<ActionResult<IEnumerable<Product>>> GetProducts(string? searchString, int? categoryId, int pageSize = pageSize, int pageNumber = 1)
         {
             try
             {
-                var products = await _service.GetProductsAsync(searchString);
+                var products = await _service.GetProductsAsync(searchString, categoryId, pageSize, pageNumber);
 
                 if (products is null)
                 {

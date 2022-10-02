@@ -1,4 +1,5 @@
 ﻿using ReverseAnalytics.Domain.DTOs.Order;
+using ReverseAnalytics.Domain.DTOs.OrderItem;
 
 namespace ReverseAnalytics.Domain.Interfaces.Services
 {
@@ -9,5 +10,11 @@ namespace ReverseAnalytics.Domain.Interfaces.Services
         public Task<OrderDto> CreateOrderAsync(OrderForCreate orderToCreate);
         public Task UpdateOrderAsync(OrderForUpdate orderToUpdate);
         public Task DeleteOrderAsync(int id);
+
+        public Task<IEnumerable<OrderItemDto>?> GetAllOrderItemsAsync(int orderId, int pageSize, int pageNumber);
+        public Task<OrderItemDto> GetOrderItemByIdAsync(int orderId, int orderItemId);
+        public Task<OrderItemDto> CreateOrderItemAsync(OrderItemForCreate orderItemToCreate);
+        public Task UpdateOrderItemAsync(OrderItemForUpdate orderItemToUpdate);
+        public Task DeleteOrderItemAsync(int orderItemId);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ReverseAnalytics.Domain.DTOs.Order;
+using ReverseAnalytics.Domain.DTOs.OrderItem;
 using ReverseAnalytics.Domain.Entities;
 using ReverseAnalytics.Domain.Exceptions;
 using ReverseAnalytics.Domain.Interfaces.Repositories;
@@ -131,5 +132,110 @@ namespace ReverseAnalytics.Services
                 throw new Exception($"There was an error deleting Order with id: {id}.", ex);
             }
         }
+
+        #region Order Item
+
+        public async Task<IEnumerable<OrderItemDto>?> GetAllOrderItemsAsync(int orderId, int pageSize, int pageNumber)
+        {
+            try
+            {
+                var orderItems = await _repository.OrderItem.FindAllByOrderIdAsync(orderId, pageSize, pageNumber);
+
+                if (orderItems is null)
+                {
+                    return null;
+                }
+
+                var orderItemDtos = _mapper.Map<IEnumerable<OrderItemDto>>(orderItems);
+
+                return orderItemDtos;
+            }
+            catch(NotFoundException ex)
+            {
+                throw ex;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception($"There was an error retrieving Order Items for order with id: {orderId}", ex);
+            }
+        }
+
+        public async Task<OrderItemDto> GetOrderItemByIdAsync(int orderId, int orderItemId)
+        {
+            try
+            {
+                var orderItemEntity = await _repository.OrderItem.FindByIdAsync(orderItemId);
+
+                var orderItemDto = _mapper.Map<OrderItemDto>(orderItemEntity);
+
+                return orderItemDto;
+            }
+            catch(NotFoundException ex)
+            {
+                throw ex;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception($"There was an error retrieving Order Item with Order id: {orderId} and Order Item id: {orderItemId}.", ex);
+            }
+        }
+
+        public async Task<OrderItemDto> CreateOrderItemAsync(OrderItemForCreate orderItemToCreate)
+        {
+            try
+            {
+                var orderItemEntity = _mapper.Map<OrderDetail>(orderItemToCreate);
+
+                var createdEntity = _repository.OrderItem.Create(orderItemEntity);
+                await _repository.SaveChangesAsync();
+
+                var orderItemDto = _mapper.Map<OrderItemDto>(createdEntity);
+
+                return orderItemDto;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception("There was an error creating new Order Item.", ex);
+            }
+        }
+
+        public async Task UpdateOrderItemAsync(OrderItemForUpdate orderItemToUpdate)
+        {
+            try
+            {
+                if(orderItemToUpdate is null)
+                {
+                    throw new ArgumentNullException(nameof(orderItemToUpdate));
+                }
+
+                var orderItemDto = _mapper.Map<OrderDetail>(orderItemToUpdate);
+
+                _repository.OrderItem.Update(orderItemDto);
+                await _repository.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                throw new Exception($"There was an error updating Order Item with id: {orderItemToUpdate.Id}", ex);
+            }
+        }
+
+        public async Task DeleteOrderItemAsync(int id)
+        {
+            try
+            {
+                _repository.OrderItem.Delete(id);
+                await _repository.SaveChangesAsync();
+            }
+            catch(NotFoundException ex)
+            {
+                throw ex;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception($"There was an error deleting Order Item with id: {id}", ex);
+            }
+        }
+
+        #endregion
     }
 }

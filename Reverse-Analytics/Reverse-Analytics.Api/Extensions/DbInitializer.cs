@@ -1,5 +1,6 @@
 ﻿using Bogus;
 using ReverseAnalytics.Domain.Entities;
+using ReverseAnalytics.Domain.Enums;
 using ReverseAnalytics.Infrastructure.Persistence;
 
 namespace Reverse_Analytics.Api.Extensions
@@ -16,7 +17,7 @@ namespace Reverse_Analytics.Api.Extensions
             {
                 var context = services.GetRequiredService<ApplicationDbContext>();
 
-                if (context.Customers.Any())
+                if (context.Products.Any())
                 {
                     return app;
                 }
@@ -45,6 +46,8 @@ namespace Reverse_Analytics.Api.Extensions
                 CreateCustomers(context);
                 CreateCustomerPhones(context);
                 CreateCustomerDebts(context);
+                CreateOrders(context);
+                CreateOrderItems(context);
             }
             catch (Exception)
             {
@@ -165,6 +168,69 @@ namespace Reverse_Analytics.Api.Extensions
             }
 
             context.Products.AddRange(products);
+            context.SaveChanges();
+        }
+
+        private static void CreateOrders(ApplicationDbContext context)
+        {
+            var customers = context.Customers.ToList();
+            List<Order> orders = new List<Order>();
+            var enumValues = Enum.GetValues(typeof(OrderStatus));
+
+            foreach(var customer in customers)
+            {
+                int ordersCount = _random.Next(1, 25);
+
+                for(int i = 0; i < ordersCount; i++)
+                {
+                    var totalDue = decimal.Round(_faker.Random.Decimal(10, 5000), 2);
+                    var discountPercentage = decimal.Round(_faker.Random.Decimal(0, 100), 2);
+                    var discountTotal = decimal.Round((totalDue * discountPercentage) / 100, 2);
+                    OrderStatus status = (OrderStatus)enumValues.GetValue(_random.Next(enumValues.Length));
+
+                    orders.Add(
+                        new Order()
+                        {
+                            TotalDue = totalDue,
+                            DiscountPercentage = discountPercentage,
+                            DiscountTotal = discountTotal,
+                            Comment = _faker.Lorem.Sentence(null, 50),
+                            OrderDate = _faker.Date.Between(new DateTime(DateTime.Now.Year, 1, 1), DateTime.Now),
+                            Status = status,
+                            CustomerId = customer.Id
+                        });
+                }
+            }
+
+            context.Orders.AddRange(orders);
+            context.SaveChanges();
+        }
+
+        private static void CreateOrderItems(ApplicationDbContext context)
+        {
+            var orders = context.Orders.ToList();
+            var products = context.Products.ToList();
+            List<OrderDetail> orderItems = new();
+
+            foreach(var order in orders)
+            {
+                var orderItemsCount = _random.Next(1, 30);
+             
+                for(int i = 0; i < orderItemsCount; i++)
+                {
+                    orderItems.Add(
+                        new OrderDetail()
+                        {
+                            Quantity = _random.Next(1, 20),
+                            UnitPrice = decimal.Round(_faker.Random.Decimal(5, 500), 2),
+                            UnitPriceDiscount = decimal.Round(_faker.Random.Decimal(0, 100), 2),
+                            OrderId = order.Id,
+                            ProductId = products[_random.Next(0, products.Count)]?.Id ?? 1
+                        });
+                } 
+            }
+
+            context.OrderItems.AddRange(orderItems);
             context.SaveChanges();
         }
     }

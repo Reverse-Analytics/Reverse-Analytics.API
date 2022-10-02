@@ -24,6 +24,7 @@ namespace ReverseAnalytics.Repositories
                                  .AsNoTracking()
                                  .Skip(pageSize * (pageNumber - 1))
                                  .Take(pageSize)
+                                 .OrderBy(x => x.Id)
                                  .ToListAsync();
             }
 

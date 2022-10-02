@@ -1,6 +1,6 @@
-﻿namespace ReverseAnalytics.Domain.DTOs.OrderDetail
+﻿namespace ReverseAnalytics.Domain.DTOs.OrderItem
 {
-    public class OrderDetailForUpdate
+    public class OrderItemForCreate
     {
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }

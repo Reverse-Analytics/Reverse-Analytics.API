@@ -1,4 +1,4 @@
-﻿using ReverseAnalytics.Domain.DTOs.OrderDetail;
+﻿using ReverseAnalytics.Domain.DTOs.OrderItem;
 using ReverseAnalytics.Domain.Enums;
 
 namespace ReverseAnalytics.Domain.DTOs.Order
@@ -14,6 +14,6 @@ namespace ReverseAnalytics.Domain.DTOs.Order
 
         public int CustomerId { get; set; }
 
-        public ICollection<OrderDetailDto> OrderDetails { get; set; }
+        public ICollection<OrderItemDto> OrderItems { get; set; }
     }
 }

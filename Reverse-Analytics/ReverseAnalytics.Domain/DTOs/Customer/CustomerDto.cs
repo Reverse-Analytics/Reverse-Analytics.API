@@ -1,5 +1,6 @@
 ﻿using ReverseAnalytics.Domain.DTOs.CustomerDebt;
 using ReverseAnalytics.Domain.DTOs.CustomerPhone;
+using ReverseAnalytics.Domain.DTOs.Order;
 using ReverseAnalytics.Domain.Entities;
 
 namespace ReverseAnalytics.Domain.DTOs.CustomerPhoneDto
@@ -14,14 +15,14 @@ namespace ReverseAnalytics.Domain.DTOs.CustomerPhoneDto
 
         public ICollection<CustomerPhone.CustomerPhoneDto> CustomerPhones { get; set; }
         public ICollection<CustomerDebtDto> CustomerDebts { get; set; }
-        public ICollection<Order> Orders { get; set; }
+        public ICollection<OrderDto> Orders { get; set; }
 
         public CustomerDto()
         {
             FirstName = "";
             CustomerPhones = new List<CustomerPhone.CustomerPhoneDto>();
             CustomerDebts = new List<CustomerDebtDto>();
-            Orders = new List<Order>();
+            Orders = new List<OrderDto>();
         }
     }
 }

@@ -13,13 +13,16 @@ namespace ReverseAnalytics.Infrastructure.Persistence
         public virtual DbSet<ProductCategory> ProductCategories { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<CustomerPhone> CustomerPhones { get; set; }
+        public virtual DbSet<CustomerDebt> CustomerDebts { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<OrderDetail> OrderItems { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, 
                                     AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor)
             : base(options)
         {
             _auditableEntitySaveChangesInterceptor = auditableEntitySaveChangesInterceptor;
-            // Database.EnsureCreated();
+            Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

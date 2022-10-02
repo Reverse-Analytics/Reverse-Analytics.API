@@ -4,6 +4,7 @@ namespace ReverseAnalytics.Domain.DTOs.Order
 {
     public class OrderForUpdate
     {
+        public int Id { get; set; }
         public decimal TotalDue { get; set; }
         public decimal? DiscountPercentage { get; set; }
         public decimal? DiscountTotal { get; set; }

@@ -1,10 +1,11 @@
 ﻿using ReverseAnalytics.Domain.DTOs.CustomerPhoneDto;
-using ReverseAnalytics.Domain.DTOs.OrderDetail;
+using ReverseAnalytics.Domain.DTOs.OrderItem;
+using ReverseAnalytics.Domain.DTOs.OrderItem;
 using ReverseAnalytics.Domain.Enums;
 
 namespace ReverseAnalytics.Domain.DTOs.Order
 {
-    internal class OrderDto
+    public class OrderDto
     {
         public int Id { get; set; }
         public decimal TotalDue { get; set; }
@@ -16,7 +17,7 @@ namespace ReverseAnalytics.Domain.DTOs.Order
 
         public int CustomerId { get; set; }
 
-        public ICollection<OrderDetailDto> OrderDetails { get; set; }
+        public ICollection<OrderItemDto> OrderItems { get; set; }
 
     }
 }

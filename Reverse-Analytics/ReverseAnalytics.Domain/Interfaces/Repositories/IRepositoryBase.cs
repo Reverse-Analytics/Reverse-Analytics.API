@@ -2,7 +2,7 @@
 {
     public interface IRepositoryBase<T> where T : class
     {
-        Task<IEnumerable<T>> FindAllAsync();
+        Task<IEnumerable<T>> FindAllAsync(int pageSize = 0, int pageNumber = 0);
         Task<T?> FindByIdAsync(int id);
         T Create(T entity);
         void CreateRange(IEnumerable<T> entities);

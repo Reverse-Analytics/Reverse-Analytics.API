@@ -22,7 +22,7 @@ namespace ReverseAnalytics.Services
         {
             try
             {
-                var orders = await _repository.Order.FindAllAsync();
+                var orders = await _repository.Order.FindAllAsync(pageSize, pageNumber);
 
                 var orderDtos = _mapper.Map<IEnumerable<OrderDto>>(orders);
 

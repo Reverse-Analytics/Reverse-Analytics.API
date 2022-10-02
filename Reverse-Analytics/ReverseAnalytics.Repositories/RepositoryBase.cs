@@ -3,6 +3,7 @@ using ReverseAnalytics.Domain.Common;
 using ReverseAnalytics.Domain.Exceptions;
 using ReverseAnalytics.Domain.Interfaces.Repositories;
 using ReverseAnalytics.Infrastructure.Persistence;
+using System.Linq;
 
 namespace ReverseAnalytics.Repositories
 {
@@ -15,8 +16,17 @@ namespace ReverseAnalytics.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<T>> FindAllAsync()
+        public async Task<IEnumerable<T>> FindAllAsync(int pageSize = 0, int pageNumber = 0)
         {
+            if(pageSize > 0 && pageNumber > 0)
+            {
+                return await _context.Set<T>()
+                                 .AsNoTracking()
+                                 .Skip(pageSize * (pageNumber - 1))
+                                 .Take(pageSize)
+                                 .ToListAsync();
+            }
+
             return await _context.Set<T>()
                                  .AsNoTracking()
                                  .ToListAsync();

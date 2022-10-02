@@ -6,5 +6,10 @@
         public IProductRepository Product { get; }
         public ICustomerRepository Customer { get; }
         public ICustomerPhoneRepository CustomerPhone { get; }
+        public ICustomerDebtRepository CustomerDebt { get; }
+        public IOrderRepository Order { get; }
+        public IOrderItemRepository OrderItem { get; }
+
+        public Task<int> SaveChangesAsync();
     }
 }

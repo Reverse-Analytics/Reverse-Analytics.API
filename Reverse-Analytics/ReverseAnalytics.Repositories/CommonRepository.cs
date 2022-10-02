@@ -15,21 +15,43 @@ namespace ReverseAnalytics.Repositories
         public IProductRepository Product => _product ?? 
             new ProductRepository(_context);
 
-        private readonly ICustomerRepository _customerRepository;
-        public ICustomerRepository Customer => _customerRepository ?? 
+        private readonly ICustomerRepository _customer;
+        public ICustomerRepository Customer => _customer ?? 
             new CustomerRepository(_context);
 
         private readonly ICustomerPhoneRepository _customerPhone;
         public ICustomerPhoneRepository CustomerPhone => _customerPhone ??
             new CustomerPhoneRepository(_context);
 
+        private readonly ICustomerDebtRepository _customerDebt;
+        public ICustomerDebtRepository CustomerDebt => _customerDebt ??
+            new CustomerDebtRepository(_context);
+
+        private readonly IOrderRepository _order;
+        public IOrderRepository Order => _order ??
+            new OrderRepository(_context);
+
+        private readonly IOrderItemRepository _orderItem;
+        public IOrderItemRepository OrderItem => _orderItem ??
+            new OrderItemRepository(_context);
+
         public CommonRepository(ApplicationDbContext context)
         {
             _context = context ?? throw new ArgumentNullException("Parameter context cannot be null.");
             _productCategory = new ProductCategoryRepository(_context);
             _product = new ProductRepository(_context);
-            _customerRepository = new CustomerRepository(_context);
+            _customer = new CustomerRepository(_context);
             _customerPhone = new CustomerPhoneRepository(_context);
+            _customerDebt = new CustomerDebtRepository(_context);
+            _order = new OrderRepository(_context);
+            _orderItem = new OrderItemRepository(_context);
+        }
+
+        public async Task<int> SaveChangesAsync()
+        {
+            int savedChanges = await _context.SaveChangesAsync();
+
+            return savedChanges;
         }
     }
 }

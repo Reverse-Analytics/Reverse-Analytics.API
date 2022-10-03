@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ReverseAnalytics.Domain.DTOs.Order;
+using ReverseAnalytics.Domain.DTOs.OrderItem;
 using ReverseAnalytics.Domain.Interfaces.Services;
 
 namespace Reverse_Analytics.Api.Controllers
@@ -18,6 +19,8 @@ namespace Reverse_Analytics.Api.Controllers
             _service = service;
             _logger = logger;
         }
+
+        #region CRUD
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OrderDto>>> GetOrdersAsync(int pageSize = pageSize, int pageNumber = 1)
@@ -93,7 +96,7 @@ namespace Reverse_Analytics.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateOrderAsync([FromBody] OrderForUpdate orderToUpdate, int orderId)
+        public async Task<ActionResult> UpdateOrderAsync([FromBody] OrderForUpdate orderToUpdate, int id)
         {
             try
             {
@@ -107,9 +110,9 @@ namespace Reverse_Analytics.Api.Controllers
                     return BadRequest("Order to update is not valid.");
                 }
 
-                if (orderToUpdate.Id != orderId)
+                if (orderToUpdate.Id != id)
                 {
-                    return BadRequest($"Route id: {orderToUpdate.Id} does not match with route id: {orderId}.");
+                    return BadRequest($"Route id: {orderToUpdate.Id} does not match with route id: {id}.");
                 }
 
                 await _service.UpdateOrderAsync(orderToUpdate);
@@ -118,8 +121,8 @@ namespace Reverse_Analytics.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error while updating Order with id: {orderId}.", ex.Message);
-                return StatusCode(500, $"There was an error updating Order with id: {orderId}. Please, try again later.");
+                _logger.LogError($"Error while updating Order with id: {id}.", ex.Message);
+                return StatusCode(500, $"There was an error updating Order with id: {id}. Please, try again later.");
             }
         }
 
@@ -132,11 +135,131 @@ namespace Reverse_Analytics.Api.Controllers
 
                 return NoContent();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError($"Error while deleting Order with id: {id}.", ex.Message);
                 return StatusCode(500, "There was an error deleting Order with id: {id}. Please, try again later.");
             }
         }
+
+        #endregion
+
+        #region Order Items
+
+        [HttpGet("{id}/items")]
+        public async Task<ActionResult<IEnumerable<OrderItemDto>>> GetOrderItemsAsync(int id, int pageSize = pageSize, int pageNumber = 1)
+        {
+            try
+            {
+                var orderItems = await _service.GetAllOrderItemsAsync(id, pageSize, pageNumber);
+
+                if(orderItems?.Count() < 1)
+                {
+                    return Ok($"There is Items in Order with id: {id}.");
+                }
+
+                return Ok(orderItems);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError($"Error retrieving Order Items for Order with id: {id}.", ex.Message);
+                return StatusCode(500, $"There was an error retrieving Order Items for Order with id: {id}. Please, try again later.");
+            }
+        }
+
+        [HttpGet("{id}/items/{orderItemId}")]
+        public async Task<ActionResult<OrderItemDto>> GetOrderItemByIdAsync(int id, int orderItemId)
+        {
+            try
+            {
+                var orderItem = await _service.GetOrderItemByIdAsync(id, orderItemId);
+
+                if(orderItem is null)
+                {
+                    return NotFound($"There is no Order Item with id: {orderItemId}.");
+                }
+
+                return Ok(orderItem);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError($"Error while retrieving Order Item with Order id: {id} and Order Item id: {orderItemId}.", ex.Message);
+                return StatusCode(500, $"There was an error retrieving Order Item with id: {orderItemId}. Please, try again later.");
+            }
+        }
+
+        [HttpPost("{id}/items")]
+        public async Task<ActionResult<OrderItemDto>> CreateOrderItem([FromBody] OrderItemForCreate orderItemToCreate)
+        {
+            try
+            {
+                if(orderItemToCreate is null)
+                {
+                    return BadRequest("Order item to create cannot be null.");
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Order Item to create is not valid.");
+                }
+
+                var createdOrderItem = await _service.CreateOrderItemAsync(orderItemToCreate);
+
+                return Ok(createdOrderItem);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError("Error while creating new Order Item.", ex.Message);
+                return StatusCode(500, "There was an error creating new Order Item. Please, try again later.");
+            }
+        }
+
+        [HttpPut("{id}/items/{orderItemId}")]
+        public async Task<ActionResult> UpdateOrderItemAsync([FromBody] OrderItemForUpdate orderItemToUpdate, int id, int orderItemId)
+        {
+            try
+            {
+                if(orderItemToUpdate is null)
+                {
+                    return BadRequest("Order Item to update cannot be null.");
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Order Item to update is not valid.");
+                }
+
+                if(orderItemId != orderItemToUpdate.Id)
+                {
+                    return BadRequest($"Order Item id: {orderItemToUpdate.Id} does not match with route id: {orderItemId}");
+                }
+
+                await _service.UpdateOrderItemAsync(orderItemToUpdate);
+
+                return NoContent();
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError($"Error while updating Order Item with id: {orderItemId}.", ex.Message);
+                return StatusCode(500, "There was an error updating Order Item with id: {orderItemId}. Please, try again later.");
+            }
+        }
+
+        [HttpDelete("{id}/items/{orderItemId}")]
+        public async Task<ActionResult> DeleteOrderItemAsync(int id, int orderItemId)
+        {
+            try
+            {
+                await _service.DeleteOrderItemAsync(orderItemId);
+
+                return NoContent();
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError($"Error while deleting Order Item with id: {orderItemId}.", ex.Message);
+                return StatusCode(500, $"There was an error deleting Order Item with id: {orderItemId}. Please, try again later.");
+            }
+        }
+        #endregion
     }
 }

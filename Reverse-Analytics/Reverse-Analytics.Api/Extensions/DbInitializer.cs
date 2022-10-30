@@ -272,7 +272,7 @@ namespace Reverse_Analytics.Api.Extensions
         {
             if (context.SupplierPhones.Any()) return;
 
-            var suppliers = context.SupplierPhones.ToList();
+            var suppliers = context.Suppliers.ToList();
             List<SupplierPhone> supplierPhones = new();
 
             foreach (var supplier in suppliers)

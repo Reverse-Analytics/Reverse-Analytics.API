@@ -1,6 +1,6 @@
 ﻿namespace ReverseAnalytics.Domain.DTOs.Supplier
 {
-    class SupplierForUpdateDto
+    public class SupplierForUpdateDto
     {
         public int Id { get; set; }
         public string FirstName { get; set; }

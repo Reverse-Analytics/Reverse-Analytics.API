@@ -18,42 +18,6 @@ namespace ReverseAnalytics.Services
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<SupplierPhoneDto> CreateSupplierPhoneAsync(SupplierPhoneForCreate supplierPhoneToCreate)
-        {
-            try
-            {
-                var supplierEntity = _mapper.Map<SupplierPhone>(supplierPhoneToCreate);
-
-                var createdSupplier = _repository.SupplierPhone.Create(supplierEntity);
-                await _repository.SaveChangesAsync();
-
-                var supplierDto = _mapper.Map<SupplierPhoneDto>(createdSupplier);
-
-                return supplierDto;
-            }
-            catch(Exception)
-            {
-                throw;
-            }
-        }
-
-        public async Task DeleteSupplierPhoneAsync(int id)
-        {
-            try
-            {
-                _repository.SupplierPhone.Delete(id);
-                await _repository.SaveChangesAsync();
-            }
-            catch (NotFoundException)
-            {
-                throw;
-            }
-            catch(Exception)
-            {
-                throw;
-            }
-        }
-
         public async Task<IEnumerable<SupplierPhoneDto>> GetAllSupplierPhonesAsync(string? searchString)
         {
             try
@@ -65,6 +29,22 @@ namespace ReverseAnalytics.Services
                 return supplierPhoneDtos;
             }
             catch(Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<SupplierPhoneDto>> GetSupplierPhonesBySupplierIdAsync(int supplierId)
+        {
+            try
+            {
+                var supplierPhones = await _repository.SupplierPhone.FindAllBySupplierIdAsync(supplierId);
+
+                var supplierPhoneDtos = _mapper.Map<IEnumerable<SupplierPhoneDto>>(supplierPhones);
+
+                return supplierPhoneDtos;
+            }
+            catch (Exception)
             {
                 throw;
             }
@@ -90,17 +70,36 @@ namespace ReverseAnalytics.Services
             }
         }
 
-        public async Task<IEnumerable<SupplierPhoneDto>> GetSupplierPhonesBySupplierIdAsync(int supplierId)
+        public async Task<SupplierPhoneDto> GetSupplierPhoneBySupplierAndPhoneIdAsync(int supplierId, int phoneId)
         {
             try
             {
-                var supplierPhones = await _repository.SupplierPhone.FindAllBySupplierIdAsync(supplierId);
+                var supplierPhone = await _repository.SupplierPhone.FindBySupplierAndPhoneIdAsync(supplierId, phoneId);
 
-                var supplierPhoneDtos = _mapper.Map<IEnumerable<SupplierPhoneDto>>(supplierPhones);
+                var supplierPhoneDto = _mapper.Map<SupplierPhoneDto>(supplierPhone);
 
-                return supplierPhoneDtos;
+                return supplierPhoneDto;
             }
             catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<SupplierPhoneDto> CreateSupplierPhoneAsync(SupplierPhoneForCreate supplierPhoneToCreate)
+        {
+            try
+            {
+                var supplierEntity = _mapper.Map<SupplierPhone>(supplierPhoneToCreate);
+
+                var createdSupplier = _repository.SupplierPhone.Create(supplierEntity);
+                await _repository.SaveChangesAsync();
+
+                var supplierDto = _mapper.Map<SupplierPhoneDto>(createdSupplier);
+
+                return supplierDto;
+            }
+            catch(Exception)
             {
                 throw;
             }
@@ -124,5 +123,23 @@ namespace ReverseAnalytics.Services
                 throw;
             }
         }
+
+        public async Task DeleteSupplierPhoneAsync(int id)
+        {
+            try
+            {
+                _repository.SupplierPhone.Delete(id);
+                await _repository.SaveChangesAsync();
+            }
+            catch (NotFoundException)
+            {
+                throw;
+            }
+            catch(Exception)
+            {
+                throw;
+            }
+        }
+
     }
 }

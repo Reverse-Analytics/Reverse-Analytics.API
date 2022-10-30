@@ -20,5 +20,12 @@ namespace ReverseAnalytics.Repositories
 
             return supplierPhones;
         }
+
+        public async Task<SupplierPhone?> FindBySupplierAndPhoneIdAsync(int supplierId, int phoneId)
+        {
+            var supplierPhone = await _context.SupplierPhones.FirstOrDefaultAsync(sp => sp.SupplierId == supplierId && sp.Id == phoneId);
+
+            return supplierPhone;
+        }
     }
 }

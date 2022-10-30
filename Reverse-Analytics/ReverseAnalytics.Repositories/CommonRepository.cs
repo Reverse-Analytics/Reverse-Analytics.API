@@ -43,6 +43,10 @@ namespace ReverseAnalytics.Repositories
         public ISupplierPhoneRepository SupplierPhone => _supplierPhone ??
             new SupplierPhoneRepository(_context);
 
+        private readonly ISupplierDebtRepository _supplierDebt;
+        public ISupplierDebtRepository SupplierDebt => _supplierDebt ??
+            new SupplierDebtRepository(_context);
+
         public CommonRepository(ApplicationDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
@@ -55,6 +59,7 @@ namespace ReverseAnalytics.Repositories
             _orderItem = new OrderItemRepository(context);
             _supplier = new SupplierRepository(context);
             _supplierPhone = new SupplierPhoneRepository(context);
+            _supplierDebt = new SupplierDebtRepository(context);
         }
 
         public async Task<int> SaveChangesAsync()

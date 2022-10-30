@@ -11,6 +11,7 @@
         public IOrderItemRepository OrderItem { get; }
         public ISupplierRepository Supplier { get; }
         public ISupplierPhoneRepository SupplierPhone { get; }
+        public ISupplierDebtRepository SupplierDebt { get; }
 
         public Task<int> SaveChangesAsync();
     }

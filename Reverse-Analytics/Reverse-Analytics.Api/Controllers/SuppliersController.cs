@@ -131,7 +131,7 @@ namespace Reverse_Analytics.Api.Controllers
 
         #region Supplier Phones
 
-        [HttpGet("{supplierId}/")]
+        [HttpGet("{supplierId}/phones")]
         public async Task<ActionResult<IEnumerable<SupplierPhoneDto>>> GetAllSupplierPhones(int supplierId)
         {
             try
@@ -152,7 +152,7 @@ namespace Reverse_Analytics.Api.Controllers
             }
         }
 
-        [HttpGet("{supplierId}/phoneId")]
+        [HttpGet("{supplierId}/phones/{phoneId}")]
         public async Task<ActionResult<SupplierPhoneDto>> GetSupplierPhoneById(int supplierId, int phoneId)
         {
             try
@@ -173,7 +173,7 @@ namespace Reverse_Analytics.Api.Controllers
             }
         }
 
-        [HttpPost("{supplierId}")]
+        [HttpPost("{supplierId}/phones")]
         public async Task<ActionResult<SupplierPhoneDto>> CreateSupplierPhone(int supplierId, SupplierPhoneForCreate supplierPhoneToCreate)
         {
             try
@@ -194,7 +194,7 @@ namespace Reverse_Analytics.Api.Controllers
             }
         }
 
-        [HttpPut("{supplierId}/phoneId")]
+        [HttpPut("{supplierId}/phones/{phoneId}")]
         public async Task<ActionResult> UpdateSupplierPhoneAsync(int supplierId, int phoneId, SupplierPhoneForUpdate supplierToUpdate)
         {
             try
@@ -220,7 +220,7 @@ namespace Reverse_Analytics.Api.Controllers
             }
         }
 
-        [HttpDelete("{supplierId}/{phoneId}")]
+        [HttpDelete("{supplierId}/phones/{phoneId}")]
         public async Task<ActionResult> DeleteSupplierPhoneAsync(int supplierId, int phoneId)
         {
             try

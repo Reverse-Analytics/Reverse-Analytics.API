@@ -47,6 +47,7 @@ namespace Reverse_Analytics.Api.Extensions
                 CreateOrders(context);
                 CreateOrderItems(context);
                 CreateSuppliers(context);
+                CreateSupplierPhones(context);
             }
             catch (Exception)
             {
@@ -264,6 +265,32 @@ namespace Reverse_Analytics.Api.Extensions
             }
 
             context.Suppliers.AddRange(suppliers);
+            context.SaveChanges();
+        }
+
+        private static void CreateSupplierPhones(ApplicationDbContext context)
+        {
+            if (context.SupplierPhones.Any()) return;
+
+            var suppliers = context.SupplierPhones.ToList();
+            List<SupplierPhone> supplierPhones = new();
+
+            foreach (var supplier in suppliers)
+            {
+                int numberOfPhones = _random.Next(0, 5);
+
+                for (int i = 0; i < numberOfPhones; i++)
+                {
+                    supplierPhones.Add(
+                        new SupplierPhone()
+                        {
+                            SupplierId = supplier.Id,
+                            PhoneNumber = _faker.Phone.PhoneNumber()
+                        });
+                }
+            }
+
+            context.SupplierPhones.AddRange(supplierPhones);
             context.SaveChanges();
         }
     }

@@ -10,6 +10,7 @@
         public IOrderRepository Order { get; }
         public IOrderItemRepository OrderItem { get; }
         public ISupplierRepository Supplier { get; }
+        public ISupplierPhoneRepository SupplierPhone { get; }
 
         public Task<int> SaveChangesAsync();
     }

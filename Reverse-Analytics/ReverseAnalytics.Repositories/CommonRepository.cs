@@ -39,17 +39,22 @@ namespace ReverseAnalytics.Repositories
         public ISupplierRepository Supplier => _supplier ??
             new SupplierRepository(_context);
 
+        private readonly ISupplierPhoneRepository _supplierPhone;
+        public ISupplierPhoneRepository SupplierPhone => _supplierPhone ??
+            new SupplierPhoneRepository(_context);
+
         public CommonRepository(ApplicationDbContext context)
         {
-            _context = context ?? throw new ArgumentNullException("Parameter context cannot be null.");
-            _productCategory = new ProductCategoryRepository(_context);
-            _product = new ProductRepository(_context);
-            _customer = new CustomerRepository(_context);
-            _customerPhone = new CustomerPhoneRepository(_context);
-            _customerDebt = new CustomerDebtRepository(_context);
-            _order = new OrderRepository(_context);
-            _orderItem = new OrderItemRepository(_context);
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _productCategory = new ProductCategoryRepository(context);
+            _product = new ProductRepository(context);
+            _customer = new CustomerRepository(context);
+            _customerPhone = new CustomerPhoneRepository(context);
+            _customerDebt = new CustomerDebtRepository(context);
+            _order = new OrderRepository(context);
+            _orderItem = new OrderItemRepository(context);
             _supplier = new SupplierRepository(context);
+            _supplierPhone = new SupplierPhoneRepository(context);
         }
 
         public async Task<int> SaveChangesAsync()

@@ -2,6 +2,7 @@
 using ReverseAnalytics.Domain.Entities;
 using ReverseAnalytics.Domain.Enums;
 using ReverseAnalytics.Infrastructure.Persistence;
+using System.Diagnostics;
 
 namespace Reverse_Analytics.Api.Extensions
 {
@@ -13,19 +14,16 @@ namespace Reverse_Analytics.Api.Extensions
 
             using var scope = app.ApplicationServices.CreateScope();
             var services = scope.ServiceProvider;
+
             try
             {
                 var context = services.GetRequiredService<ApplicationDbContext>();
-
-                if (context.Products.Any())
-                {
-                    return app;
-                }
 
                 DbSeeder.Initialize(context);
             }
             catch (Exception ex)
             {
+                Debug.WriteLine(ex.Message);
             }
 
             return app;
@@ -48,6 +46,7 @@ namespace Reverse_Analytics.Api.Extensions
                 CreateCustomerDebts(context);
                 CreateOrders(context);
                 CreateOrderItems(context);
+                CreateSuppliers(context);
             }
             catch (Exception)
             {
@@ -56,6 +55,8 @@ namespace Reverse_Analytics.Api.Extensions
 
         private static void CreateCustomers(ApplicationDbContext context)
         {
+            if (context.Customers.Any()) return;
+
             // Customers
             List<Customer> customers = new();
 
@@ -77,6 +78,8 @@ namespace Reverse_Analytics.Api.Extensions
 
         private static void CreateCustomerPhones(ApplicationDbContext context)
         {
+            if (context.CustomerPhones.Any()) return;
+
             var customers = context.Customers.ToList();
             List<CustomerPhone> customerPhones = new();
 
@@ -101,6 +104,8 @@ namespace Reverse_Analytics.Api.Extensions
 
         private static void CreateCustomerDebts(ApplicationDbContext context)
         {
+            if (context.CustomerDebts.Any()) return;
+
             var customers = context.Customers.ToList();
             List<CustomerDebt> customerDebts = new();
 
@@ -127,6 +132,8 @@ namespace Reverse_Analytics.Api.Extensions
 
         private static void CreateProductCategories(ApplicationDbContext context)
         {
+            if (context.ProductCategories.Any()) return;
+
             List<ProductCategory> productCategories = new();
             var fakeCategories = _faker.Commerce.Categories(50);
 
@@ -145,6 +152,8 @@ namespace Reverse_Analytics.Api.Extensions
 
         private static void CreateProducts(ApplicationDbContext context)
         {
+            if (context.Products.Any()) return;
+
             var categories = context.ProductCategories.ToList();
             List<Product> products = new();
 
@@ -173,6 +182,8 @@ namespace Reverse_Analytics.Api.Extensions
 
         private static void CreateOrders(ApplicationDbContext context)
         {
+            if (context.Orders.Any()) return;
+
             var customers = context.Customers.ToList();
             List<Order> orders = new List<Order>();
             var enumValues = Enum.GetValues(typeof(OrderStatus));
@@ -208,6 +219,8 @@ namespace Reverse_Analytics.Api.Extensions
 
         private static void CreateOrderItems(ApplicationDbContext context)
         {
+            if (context.OrderItems.Any()) return;
+
             var orders = context.Orders.ToList();
             var products = context.Products.ToList();
             List<OrderDetail> orderItems = new();
@@ -231,6 +244,26 @@ namespace Reverse_Analytics.Api.Extensions
             }
 
             context.OrderItems.AddRange(orderItems);
+            context.SaveChanges();
+        }
+
+        private static void CreateSuppliers(ApplicationDbContext context)
+        {
+            if (context.Suppliers.Any()) return;
+
+            List<Supplier> suppliers = new List<Supplier>();
+
+            for(int i = 0; i < 500; i++)
+            {
+                suppliers.Add(new Supplier()
+                {
+                    FirstName = _faker.Name.FirstName(),
+                    LastName = _faker.Name.LastName(),
+                    CompanyName = _faker.Company.CompanyName()
+                });
+            }
+
+            context.Suppliers.AddRange(suppliers);
             context.SaveChanges();
         }
     }

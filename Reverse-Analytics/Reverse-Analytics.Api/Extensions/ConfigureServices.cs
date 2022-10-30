@@ -18,6 +18,7 @@ namespace Reverse_Analytics.Api.Extensions
             services.AddScoped<ICustomerDebtRepository, CustomerDebtRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+            services.AddScoped<ISupplierRepository, SupplierRepository>();
 
             services.AddScoped<AuditableEntitySaveChangesInterceptor>();
 

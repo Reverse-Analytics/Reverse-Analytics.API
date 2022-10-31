@@ -161,7 +161,7 @@ namespace Reverse_Analytics.Api.Controllers
         {
             try
             {
-                var supplierPhone = await _supplierPhoneService.GetSupplierPhoneBySupplierAndPhoneIdAsync(supplierId, supplierId);
+                var supplierPhone = await _supplierPhoneService.GetSupplierPhoneBySupplierAndPhoneIdAsync(supplierId, phoneId);
 
                 if(supplierPhone is null)
                 {
@@ -297,7 +297,7 @@ namespace Reverse_Analytics.Api.Controllers
                     return BadRequest($"Supplier Debt to create is not valid.");
                 }
 
-                var createdSupplierDebt = await _supplierDebtService.CreateSupplierDebt(supplierDebtToCreate);
+                var createdSupplierDebt = await _supplierDebtService.CreateSupplierDebtAsync(supplierDebtToCreate);
 
                 return Ok(createdSupplierDebt);
             }
@@ -320,7 +320,7 @@ namespace Reverse_Analytics.Api.Controllers
 
                 if(supplierDebtToUpdate.Id != debtId)
                 {
-                    return BadRequest($"Supplier Debt id: {debtId} does not match with route id: {debtId}.");
+                    return BadRequest($"Supplier Debt id: {supplierDebtToUpdate.Id} does not match with route id: {debtId}.");
                 }
 
                 await _supplierDebtService.UpdateSupplierDebtAsync(supplierDebtToUpdate);

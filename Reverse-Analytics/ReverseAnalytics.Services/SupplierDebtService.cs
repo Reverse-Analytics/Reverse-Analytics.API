@@ -69,7 +69,7 @@ namespace ReverseAnalytics.Services
         {
             try
             {
-                var supplierDebt = await _repository.SupplierDebt.FindAllBySupplierAndDebtIdAsync(supplierId, debtId);
+                var supplierDebt = await _repository.SupplierDebt.FindBySupplierAndDebtIdAsync(supplierId, debtId);
 
                 var supplierDebtDto = _mapper.Map<SupplierDebtDto>(supplierDebt);
 

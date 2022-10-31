@@ -6,7 +6,7 @@ using ReverseAnalytics.Domain.Interfaces.Services;
 
 namespace Reverse_Analytics.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/suppliers")]
     [ApiController]
     public class SuppliersController : ControllerBase
     {
@@ -265,7 +265,6 @@ namespace Reverse_Analytics.Api.Controllers
             }
         }
         
-
         [HttpGet("{supplierId}/debts/{debtId}")]
         public async Task<ActionResult<SupplierDebtDto>> GetSupplierDebtBySupplierAndDebtIdAsync(int supplierId, int debtId)
         {

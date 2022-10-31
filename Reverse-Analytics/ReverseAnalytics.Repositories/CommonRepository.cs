@@ -47,6 +47,10 @@ namespace ReverseAnalytics.Repositories
         public ISupplierDebtRepository SupplierDebt => _supplierDebt ??
             new SupplierDebtRepository(_context);
 
+        private readonly ISupplyRepository _supply;
+        public ISupplyRepository Supply => _supply ??
+            new SupplyRepository(_context);
+
         public CommonRepository(ApplicationDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));

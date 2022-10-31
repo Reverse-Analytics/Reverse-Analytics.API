@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ReverseAnalytics.Domain.DTOs.Supplier;
+using ReverseAnalytics.Domain.DTOs.SupplierDebt;
 using ReverseAnalytics.Domain.DTOs.SupplierPhone;
 using ReverseAnalytics.Domain.Interfaces.Services;
 
@@ -11,13 +12,16 @@ namespace Reverse_Analytics.Api.Controllers
     {
         private readonly ISupplierService _service;
         private readonly ISupplierPhoneService _supplierPhoneService;
+        private readonly ISupplierDebtService _supplierDebtService;
         private readonly ILogger<SuppliersController> _logger;
 
-        public SuppliersController(ISupplierService service, ISupplierPhoneService supplierPhoneService, ILogger<SuppliersController> logger)
+        public SuppliersController(ISupplierService service, ISupplierPhoneService supplierPhoneService, 
+            ISupplierDebtService supplierDebtService, ILogger<SuppliersController> logger)
         {
-            _service = service ?? throw new ArgumentNullException(nameof(service));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _service = service ?? throw new ArgumentNullException(nameof(service));
             _supplierPhoneService = supplierPhoneService ?? throw new ArgumentException(nameof(supplierPhoneService));
+            _supplierDebtService = supplierDebtService ?? throw new ArgumentException(nameof(supplierDebtService));
         }
 
         #region CRUD
@@ -233,6 +237,116 @@ namespace Reverse_Analytics.Api.Controllers
             {
                 _logger.LogError($"Error while deleting Supplier Phone for Supplier with id: {supplierId} and Phone id: {phoneId}.", ex.Message);
                 return StatusCode(500, $"There was an error deleting Phone for Supplier with id: {supplierId} and Phone id: {phoneId}. Please, try again later.");
+            }
+        }
+
+        #endregion
+
+        #region Supplier Debts
+
+        [HttpGet("{supplierId}/debts")]
+        public async Task<ActionResult<IEnumerable<SupplierDebtDto>>> GetAllSupplierDebtsBySupplierIdAsync(int supplierId)
+        {
+            try
+            {
+                var supplierDebts = await _supplierDebtService.GetAllSupplierDebtsBySupplierIdAsync(supplierId);
+
+                if(supplierDebts is null || !supplierDebts.Any())
+                {
+                    return Ok($"Supplier with id: {supplierId} has no Debts.");
+                }
+
+                return Ok(supplierDebts);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError($"Error while retrieving Debts for supplier with id: {supplierId}.", ex.Message);
+                return StatusCode(500, $"There was an error while retrieving Debt for Supplier with Id: {supplierId}.");
+            }
+        }
+        
+
+        [HttpGet("{supplierId}/debts/{debtId}")]
+        public async Task<ActionResult<SupplierDebtDto>> GetSupplierDebtBySupplierAndDebtIdAsync(int supplierId, int debtId)
+        {
+            try
+            {
+                var supplierDebt = await _supplierDebtService.GetSupplierDebtBySupplierAndDebtIdAsync(supplierId, debtId);
+
+                if(supplierDebt is null)
+                {
+                    return Ok($"There is no Debt with id: {debtId} and Supplier id: {supplierId}.");
+                }
+
+                return Ok(supplierDebt);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError($"Error while retrieving Debts for supplier with id: {supplierId}.", ex.Message);
+                return StatusCode(500, $"There was an error while retrieving Debt for Supplier with id: {supplierId} and Debt id: {debtId}.");
+            }
+        }
+
+        [HttpPost("{supplierId}/debts")]
+        public async Task<ActionResult<SupplierDebtDto>> CreateSupplierDebtAsync([FromBody] SupplierDebtForCreateDto supplierDebtToCreate, int supplierId)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest($"Supplier Debt to create is not valid.");
+                }
+
+                var createdSupplierDebt = await _supplierDebtService.CreateSupplierDebt(supplierDebtToCreate);
+
+                return Ok(createdSupplierDebt);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError($"Error while creating Debt for Supplier with id: {supplierId}.", ex.Message);
+                return StatusCode(500, $"There was an error while creating Debt for Supplier with Id: {supplierId}.");
+            }
+        }
+
+        [HttpPut("{supplierId}/debts/{debtId}")]
+        public async Task<ActionResult> UpdateSupplierDebt([FromBody]SupplierDebtForUpdateDto supplierDebtToUpdate, int supplierId, int debtId)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Supplier Debt is not valid to update.");
+                }
+
+                if(supplierDebtToUpdate.Id != debtId)
+                {
+                    return BadRequest($"Supplier Debt id: {debtId} does not match with route id: {debtId}.");
+                }
+
+                await _supplierDebtService.UpdateSupplierDebtAsync(supplierDebtToUpdate);
+
+                return NoContent();
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError($"Error while updating Debt for Supplier with id: {supplierId} and Debt id: {debtId}.", ex.Message);
+                return StatusCode(500, $"There was an error while updating Debt for Supplier with Id: {supplierId} and Debt id: {debtId}.");
+            }
+        }
+
+        [HttpDelete("{supplierId}/debts/{debtId}")]
+        public async Task<ActionResult> DeleteSupplierDebt(int supplierId, int debtId)
+        {
+            try
+            {
+                await _supplierDebtService.DeleteSupplierDebtAsync(debtId);
+
+                return NoContent();
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError($"Error while deleting Debt for Supplier with id: {supplierId} and Debt id: {debtId}.", ex.Message);
+                return StatusCode(500, $"There was an error while deleting Debt for Supplier with Id: {supplierId} and Debt id: {debtId}.");
             }
         }
 

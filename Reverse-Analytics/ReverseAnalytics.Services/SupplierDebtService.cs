@@ -81,7 +81,7 @@ namespace ReverseAnalytics.Services
             }
         }
 
-        public async Task<SupplierDebtDto> CreateSupplierDebt(SupplierDebtForCreateDto supplierDebtToCreate)
+        public async Task<SupplierDebtDto> CreateSupplierDebtAsync(SupplierDebtForCreateDto supplierDebtToCreate)
         {
             try
             {

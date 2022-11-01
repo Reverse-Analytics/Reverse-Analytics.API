@@ -49,6 +49,7 @@ namespace Reverse_Analytics.Api.Extensions
                 CreateSuppliers(context);
                 CreateSupplierPhones(context);
                 CreateSupplierDebts(context);
+                CreateSupplies(context);
             }
             catch (Exception)
             {
@@ -320,6 +321,40 @@ namespace Reverse_Analytics.Api.Extensions
             }
 
             context.SupplierDebts.AddRange(supplierDebts);
+            context.SaveChanges();
+        }
+
+        private static void CreateSupplies(ApplicationDbContext context)
+        {
+            if (context.Supplies.Any()) return;
+
+            var suppliers = context.Suppliers.ToList();
+            List<Supply> supplies = new();
+
+            foreach (var supplier in suppliers)
+            {
+                int suppliesCount = _random.Next(1, 25);
+
+                for (int i = 0; i < suppliesCount; i++)
+                {
+                    var totalDue = decimal.Round(_faker.Random.Decimal(10, 5000), 2);
+                    var paidAmount = decimal.Round(_faker.Random.Decimal(100, totalDue), 2);
+                    var debtAmount = totalDue - paidAmount;
+
+                    supplies.Add(
+                        new Supply()
+                        {
+                            TotalDue = totalDue,
+                            PaymentAmount = paidAmount,
+                            DebtAmount = debtAmount,
+                            ReceivedBy = _faker.Name.FirstName(),
+                            PurchaseDate = _faker.Date.Between(new DateTime(DateTime.Now.Year, 1, 1), DateTime.Now),
+                            SupplierId = supplier.Id
+                        });
+                }
+            }
+
+            context.Supplies.AddRange(supplies);
             context.SaveChanges();
         }
     }

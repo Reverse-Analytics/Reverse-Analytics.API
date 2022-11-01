@@ -17,6 +17,8 @@ namespace Reverse_Analytics.Api.Controllers
             _logger = logger;
         }
 
+        #region CRUD
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SupplyDto>>> GetAllSuppliesAsync()
         {
@@ -24,14 +26,14 @@ namespace Reverse_Analytics.Api.Controllers
             {
                 var supplies = await _service.GetAllSuppliesAsync();
 
-                if(supplies is null || !supplies.Any())
+                if (supplies is null || !supplies.Any())
                 {
                     return Ok("There are no Supplies.");
                 }
 
                 return Ok(supplies);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError("Error retrieving Supplies.", ex.Message);
                 return StatusCode(500, "There was an error retrieving Supplies.");
@@ -66,7 +68,7 @@ namespace Reverse_Analytics.Api.Controllers
             {
                 var supply = await _service.GetSupplyByIdAsync(supplyId);
 
-                if(supply is null)
+                if (supply is null)
                 {
                     return NotFound($"There is no Supply with id: {supplyId}");
                 }
@@ -94,7 +96,7 @@ namespace Reverse_Analytics.Api.Controllers
 
                 return Ok(createdSupply);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError("Error creating Supplies.", ex.Message);
                 return StatusCode(500, "There was an error creating a new Supply.");
@@ -119,7 +121,7 @@ namespace Reverse_Analytics.Api.Controllers
                 await _service.UpdateSupplyAsync(supplyToUpdate);
                 return NoContent();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError($"Error updating Supplly with id: {supplyId}.", ex.Message);
                 return StatusCode(500, $"There was an error retrieving Supply with id: {supplyId}.");
@@ -134,11 +136,13 @@ namespace Reverse_Analytics.Api.Controllers
                 await _service.DeleteSupplyAsync(supplyId);
                 return NoContent();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError($"Error updating Supplly with id: {supplyId}.", ex.Message);
                 return StatusCode(500, $"There was an error retrieving Supply with id: {supplyId}.");
             }
         }
+
+        #endregion
     }
 }

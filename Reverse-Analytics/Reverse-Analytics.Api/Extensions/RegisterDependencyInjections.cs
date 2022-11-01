@@ -13,6 +13,11 @@ namespace Reverse_Analytics.Api.Extensions
             services.AddScoped<ICustomerPhoneService, CustomerPhoneService>();
             services.AddScoped<ICustomerDebtService, CustomerDebtService>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<ISupplierService, SupplierService>();
+            services.AddScoped<ISupplierPhoneService, SupplierPhoneService>();
+            services.AddScoped<ISupplierDebtService, SupplierDebtService>();
+            services.AddScoped<ISupplyService, SupplyService>();
+            services.AddScoped<ISupplyDetailService, SupplyDetailService>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }

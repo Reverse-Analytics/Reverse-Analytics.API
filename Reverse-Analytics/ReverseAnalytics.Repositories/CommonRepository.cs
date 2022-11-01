@@ -35,16 +35,41 @@ namespace ReverseAnalytics.Repositories
         public IOrderItemRepository OrderItem => _orderItem ??
             new OrderItemRepository(_context);
 
+        private readonly ISupplierRepository _supplier;
+        public ISupplierRepository Supplier => _supplier ??
+            new SupplierRepository(_context);
+
+        private readonly ISupplierPhoneRepository _supplierPhone;
+        public ISupplierPhoneRepository SupplierPhone => _supplierPhone ??
+            new SupplierPhoneRepository(_context);
+
+        private readonly ISupplierDebtRepository _supplierDebt;
+        public ISupplierDebtRepository SupplierDebt => _supplierDebt ??
+            new SupplierDebtRepository(_context);
+
+        private readonly ISupplyRepository _supply;
+        public ISupplyRepository Supply => _supply ??
+            new SupplyRepository(_context);
+
+        private readonly ISupplyDetailRepository _supplyDetail;
+        public ISupplyDetailRepository SupplyDetail => _supplyDetail ??
+            new SupplyDetailRepository(_context);
+
         public CommonRepository(ApplicationDbContext context)
         {
-            _context = context ?? throw new ArgumentNullException("Parameter context cannot be null.");
-            _productCategory = new ProductCategoryRepository(_context);
-            _product = new ProductRepository(_context);
-            _customer = new CustomerRepository(_context);
-            _customerPhone = new CustomerPhoneRepository(_context);
-            _customerDebt = new CustomerDebtRepository(_context);
-            _order = new OrderRepository(_context);
-            _orderItem = new OrderItemRepository(_context);
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _productCategory = new ProductCategoryRepository(context);
+            _product = new ProductRepository(context);
+            _customer = new CustomerRepository(context);
+            _customerPhone = new CustomerPhoneRepository(context);
+            _customerDebt = new CustomerDebtRepository(context);
+            _order = new OrderRepository(context);
+            _orderItem = new OrderItemRepository(context);
+            _supplier = new SupplierRepository(context);
+            _supplierPhone = new SupplierPhoneRepository(context);
+            _supplierDebt = new SupplierDebtRepository(context);
+            _supply = new SupplyRepository(context);
+            _supplyDetail = new SupplyDetailRepository(context);
         }
 
         public async Task<int> SaveChangesAsync()

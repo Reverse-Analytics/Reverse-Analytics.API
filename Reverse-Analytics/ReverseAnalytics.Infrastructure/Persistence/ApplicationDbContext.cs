@@ -16,6 +16,11 @@ namespace ReverseAnalytics.Infrastructure.Persistence
         public virtual DbSet<CustomerDebt> CustomerDebts { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderDetail> OrderItems { get; set; }
+        public virtual DbSet<Supplier> Suppliers { get; set; }
+        public virtual DbSet<SupplierPhone> SupplierPhones { get; set; }
+        public virtual DbSet<SupplierDebt> SupplierDebts { get; set; }
+        public virtual DbSet<Supply> Supplies { get; set; }
+        public virtual DbSet<SupplyDetail> SupplyDetails { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, 
                                     AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor)

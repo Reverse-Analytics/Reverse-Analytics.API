@@ -228,7 +228,7 @@ namespace Reverse_Analytics.Api.Controllers
         {
             try
             {
-                await _detailService.UpdateSupplyDetailAsync(supplyDetailId);
+                await _detailService.DeleteSupplyDetailAsync(supplyDetailId);
 
                 return NoContent();
             }

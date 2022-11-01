@@ -1,6 +1,6 @@
 ﻿namespace ReverseAnalytics.Domain.DTOs.SupplyDetail
 {
-    public class SupplyForUpdateDto
+    public class SupplyDetailForUpdateDto
     {
         public int Id { get; set; }
         public decimal UnitPrice { get; set; }

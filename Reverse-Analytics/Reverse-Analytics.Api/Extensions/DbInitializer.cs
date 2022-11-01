@@ -50,6 +50,7 @@ namespace Reverse_Analytics.Api.Extensions
                 CreateSupplierPhones(context);
                 CreateSupplierDebts(context);
                 CreateSupplies(context);
+                CreateSupplyDetails(context);
             }
             catch (Exception)
             {
@@ -355,6 +356,35 @@ namespace Reverse_Analytics.Api.Extensions
             }
 
             context.Supplies.AddRange(supplies);
+            context.SaveChanges();
+        }
+
+        private static void CreateSupplyDetails(ApplicationDbContext context)
+        {
+            if (context.SupplyDetails.Any()) return;
+
+            var supplies = context.Supplies.ToList();
+            var products = context.Products.ToList();
+            List<SupplyDetail> supplyDetails = new List<SupplyDetail>();
+
+            foreach(var supply in supplies)
+            {
+                int suppliesCount = _random.Next(1, 25);
+
+                for(int i = 0; i < suppliesCount; i++)
+                {
+                    supplyDetails.Add(new SupplyDetail()
+                    {
+                        Quantity = _random.Next(1, 20),
+                        UnitPrice = decimal.Round(_faker.Random.Decimal(5, 500), 2),
+                        UnitPriceDiscount = decimal.Round(_faker.Random.Decimal(0, 100), 2),
+                        SupplyId = supply.Id,
+                        ProductId = products[_random.Next(0, products.Count)]?.Id ?? 1
+                    });
+                }
+            }
+
+            context.SupplyDetails.AddRange(supplyDetails);
             context.SaveChanges();
         }
     }

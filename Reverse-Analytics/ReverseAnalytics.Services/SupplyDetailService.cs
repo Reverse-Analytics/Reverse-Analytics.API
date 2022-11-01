@@ -18,47 +18,6 @@ namespace ReverseAnalytics.Services
             _mapper = mapper;
         }
 
-        public async Task<SupplyDetailDto> CreateSupplyDetailAsync(SupplyDetailForCreateDto supplyDetailToCreate)
-        {
-            try
-            {
-                var supplyDetailEntity = _mapper.Map<SupplyDetail>(supplyDetailToCreate);
-
-                var createdEntity = _repository.SupplyDetail.Create(supplyDetailEntity);
-                await _repository.SaveChangesAsync();
-
-                var supplyDetailDto = _mapper.Map<SupplyDetailDto>(createdEntity);
-
-                return supplyDetailDto;
-            }
-            catch (AutoMapperMappingException)
-            {
-                throw;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        public async Task DeleteSupplyDetailAsync(int supplyDetailid)
-        {
-            try
-            {
-                _repository.SupplyDetail.Delete(supplyDetailid);
-                await _repository.SaveChangesAsync();
-            }
-            catch (NotFoundException)
-            {
-
-                throw;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
         public async Task<IEnumerable<SupplyDetailDto>> GetAllSupplyDetailsAsync()
         {
             try
@@ -139,6 +98,29 @@ namespace ReverseAnalytics.Services
             }
         }
 
+        public async Task<SupplyDetailDto> CreateSupplyDetailAsync(SupplyDetailForCreateDto supplyDetailToCreate)
+        {
+            try
+            {
+                var supplyDetailEntity = _mapper.Map<SupplyDetail>(supplyDetailToCreate);
+
+                var createdEntity = _repository.SupplyDetail.Create(supplyDetailEntity);
+                await _repository.SaveChangesAsync();
+
+                var supplyDetailDto = _mapper.Map<SupplyDetailDto>(createdEntity);
+
+                return supplyDetailDto;
+            }
+            catch (AutoMapperMappingException)
+            {
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public async Task UpdateSupplyDetailAsync(SupplyDetailForUpdateDto supplyDetailToUpdate)
         {
             try
@@ -154,6 +136,24 @@ namespace ReverseAnalytics.Services
             }
             catch (AutoMapperMappingException)
             {
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task DeleteSupplyDetailAsync(int supplyDetailid)
+        {
+            try
+            {
+                _repository.SupplyDetail.Delete(supplyDetailid);
+                await _repository.SaveChangesAsync();
+            }
+            catch (NotFoundException)
+            {
+
                 throw;
             }
             catch (Exception)

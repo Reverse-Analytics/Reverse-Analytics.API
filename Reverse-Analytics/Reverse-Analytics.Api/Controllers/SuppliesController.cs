@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ReverseAnalytics.Domain.DTOs.Supply;
+using ReverseAnalytics.Domain.DTOs.SupplyDetail;
 using ReverseAnalytics.Domain.Interfaces.Services;
 
 namespace Reverse_Analytics.Api.Controllers
@@ -9,11 +10,13 @@ namespace Reverse_Analytics.Api.Controllers
     public class SuppliesController : ControllerBase
     {
         private readonly ISupplyService _service;
+        private readonly ISupplyDetailService _detailService;
         private readonly ILogger<SuppliesController> _logger;
 
-        public SuppliesController(ISupplyService service, ILogger<SuppliesController> logger)
+        public SuppliesController(ISupplyService supplyService, ISupplyDetailService supplyDetailService, ILogger<SuppliesController> logger)
         {
-            _service = service;
+            _service = supplyService;
+            _detailService = supplyDetailService;
             _logger = logger;
         }
 
@@ -140,6 +143,99 @@ namespace Reverse_Analytics.Api.Controllers
             {
                 _logger.LogError($"Error updating Supplly with id: {supplyId}.", ex.Message);
                 return StatusCode(500, $"There was an error retrieving Supply with id: {supplyId}.");
+            }
+        }
+
+        #endregion
+
+        #region Supply Details
+
+        [HttpGet("{supplyId}/details")]
+        public async Task<ActionResult<IEnumerable<SupplyDetailDto>>> GetSupplyDetailsAsync(int supplyId)
+        {
+            try
+            {
+                var supplyDetails = await _detailService.GetAllSupplyDetailsBySupplyIdAsync(supplyId);
+
+                if(supplyDetails is null || !supplyDetails.Any())
+                {
+                    return Ok($"Supply with id: {supplyId} has no details.");
+                }
+
+                return Ok(supplyDetails);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError($"Error while retrieving Details for Supply with id: {supplyId}.", ex.Message);
+                return StatusCode(500, $"There was an error while retrieving details for Supply with id: {supplyId}.");
+            }
+        }
+
+        [HttpPost("{supplyId}/details")]
+        public async Task<ActionResult<SupplyDetailDto>> CreateSupplyDetailAsync([FromBody]SupplyDetailForCreateDto supplyDetailToCreate, int supplyId)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Supply detail to create is not valid.");
+                }
+
+                var createdSupplyDetail = await _detailService.CreateSupplyDetailAsync(supplyDetailToCreate);
+
+                return Ok(createdSupplyDetail);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError($"Error while creating Detail for Supply with id: {supplyId}.", ex.Message);
+                return StatusCode(500, $"There was an error while creating detail for Supply with id: {supplyId}.");
+            }
+        }
+
+        [HttpPut("{supplyId}/details/{supplyDetailId}")]
+        public async Task<ActionResult> UpdateSupplyDetailAsyc([FromBody] SupplyDetailForUpdateDto supplyDetailToUpdate, int supplyId, int supplyDetailId)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Supply detail is not valid to update.");
+                }
+
+                if(supplyDetailToUpdate.Id != supplyDetailId)
+                {
+                    return BadRequest($"Supply detail id: {supplyDetailId} does not match with route {supplyDetailId}.");
+                }
+
+                if(supplyDetailToUpdate.SupplyId != supplyId)
+                {
+                    return BadRequest($"Supply id: {supplyDetailToUpdate.SupplyId} does not match with route id: {supplyId}.");
+                }
+
+                await _detailService.UpdateSupplyDetailAsync(supplyDetailToUpdate);
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while updating Detail for Supply with id: {supplyId}.", ex.Message);
+                return StatusCode(500, $"There was an error while updating detail for Supply with id: {supplyId}.");
+            }
+        }
+
+        [HttpDelete("{supplyId}/details/{supplyDetailId}")]
+        public async Task<ActionResult> DeleteSupplyDetailAsync(int supplyId, int supplyDetailId)
+        {
+            try
+            {
+                await _detailService.UpdateSupplyDetailAsync(supplyDetailId);
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while deleting Detail for Supply with id: {supplyId}.", ex.Message);
+                return StatusCode(500, $"There was an error while deleting detail for Supply with id: {supplyId}.");
             }
         }
 

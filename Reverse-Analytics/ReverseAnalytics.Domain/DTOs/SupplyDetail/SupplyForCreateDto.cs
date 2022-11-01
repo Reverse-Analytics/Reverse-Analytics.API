@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ReverseAnalytics.Domain.DTOs.SupplyDetail
+﻿namespace ReverseAnalytics.Domain.DTOs.SupplyDetail
 {
-    internal class SupplyForCreateDto
+    public class SupplyForCreateDto
     {
+        public decimal UnitPrice { get; set; }
+        public decimal? UnitPriceDiscount { get; set; }
+
+        public int SupplyId { get; set; }
+        public int ProductId { get; set; }
     }
 }

@@ -14,6 +14,7 @@
         public ISupplierDebtRepository SupplierDebt { get; }
         public ISupplyRepository Supply { get; }
         public ISupplyDetailRepository SupplyDetail { get; }
+        public IUserRepository User { get; }
 
         public Task<int> SaveChangesAsync();
     }

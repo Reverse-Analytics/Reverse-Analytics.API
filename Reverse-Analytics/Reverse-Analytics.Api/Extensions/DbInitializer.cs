@@ -51,10 +51,30 @@ namespace Reverse_Analytics.Api.Extensions
                 CreateSupplierDebts(context);
                 CreateSupplies(context);
                 CreateSupplyDetails(context);
+                CreateUsers(context);
             }
             catch (Exception)
             {
             }
+        }
+
+        private static void CreateUsers(ApplicationDbContext context)
+        {
+            if (context.Users.Any()) return;
+
+            List<User> users = new();
+
+            for(int i = 0; i < 10; i++)
+            {
+                users.Add(new User()
+                {
+                    UserName = _faker.Internet.UserName(),
+                    Password = _faker.Internet.Password()
+                });
+            }
+
+            context.AddRange(users);
+            context.SaveChanges();
         }
 
         private static void CreateCustomers(ApplicationDbContext context)

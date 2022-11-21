@@ -4,8 +4,8 @@ namespace ReverseAnalytics.Domain.DTOs.UserAccount
 {
     public class UserAccountForCreateDto
     {
-        [Required(ErrorMessage = "Login is required.")]
-        public string Login { get; set; }
+        [Required(ErrorMessage = "User name is required.")]
+        public string UserName { get; set; }
 
         [Required(ErrorMessage = "Login is required.")]
         [DataType(DataType.Password)]

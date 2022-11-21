@@ -4,11 +4,11 @@ namespace ReverseAnalytics.Domain.Interfaces.Services
 {
     public interface IAccountService
     {
-        public Task<ICollection<UserAccountDto>> GetAllUserAccounts();
-        public Task<UserAccountDto> GetuserAccountById(string id);
-        public Task<UserAccountDto> GetUserAccountByLogin(string name);
-        public Task<UserAccountDto> CreateUserAccount(UserAccountForCreateDto userAccountToCreate);
-        public Task UpdateUserAccount(UserAccountForUpdateDto userAccountToUpdate);
-        public Task DeleteUserAccount(string id);
+        public Task<IEnumerable<UserAccountDto>> GetAllAccountsAsync();
+        public Task<UserAccountDto> GetAccountByIdAsync(string id);
+        public Task<UserAccountDto> GetAccountByLoginAsync(string name);
+        public Task CreateAccountAsync(UserAccountForCreateDto userAccountToCreate);
+        public Task UpdateAccountAsync(UserAccountForUpdateDto userAccountToUpdate);
+        public Task DeleteAccountAsync(string id);
     }
 }

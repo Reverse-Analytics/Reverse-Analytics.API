@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
+using ReverseAnalytics.Domain.DTOs.PasswordReset;
 using ReverseAnalytics.Domain.DTOs.UserAccount;
 using ReverseAnalytics.Domain.Interfaces.Services;
+using System.Text;
 
 namespace ReverseAnalytics.Services
 {
@@ -17,32 +20,15 @@ namespace ReverseAnalytics.Services
             _mapper = mapper;
         }
 
-        public async Task CreateAccountAsync(UserAccountForCreateDto userAccountToCreate)
+        public async Task<IEnumerable<UserAccountDto>> GetAllAccountsAsync()
         {
             try
             {
-                var user = _mapper.Map<IdentityUser>(userAccountToCreate);
+                var users = await _userManager.Users.ToListAsync();
 
-                var result = await _userManager.CreateAsync(user, userAccountToCreate.Password);
+                var userDtos = _mapper.Map<IEnumerable<UserAccountDto>>(users);
 
-                await _userManager.AddToRoleAsync(user, "Visitor");
-            }
-            catch(Exception)
-            {
-                throw;
-            }
-        }
-
-        public async Task DeleteAccountAsync(string id)
-        {
-            try
-            {
-                var user = await _userManager.FindByIdAsync(id);
-
-                if(user != null)
-                {
-                    await _userManager.DeleteAsync(user);
-                }
+                return userDtos;
             }
             catch (Exception)
             {
@@ -82,17 +68,17 @@ namespace ReverseAnalytics.Services
             }
         }
 
-        public async Task<IEnumerable<UserAccountDto>> GetAllAccountsAsync()
+        public async Task CreateAccountAsync(UserAccountForCreateDto userAccountToCreate)
         {
             try
             {
-                var users = await _userManager.Users.ToListAsync();
+                var user = _mapper.Map<IdentityUser>(userAccountToCreate);
 
-                var userDtos = _mapper.Map<IEnumerable<UserAccountDto>>(users);
+                var result = await _userManager.CreateAsync(user, userAccountToCreate.Password);
 
-                return userDtos;
+                await _userManager.AddToRoleAsync(user, "Visitor");
             }
-            catch (Exception)
+            catch(Exception)
             {
                 throw;
             }
@@ -108,6 +94,69 @@ namespace ReverseAnalytics.Services
                 user.NormalizedUserName = userAccountToUpdate.UserName.ToUpper();
 
                 var result = await _userManager.UpdateAsync(user);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<PasswordResetResponse> ResetPasswordAsync(PasswordResetRequest request)
+        {
+            var user = await _userManager.FindByNameAsync(request.UserName);
+
+            if(request.NewPassword != request.ConfirmPassword)
+            {
+                return new PasswordResetResponse
+                {
+                    IsSuccess = false,
+                    Message = "New password does not match to its confirmation."
+                };
+            }
+
+            if(user is null)
+            {
+                return new PasswordResetResponse
+                {
+                    IsSuccess = false,
+                    Message = "User not found."
+                };
+            }
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var result = await _userManager.ResetPasswordAsync(user, token, request.NewPassword);
+
+            if (!result.Succeeded)
+            {
+                return new PasswordResetResponse
+                {
+                    IsSuccess = false,
+                    Message = "Password reset failed, see erros for more details.",
+                    Errors = result.Errors.Select(e => new ResponseError
+                    {
+                        Description = e.Description,
+                        Code = e.Code
+                    }).ToList()
+                };
+            }
+
+            return new PasswordResetResponse
+            {
+                IsSuccess = true,
+                Message = "Password was successfully updated."
+            };
+        }
+
+        public async Task DeleteAccountAsync(string id)
+        {
+            try
+            {
+                var user = await _userManager.FindByIdAsync(id);
+
+                if(user != null)
+                {
+                    await _userManager.DeleteAsync(user);
+                }
             }
             catch (Exception)
             {

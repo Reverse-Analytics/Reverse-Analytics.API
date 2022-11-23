@@ -1,4 +1,5 @@
-﻿using ReverseAnalytics.Domain.DTOs.UserAccount;
+﻿using ReverseAnalytics.Domain.DTOs.PasswordReset;
+using ReverseAnalytics.Domain.DTOs.UserAccount;
 
 namespace ReverseAnalytics.Domain.Interfaces.Services
 {
@@ -9,6 +10,7 @@ namespace ReverseAnalytics.Domain.Interfaces.Services
         public Task<UserAccountDto> GetAccountByLoginAsync(string name);
         public Task CreateAccountAsync(UserAccountForCreateDto userAccountToCreate);
         public Task UpdateAccountAsync(UserAccountForUpdateDto userAccountToUpdate);
+        public Task<PasswordResetResponse> ResetPasswordAsync(PasswordResetRequest request);
         public Task DeleteAccountAsync(string id);
     }
 }

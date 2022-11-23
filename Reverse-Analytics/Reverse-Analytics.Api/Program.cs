@@ -35,8 +35,6 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 })
     .AddEntityFrameworkStores<ApplicationIdentityDbContext>();
 
-builder.Services.ConfigureAuthentication(builder.Configuration);
-
 builder.Services.AddControllers(options =>
 {
     options.ReturnHttpNotAcceptable = true;
@@ -48,6 +46,8 @@ builder.Services.AddControllers(options =>
         options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
     })
     .AddXmlDataContractSerializerFormatters();
+
+builder.Services.ConfigureAuthentication(builder.Configuration);
 
 builder.Services.AddSwaggerGen();
 

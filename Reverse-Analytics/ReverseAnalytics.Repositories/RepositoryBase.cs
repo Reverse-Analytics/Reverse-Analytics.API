@@ -3,7 +3,6 @@ using ReverseAnalytics.Domain.Common;
 using ReverseAnalytics.Domain.Exceptions;
 using ReverseAnalytics.Domain.Interfaces.Repositories;
 using ReverseAnalytics.Infrastructure.Persistence;
-using System.Linq;
 
 namespace ReverseAnalytics.Repositories
 {

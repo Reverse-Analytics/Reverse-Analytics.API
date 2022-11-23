@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ReverseAnalytics.Domain.DTOs.Supplier;
 using ReverseAnalytics.Domain.DTOs.SupplierDebt;
 using ReverseAnalytics.Domain.DTOs.SupplierPhone;
@@ -6,8 +7,9 @@ using ReverseAnalytics.Domain.Interfaces.Services;
 
 namespace Reverse_Analytics.Api.Controllers
 {
-    [Route("api/suppliers")]
+    [Authorize]
     [ApiController]
+    [Route("api/suppliers")]
     public class SuppliersController : ControllerBase
     {
         private readonly ISupplierService _service;

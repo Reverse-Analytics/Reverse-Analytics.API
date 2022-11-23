@@ -1,12 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ReverseAnalytics.Domain.DTOs.Order;
 using ReverseAnalytics.Domain.DTOs.OrderItem;
 using ReverseAnalytics.Domain.Interfaces.Services;
 
 namespace Reverse_Analytics.Api.Controllers
 {
-    [Route("api/orders")]
+    [Authorize]
     [ApiController]
+    [Route("api/orders")]
     public class OrdersController : ControllerBase
     {
         private readonly IOrderService _service;

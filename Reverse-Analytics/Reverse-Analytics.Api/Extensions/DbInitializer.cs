@@ -1,4 +1,5 @@
 ﻿using Bogus;
+using Microsoft.AspNetCore.Identity;
 using ReverseAnalytics.Domain.Entities;
 using ReverseAnalytics.Domain.Enums;
 using ReverseAnalytics.Infrastructure.Persistence;
@@ -18,8 +19,10 @@ namespace Reverse_Analytics.Api.Extensions
             try
             {
                 var context = services.GetRequiredService<ApplicationDbContext>();
+                var identityContext = services.GetRequiredService<ApplicationIdentityDbContext>();
+                var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
 
-                DbSeeder.Initialize(context);
+                DbSeeder.Initialize(context, identityContext, userManager);
             }
             catch (Exception ex)
             {
@@ -35,7 +38,7 @@ namespace Reverse_Analytics.Api.Extensions
         private static readonly Faker _faker = new();
         private static readonly Random _random = new();
 
-        public static void Initialize(ApplicationDbContext context)
+        public static void Initialize(ApplicationDbContext context, ApplicationIdentityDbContext identityContext, UserManager<IdentityUser> userManager)
         {
             try
             {
@@ -51,6 +54,8 @@ namespace Reverse_Analytics.Api.Extensions
                 CreateSupplierDebts(context);
                 CreateSupplies(context);
                 CreateSupplyDetails(context);
+                CreateRoles(identityContext);
+                CreateUsers(identityContext, userManager);
             }
             catch (Exception)
             {
@@ -386,6 +391,57 @@ namespace Reverse_Analytics.Api.Extensions
 
             context.SupplyDetails.AddRange(supplyDetails);
             context.SaveChanges();
+        }
+
+        private static void CreateRoles(ApplicationIdentityDbContext context)
+        {
+            if (context.Roles.Any()) return;
+
+            List<IdentityRole> roles = new();
+
+            roles.Add(new IdentityRole
+            {
+                Name = "Visitor",
+                NormalizedName = "VISITOR"
+            });
+            roles.Add(new IdentityRole
+            {
+                Name = "Accountant",
+                NormalizedName = "ACCOUNTANT"
+            });
+            roles.Add(new IdentityRole
+            {
+                Name = "Manager",
+                NormalizedName = "MANAGER"
+            });
+            roles.Add(new IdentityRole
+            {
+                Name = "Administrator",
+                NormalizedName = "ADMINISTRATOR"
+            });
+
+            context.Roles.AddRange(roles);
+            context.SaveChanges();
+        }
+
+        private static void CreateUsers(ApplicationIdentityDbContext context, UserManager<IdentityUser> userManager)
+        {
+            if (context.Users.Any()) return;
+
+            var roles = context.Roles.ToList();
+
+            for(int i = 0; i < 20; i++)
+            {
+                var role = roles.ElementAt(_random.Next(0, roles.Count));
+
+                var user = new IdentityUser
+                {
+                    UserName = _faker.Internet.UserName(),
+                };
+
+                userManager.CreateAsync(user, $"qwerty{i}").Wait();
+                userManager.AddToRoleAsync(user, role.Name).Wait();
+            }
         }
     }
 }

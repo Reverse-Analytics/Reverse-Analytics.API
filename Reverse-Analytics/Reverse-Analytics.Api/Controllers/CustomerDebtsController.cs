@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReverseAnalytics.Domain.DTOs.CustomerDebt;
 using ReverseAnalytics.Domain.Exceptions;
@@ -6,8 +7,9 @@ using ReverseAnalytics.Domain.Interfaces.Services;
 
 namespace Reverse_Analytics.Api.Controllers
 {
-    [Route("api/customerdebts")]
+    [Authorize]
     [ApiController]
+    [Route("api/customerdebts")]
     public class CustomerDebtsController : ControllerBase
     {
         private readonly ICustomerDebtService _service;

@@ -1,12 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ReverseAnalytics.Domain.DTOs.Supply;
 using ReverseAnalytics.Domain.DTOs.SupplyDetail;
 using ReverseAnalytics.Domain.Interfaces.Services;
 
 namespace Reverse_Analytics.Api.Controllers
 {
-    [Route("api/supplies")]
+    [Authorize]
     [ApiController]
+    [Route("api/supplies")]
     public class SuppliesController : ControllerBase
     {
         private readonly ISupplyService _service;

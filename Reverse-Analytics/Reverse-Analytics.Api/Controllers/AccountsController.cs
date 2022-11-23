@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using ReverseAnalytics.Domain.DTOs.PasswordReset;
 using ReverseAnalytics.Domain.DTOs.UserAccount;
 using ReverseAnalytics.Domain.Interfaces.Services;
 
 namespace Reverse_Analytics.Api.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/accounts")]
     public class AccountsController : Controller
@@ -67,6 +70,30 @@ namespace Reverse_Analytics.Api.Controllers
             {
                 _logger.LogError("Error while creating a new user.", ex.Message);
                 return StatusCode(500, $"There was an error creating a new user account. Please, try again later.");
+            }
+        }
+
+        [HttpPost("PasswordReset")]
+        public async Task<ActionResult<PasswordResetResponse>> ResetPasswordAsync(PasswordResetRequest request)
+        {
+            try
+            {
+                var result = await _accountService.ResetPasswordAsync(request);
+
+                if (!result.IsSuccess)
+                {
+                    foreach(var error in result.Errors)
+                    {
+                        ModelState.AddModelError(error.Code, error.Description);   
+                    }
+                }
+
+                return StatusCode(201, result);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError($"Error while resetting password for user: {request.UserName}.", ex.Message);
+                return StatusCode(500, "There was an error resetting password.");
             }
         }
 

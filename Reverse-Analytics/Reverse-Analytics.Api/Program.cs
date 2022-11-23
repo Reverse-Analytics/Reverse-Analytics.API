@@ -4,6 +4,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
 using ReverseAnalytics.Infrastructure.Persistence;
+using ReverseAnalytics.Infrastructure.Configurations;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
@@ -22,6 +24,7 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.RegisterDependencyInjection();
 
 // Identity
+builder.Services.Configure<CustomTokenOptions>(builder.Configuration.GetSection("TokenOptions"));
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
     options.Password.RequireDigit = false;
@@ -30,8 +33,9 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
     options.Password.RequireUppercase = false;
     options.Password.RequireLowercase = false;
 })
-    .AddEntityFrameworkStores<ApplicationIdentityDbContext>()
-    .AddDefaultTokenProviders();
+    .AddEntityFrameworkStores<ApplicationIdentityDbContext>();
+
+builder.Services.ConfigureAuthentication(builder.Configuration);
 
 builder.Services.AddControllers(options =>
 {

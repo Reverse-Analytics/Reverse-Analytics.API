@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReverseAnalytics.Domain.DTOs.PasswordReset;
 using ReverseAnalytics.Domain.DTOs.UserAccount;

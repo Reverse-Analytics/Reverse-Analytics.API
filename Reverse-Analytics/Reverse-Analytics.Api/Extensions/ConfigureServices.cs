@@ -53,23 +53,24 @@ namespace Reverse_Analytics.Api.Extensions
         {
             var tokenOptions = configuration.GetSection("TokenOptions").Get<CustomTokenOptions>();
 
-            services.AddAuthentication(auth =>
+            services.AddAuthentication(options =>
             {
-                auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(options =>
                 {
-                    ValidateIssuer = true,
-                    ValidIssuer = tokenOptions.Issuer,
-                    ValidateAudience = true,
-                    ValidAudience = tokenOptions.Audience,
-                    RequireExpirationTime = false,
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenOptions.SecurityKey))
-                };
-            });
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = tokenOptions.Issuer,
+                        ValidateAudience = true,
+                        ValidAudience = tokenOptions.Audience,
+                        RequireExpirationTime = false,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenOptions.SecurityKey))
+                    };
+                });
 
             return services;
         }

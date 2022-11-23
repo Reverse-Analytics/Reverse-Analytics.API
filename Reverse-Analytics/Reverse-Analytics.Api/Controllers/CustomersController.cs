@@ -4,11 +4,13 @@ using ReverseAnalytics.Domain.DTOs.CustomerPhone;
 using ReverseAnalytics.Domain.Exceptions;
 using ReverseAnalytics.Domain.Interfaces.Services;
 using ReverseAnalytics.Domain.DTOs.CustomerDebt;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Reverse_Analytics.Api.Controllers
 {
-    [Route("api/customers")]
+    [Authorize]
     [ApiController]
+    [Route("api/customers")]
     public class CustomersController : Controller
     {
         private readonly ICustomerService _customerService;

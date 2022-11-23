@@ -1,15 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ReverseAnalytics.Domain.DTOs.Product;
 using ReverseAnalytics.Domain.Entities;
 using ReverseAnalytics.Domain.Exceptions;
 using ReverseAnalytics.Domain.Interfaces.Services;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace Reverse_Analytics.Api.Controllers
 {
+    [Authorize]
+    [ApiController]
     [Route("api/Products")]
-    [ApiController] 
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _service;

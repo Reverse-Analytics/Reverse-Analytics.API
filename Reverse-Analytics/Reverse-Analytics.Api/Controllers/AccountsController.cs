@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReverseAnalytics.Domain.DTOs.PasswordReset;
 using ReverseAnalytics.Domain.DTOs.UserAccount;
@@ -6,9 +7,9 @@ using ReverseAnalytics.Domain.Interfaces.Services;
 
 namespace Reverse_Analytics.Api.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("api/accounts")]
+    [Authorize]
     public class AccountsController : Controller
     {
         private readonly IAccountService _accountService;

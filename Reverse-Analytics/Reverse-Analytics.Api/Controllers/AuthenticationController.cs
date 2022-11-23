@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReverseAnalytics.Domain.DTOs.Authentication;
 using ReverseAnalytics.Domain.Interfaces.Services;

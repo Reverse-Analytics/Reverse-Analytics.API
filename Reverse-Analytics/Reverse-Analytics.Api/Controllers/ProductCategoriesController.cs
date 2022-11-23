@@ -1,12 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ReverseAnalytics.Domain.DTOs.ProductCategory;
 using ReverseAnalytics.Domain.Exceptions;
 using ReverseAnalytics.Domain.Interfaces.Services;
 
 namespace Reverse_Analytics.Api.Controllers
 {
-    [Route("api/categories")]
+    [Authorize]
     [ApiController]
+    [Route("api/categories")]
     public class ProductCategoriesController : ControllerBase
     {
         private readonly ILogger<ProductCategoriesController> _logger;

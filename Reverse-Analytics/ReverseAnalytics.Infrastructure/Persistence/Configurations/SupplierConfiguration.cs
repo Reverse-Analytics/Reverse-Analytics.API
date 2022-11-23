@@ -12,16 +12,17 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
 
             builder.HasKey(p => p.Id);
 
-            builder.Property(p => p.FirstName)
-                .HasMaxLength(150)
-                .IsRequired();
-            builder.Property(p => p.LastName)
-                .HasMaxLength(200)
+            builder.Property(s => s.FullName)
+                .HasMaxLength(250)
                 .IsRequired();
             builder.Property(p => p.CompanyName)
                 .HasMaxLength(250)
                 .IsRequired(false);
 
+            builder.HasMany(s => s.Addresses)
+                .WithOne(a => a.Supplier)
+                .HasForeignKey(a => a.SupplierId)
+                .OnDelete(DeleteBehavior.Cascade);
             builder.HasMany(s => s.Supplies)
                 .WithOne(p => p.Supplier)
                 .HasForeignKey(p => p.SupplierId);

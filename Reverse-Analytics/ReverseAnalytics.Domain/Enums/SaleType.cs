@@ -2,8 +2,8 @@
 {
     public enum SaleType
     {
-        Retaile,
-        Wholesale,
-        Other
+        Retaile = 1,
+        Wholesale = 2,
+        Other = 3
     }
 }

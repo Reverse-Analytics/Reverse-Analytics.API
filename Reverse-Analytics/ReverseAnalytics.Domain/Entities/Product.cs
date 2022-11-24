@@ -16,7 +16,7 @@ namespace ReverseAnalytics.Domain.Entities
 
         public virtual ICollection<SaleDetail> SaleDetails { get; set; }
         public virtual ICollection<SupplyDetail> PurchaseDetails { get; set; }
-        public virtual ICollection<InventoryProduct> InventoryProducts { get; set; }
+        public virtual ICollection<InventoryDetail> InventoryProducts { get; set; }
 
         public Product()
         {

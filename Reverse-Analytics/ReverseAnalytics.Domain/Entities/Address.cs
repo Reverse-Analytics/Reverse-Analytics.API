@@ -2,17 +2,14 @@
 
 namespace ReverseAnalytics.Domain.Entities
 {
-    public class Address : BaseEntity
+    public class Address : BaseAuditableEntity
     {
         public string AddressDetails { get; set; }
         public string? AddressLandMark { get; set; }
-        public string LocationOnMap { get; set; }
-        public string Longtitude { get; set; }
-        public string Latitude { get; set; }
+        public double Longtitude { get; set; }
+        public double Latitude { get; set; }
 
-        public int CustomerAddressId { get; set; }
-        public CustomerAddress CustomerAddress { get; set; }
-        public int SupplierAddressId { get; set; }
-        public SupplierAddress SupplierAddress { get; set; }
+        public int PersonId { get; set; }
+        public Person Person { get; set; }
     }
 }

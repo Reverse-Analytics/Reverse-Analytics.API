@@ -41,7 +41,7 @@ namespace Reverse_Analytics.Api.Extensions
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), builder =>
                 builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
-            services.AddDbContext<ApplicationIdentityContext>(options =>
+            services.AddDbContext<ApplicationIdentityDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultIdentityConnection"), builder =>
                 builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 #endif

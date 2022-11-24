@@ -15,6 +15,10 @@ namespace ReverseAnalytics.Repositories
         public IDebtRepository Debt => _debt ??
             new DebtRepository(_context);
 
+        public readonly IPhoneRepository _phone;
+        public IPhoneRepository Phone => _phone ??
+            new PhoneRepository(_context);
+
         private readonly IProductCategoryRepository _productCategory;
         public IProductCategoryRepository ProductCategory => _productCategory ?? 
             new ProductCategoryRepository(_context);

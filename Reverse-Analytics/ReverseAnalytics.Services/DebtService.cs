@@ -3,11 +3,6 @@ using ReverseAnalytics.Domain.DTOs.Debt;
 using ReverseAnalytics.Domain.Entities;
 using ReverseAnalytics.Domain.Interfaces.Repositories;
 using ReverseAnalytics.Domain.Interfaces.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReverseAnalytics.Services
 {

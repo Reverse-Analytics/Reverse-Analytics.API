@@ -78,7 +78,7 @@ namespace ReverseAnalytics.Services
             }
             catch (Exception ex)
             {
-                throw new Exception("There was an error creating new Sale Item.", ex);
+                throw new Exception("There was an error creating new Sale Detail.", ex);
             }
         }
 

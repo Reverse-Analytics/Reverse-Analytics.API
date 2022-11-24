@@ -3,6 +3,7 @@
     public interface ICommonRepository
     {
         public IAddressRepository Address { get; }
+        public IDebtRepository Debt { get; }
         public IProductCategoryRepository ProductCategory { get; }
         public IProductRepository Product { get; }
         public ICustomerRepository Customer { get; }

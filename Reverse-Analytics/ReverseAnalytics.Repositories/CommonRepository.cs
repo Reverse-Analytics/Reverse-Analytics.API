@@ -11,6 +11,10 @@ namespace ReverseAnalytics.Repositories
         public IAddressRepository Address => _address ??
             new AddressRepository(_context);
 
+        private readonly IDebtRepository _debt;
+        public IDebtRepository Debt => _debt ??
+            new DebtRepository(_context);
+
         private readonly IProductCategoryRepository _productCategory;
         public IProductCategoryRepository ProductCategory => _productCategory ?? 
             new ProductCategoryRepository(_context);
@@ -46,16 +50,15 @@ namespace ReverseAnalytics.Repositories
         public CommonRepository(ApplicationDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+
+            _address = new AddressRepository(context);
+            _debt = new DebtRepository(context);
             _productCategory = new ProductCategoryRepository(context);
             _product = new ProductRepository(context);
             _customer = new CustomerRepository(context);
-            _customerPhone = new CustomerPhoneRepository(context);
-            _customerDebt = new CustomerDebtRepository(context);
             _order = new OrderRepository(context);
             _orderItem = new OrderItemRepository(context);
             _supplier = new SupplierRepository(context);
-            _supplierPhone = new SupplierPhoneRepository(context);
-            _supplierDebt = new SupplierDebtRepository(context);
             _supply = new SupplyRepository(context);
             _supplyDetail = new SupplyDetailRepository(context);
         }

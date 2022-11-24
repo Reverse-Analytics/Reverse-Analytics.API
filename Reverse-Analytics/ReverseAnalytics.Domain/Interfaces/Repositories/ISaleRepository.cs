@@ -2,7 +2,7 @@
 
 namespace ReverseAnalytics.Domain.Interfaces.Repositories
 {
-    public interface IOrderRepository : IRepositoryBase<Order>
+    public interface ISaleRepository : IRepositoryBase<Sale>
     {
     }
 }

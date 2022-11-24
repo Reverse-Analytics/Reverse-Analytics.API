@@ -8,8 +8,8 @@
         public IProductCategoryRepository ProductCategory { get; }
         public IProductRepository Product { get; }
         public ICustomerRepository Customer { get; }
-        public IOrderRepository Order { get; }
-        public IOrderItemRepository OrderItem { get; }
+        public ISaleRepository Sale { get; }
+        public ISaleDetailRepository SaleDetail { get; }
         public ISupplierRepository Supplier { get; }
         public ISupplyRepository Supply { get; }
         public ISupplyDetailRepository SupplyDetail { get; }

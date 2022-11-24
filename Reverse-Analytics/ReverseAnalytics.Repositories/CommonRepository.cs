@@ -7,6 +7,10 @@ namespace ReverseAnalytics.Repositories
     {
         private readonly ApplicationDbContext _context;
 
+        private readonly IAddressRepository _address;
+        public IAddressRepository Address => _address ??
+            new AddressRepository(_context);
+
         private readonly IProductCategoryRepository _productCategory;
         public IProductCategoryRepository ProductCategory => _productCategory ?? 
             new ProductCategoryRepository(_context);
@@ -19,14 +23,6 @@ namespace ReverseAnalytics.Repositories
         public ICustomerRepository Customer => _customer ?? 
             new CustomerRepository(_context);
 
-        private readonly ICustomerPhoneRepository _customerPhone;
-        public ICustomerPhoneRepository CustomerPhone => _customerPhone ??
-            new CustomerPhoneRepository(_context);
-
-        private readonly ICustomerDebtRepository _customerDebt;
-        public ICustomerDebtRepository CustomerDebt => _customerDebt ??
-            new CustomerDebtRepository(_context);
-
         private readonly IOrderRepository _order;
         public IOrderRepository Order => _order ??
             new OrderRepository(_context);
@@ -38,14 +34,6 @@ namespace ReverseAnalytics.Repositories
         private readonly ISupplierRepository _supplier;
         public ISupplierRepository Supplier => _supplier ??
             new SupplierRepository(_context);
-
-        private readonly ISupplierPhoneRepository _supplierPhone;
-        public ISupplierPhoneRepository SupplierPhone => _supplierPhone ??
-            new SupplierPhoneRepository(_context);
-
-        private readonly ISupplierDebtRepository _supplierDebt;
-        public ISupplierDebtRepository SupplierDebt => _supplierDebt ??
-            new SupplierDebtRepository(_context);
 
         private readonly ISupplyRepository _supply;
         public ISupplyRepository Supply => _supply ??

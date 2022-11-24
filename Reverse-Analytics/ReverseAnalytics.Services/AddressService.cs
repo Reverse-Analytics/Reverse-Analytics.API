@@ -49,15 +49,15 @@ namespace ReverseAnalytics.Services
             }
         }
 
-        public async Task<AddressDto> GetAddressByPersonIdAsync(int personId)
+        public async Task<IEnumerable<AddressDto>> GetAddressByPersonIdAsync(int personId)
         {
             try
             {
-                var address = await _repository.Address.FindAllByPersonId(personId);
+                var addresses = await _repository.Address.FindAllByPersonId(personId);
 
-                var addressDto = _mapper.Map<AddressDto>(address);
+                var addressDtos = _mapper.Map<IEnumerable<AddressDto>>(addresses);
 
-                return addressDto;
+                return addressDtos;
             }
             catch (Exception)
             {

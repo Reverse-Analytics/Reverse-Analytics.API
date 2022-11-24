@@ -12,7 +12,7 @@ namespace ReverseAnalytics.Repositories
         {
         }
 
-        public async Task<IEnumerable<SaleDetail>> FindAllBySaleId(int saleId)
+        public async Task<IEnumerable<SaleDetail>> FindAllBySaleIdAsync(int saleId)
         {
             var saleDetails = await _context.SaleDetails
                 .Where(s => s.SaleId == saleId)

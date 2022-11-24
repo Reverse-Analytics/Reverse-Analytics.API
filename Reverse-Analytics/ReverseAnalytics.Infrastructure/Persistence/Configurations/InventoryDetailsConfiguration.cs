@@ -4,11 +4,11 @@ using ReverseAnalytics.Domain.Entities;
 
 namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
 {
-    internal class InventoryProductConfiguration : IEntityTypeConfiguration<InventoryProduct>
+    internal class InventoryDetailsConfiguration : IEntityTypeConfiguration<InventoryDetail>
     {
-        public void Configure(EntityTypeBuilder<InventoryProduct> builder)
+        public void Configure(EntityTypeBuilder<InventoryDetail> builder)
         {
-            builder.ToFunction("Inventory_Product");
+            builder.ToTable("Inventory_Detail");
 
             builder.HasKey(ip => ip.Id);
 
@@ -21,10 +21,10 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
 
             builder.Property(ip => ip.ProductsRemained)
                 .HasDefaultValue(0)
-                .IsRequired(false);
+                .IsRequired();
             builder.Property(ip => ip.EnoughForDays)
                 .HasDefaultValue(0)
-                .IsRequired(false);
+                .IsRequired();
         }
     }
 }

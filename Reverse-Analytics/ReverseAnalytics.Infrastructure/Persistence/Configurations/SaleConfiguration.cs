@@ -40,7 +40,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
                 .IsRequired(false);
             builder.Property(s => s.SaleType)
                 .HasDefaultValue(SaleType.Other)
-                .IsRequired(false);
+                .IsRequired();
         }
     }
 }

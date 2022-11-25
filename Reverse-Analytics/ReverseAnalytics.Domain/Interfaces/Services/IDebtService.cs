@@ -6,6 +6,7 @@ namespace ReverseAnalytics.Domain.Interfaces.Services
     {
         public Task<IEnumerable<DebtDto>> GetAllDebtsAsync();
         public Task<IEnumerable<DebtDto>> GetAllDebtsByPersonIdAsync(int personId);
+        public Task<DebtDto> GetByPersonAndDebtId(int personId, int debtId);
         public Task<DebtDto> GetDebtByIdAsync(int id);
         public Task<DebtDto> CreateDebtAsync(DebtForCreateDto debtToCreate);
         public Task UpdateDebtAsync(DebtForUpdateDto debtToUpdate);

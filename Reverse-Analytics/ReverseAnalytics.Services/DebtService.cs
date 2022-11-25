@@ -49,6 +49,21 @@ namespace ReverseAnalytics.Services
             }
         }
 
+        public async Task<DebtDto> GetByPersonAndDebtId(int personId, int debtId)
+        {
+            try
+            {
+                var debt = await _repository.Debt.FindByPersonAndDebtIdAsync(personId, debtId);
+                var debtDto = _mapper.Map<DebtDto>(debt);
+
+                return debtDto;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public async Task<DebtDto> GetDebtByIdAsync(int id)
         {
             try

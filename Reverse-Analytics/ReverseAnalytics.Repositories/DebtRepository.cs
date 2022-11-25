@@ -20,5 +20,12 @@ namespace ReverseAnalytics.Repositories
 
             return debts;
         }
+
+        public async Task<Debt> FindByPersonAndDebtIdAsync(int personId, int phoneId)
+        {
+            var debt = await _context.Debts.FirstOrDefaultAsync(p => p.Id == phoneId && p.PersonId == personId);
+
+            return debt;
+        }
     }
 }

@@ -37,10 +37,25 @@ namespace ReverseAnalytics.Services
         {
             try
             {
-                var phones = await _repository.Phone.FindAllAsync();
+                var phones = await _repository.Phone.FindAllByPersonIdAsync(personId);
                 var phoneDtos = _mapper.Map<IEnumerable<PhoneDto>>(phones);
 
                 return phoneDtos;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<PhoneDto> GetByPersonAndPhoneIdAsync(int personId, int phoneId)
+        {
+            try
+            {
+                var phone = await _repository.Phone.FindByPersonAndPhoneId(personId, phoneId);
+                var phoneDto = _mapper.Map<PhoneDto>(phone);
+
+                return phoneDto;
             }
             catch
             {

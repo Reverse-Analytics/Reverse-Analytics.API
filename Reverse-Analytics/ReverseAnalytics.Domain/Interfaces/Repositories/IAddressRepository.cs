@@ -4,6 +4,7 @@ namespace ReverseAnalytics.Domain.Interfaces.Repositories
 {
     public interface IAddressRepository : IRepositoryBase<Address>
     {
-        public Task<IEnumerable<Address>> FindAllByPersonId(int id);
+        public Task<IEnumerable<Address>> FindAllByPersonIdAsync(int personId);
+        public Task<Address?> FindByPersonAndAddressIdAsync(int personId, int addressId);
     }
 }

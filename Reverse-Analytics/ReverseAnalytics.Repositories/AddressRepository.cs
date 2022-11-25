@@ -12,13 +12,22 @@ namespace ReverseAnalytics.Repositories
         {
         }
 
-        public async Task<IEnumerable<Address>> FindAllByPersonId(int id)
+        public async Task<IEnumerable<Address>> FindAllByPersonIdAsync(int personId)
         {
             var addresses = await _context.Addresses
-                .Where(a => a.PersonId == id)
+                .Where(a => a.PersonId == personId)
                 .ToListAsync();
 
             return addresses;
+        }
+
+        public async Task<Address?> FindByPersonAndAddressIdAsync(int personId, int addressId)
+        {
+            var address = await _context.Addresses
+                .FirstOrDefaultAsync(a => a.PersonId == personId &&
+                    a.Id == addressId);
+
+            return address;
         }
     }
 }

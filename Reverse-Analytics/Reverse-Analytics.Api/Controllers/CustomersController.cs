@@ -355,7 +355,7 @@ namespace Reverse_Analytics.Api.Controllers
         }
 
         [HttpPost("{customerId}/phones")]
-        public async Task<ActionResult<CustomerDto>> CreateCustomerPhoneAsync([FromBody] PhoneForCreateDto phoneToCreate, int customerId)
+        public async Task<ActionResult<PhoneDto>> CreateCustomerPhoneAsync([FromBody] PhoneForCreateDto phoneToCreate, int customerId)
         {
             try
             {

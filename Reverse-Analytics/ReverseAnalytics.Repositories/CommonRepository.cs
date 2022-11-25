@@ -39,10 +39,6 @@ namespace ReverseAnalytics.Repositories
         public ISaleDetailRepository SaleDetail => _saleDetail ??
             new SaleDetailRepository(_context);
 
-        private readonly IOrderItemRepository _orderItem;
-        public IOrderItemRepository OrderItem => _orderItem ??
-            new OrderItemRepository(_context);
-
         private readonly ISupplierRepository _supplier;
         public ISupplierRepository Supplier => _supplier ??
             new SupplierRepository(_context);
@@ -61,11 +57,12 @@ namespace ReverseAnalytics.Repositories
 
             _address = new AddressRepository(context);
             _debt = new DebtRepository(context);
+            _phone = new PhoneRepository(context);
             _productCategory = new ProductCategoryRepository(context);
             _product = new ProductRepository(context);
             _customer = new CustomerRepository(context);
             _sale = new SaleRepository(context);
-            _orderItem = new OrderItemRepository(context);
+            _saleDetail = new SaleDetailRepository(context);
             _supplier = new SupplierRepository(context);
             _supply = new SupplyRepository(context);
             _supplyDetail = new SupplyDetailRepository(context);

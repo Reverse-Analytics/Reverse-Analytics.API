@@ -60,8 +60,6 @@ namespace Reverse_Analytics.Api.Extensions
                 //CreateInventoryDetails(context);
                 //CreateRoles(identityContext);
                 //CreateUsers(identityContext, userManager);
-
-                CreateInventoryDetails(context);
             }
             catch (Exception)
             {

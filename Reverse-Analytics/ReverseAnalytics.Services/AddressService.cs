@@ -49,7 +49,7 @@ namespace ReverseAnalytics.Services
             }
         }
 
-        public async Task<IEnumerable<AddressDto>> GetAddressByPersonIdAsync(int personId)
+        public async Task<IEnumerable<AddressDto>> GetAllByPersonIdAsync(int personId)
         {
             try
             {

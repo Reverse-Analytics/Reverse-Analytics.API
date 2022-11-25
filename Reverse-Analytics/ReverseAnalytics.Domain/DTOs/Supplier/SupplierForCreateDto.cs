@@ -2,10 +2,9 @@
 {
     public class SupplierForCreateDto
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string FullName { get; set; }
         public string? CompanyName { get; set; }
-
-        public int SupplierId { get; set; }
+        public decimal Balance { get; set; }
+        public bool IsActive { get; set; }
     }
 }

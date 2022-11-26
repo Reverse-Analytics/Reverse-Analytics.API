@@ -13,6 +13,8 @@
         public ISupplierRepository Supplier { get; }
         public ISupplyRepository Supply { get; }
         public ISupplyDetailRepository SupplyDetail { get; }
+        public IInventoryRepository Inventory { get; }
+        public IInventoryDetailRepository InventoryDetail { get; }
 
         public Task<int> SaveChangesAsync();
     }

@@ -51,6 +51,14 @@ namespace ReverseAnalytics.Repositories
         public ISupplyDetailRepository SupplyDetail => _supplyDetail ??
             new SupplyDetailRepository(_context);
 
+        private readonly IInventoryRepository _inventory;
+        public IInventoryRepository Inventory => _inventory ??
+            new InventoryRepository(_context);
+
+        private readonly IInventoryDetailRepository _inventoryDetail;
+        public IInventoryDetailRepository InventoryDetail => _inventoryDetail ??
+            new InventoryDetailRepository(_context);
+
         public CommonRepository(ApplicationDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
@@ -66,6 +74,8 @@ namespace ReverseAnalytics.Repositories
             _supplier = new SupplierRepository(context);
             _supply = new SupplyRepository(context);
             _supplyDetail = new SupplyDetailRepository(context);
+            _inventory = new InventoryRepository(context);
+            _inventoryDetail = new InventoryDetailRepository(context);
         }
 
         public async Task<int> SaveChangesAsync()

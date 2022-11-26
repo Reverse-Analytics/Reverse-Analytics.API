@@ -43,6 +43,22 @@ namespace ReverseAnalytics.Services
             }
         }
 
+        public async Task<SaleDetailDto> GetSaleDetailBySaleAndDetailIdAsync(int saleId, int detailId)
+        {
+            try
+            {
+                var saleDetail = await _repository.SaleDetail.FindBySaleAndDetailIdAsync(saleId, detailId);
+
+                var saleDetailDto = _mapper.Map<SaleDetailDto>(saleDetail);
+
+                return saleDetailDto;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public async Task<SaleDetailDto> GetSaleDetailByIdAsync(int saleDetailId)
         {
             try

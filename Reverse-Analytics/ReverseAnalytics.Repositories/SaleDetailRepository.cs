@@ -20,5 +20,13 @@ namespace ReverseAnalytics.Repositories
 
             return saleDetails;
         }
+
+        public async Task<SaleDetail> FindBySaleAndDetailIdAsync(int saleId, int detailId)
+        {
+            var saleDetail = await _context.SaleDetails
+                .FirstOrDefaultAsync(s => s.SaleId == saleId && s.Id == detailId);
+
+            return saleDetail;
+        }
     }
 }

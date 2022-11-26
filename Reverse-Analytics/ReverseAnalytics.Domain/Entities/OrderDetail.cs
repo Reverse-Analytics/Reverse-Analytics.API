@@ -1,17 +1,13 @@
 ﻿using ReverseAnalytics.Domain.Common;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ReverseAnalytics.Domain.Entities
 {
-    public class OrderDetail : BaseAuditableEntity
+    public class OrderDetail : BaseEntity
     {
-        public int Quantity { get; set; }
-        public decimal UnitPrice { get; set; }
-        public decimal? UnitPriceDiscount { get; set; }
-
-        public int OrderId { get; set; }
-        public virtual Order Order { get; set; }
-
-        public int ProductId { get; set; }
-        public virtual Product Product { get; set; }
     }
 }

@@ -1,25 +1,13 @@
 ﻿using ReverseAnalytics.Domain.Common;
-using ReverseAnalytics.Domain.Enums;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ReverseAnalytics.Domain.Entities
 {
-    public class Order : BaseAuditableEntity
+    public class Order : BaseEntity
     {
-        public decimal TotalDue { get; set; }
-        public decimal? DiscountPercentage { get; set; }
-        public decimal? DiscountTotal { get; set; }
-        public string? Comment { get; set; }
-        public DateTime OrderDate { get; set; }
-        public OrderStatus? Status { get; set; }
-
-        public int CustomerId { get; set; }
-        public virtual Customer Customer { get; set; }
-
-        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
-
-        public Order()
-        {
-            OrderDetails = new List<OrderDetail>();
-        }
     }
 }

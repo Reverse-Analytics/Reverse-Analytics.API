@@ -2,6 +2,7 @@
 {
     public class SupplyDetailForCreateDto
     {
+        public int Quntity { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal? UnitPriceDiscount { get; set; }
 

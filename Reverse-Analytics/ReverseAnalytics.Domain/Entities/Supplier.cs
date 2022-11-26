@@ -2,29 +2,21 @@
 
 namespace ReverseAnalytics.Domain.Entities
 {
-    public class Supplier : BaseAuditableEntity
+    public class Supplier : Person
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string? CompanyName { get; set; }
 
         public virtual ICollection<Supply> Supplies { get; set; }
-        public virtual ICollection<SupplierDebt> SupplierDebts { get; set; }
-        public virtual ICollection<SupplierPhone> SupplierPhones { get; set; }
 
         public Supplier()
         {
         }
 
-        public Supplier(string firstName, string lastName, string? companyName)
+        public Supplier(string fullName, string? companyName)
         {
-            FirstName = firstName;
-            LastName = lastName;
+            FullName = fullName;
             CompanyName = companyName;
 
             Supplies = new List<Supply>();
-            SupplierDebts = new List<SupplierDebt>();
-            SupplierPhones = new List<SupplierPhone>();
         }
     }
 }

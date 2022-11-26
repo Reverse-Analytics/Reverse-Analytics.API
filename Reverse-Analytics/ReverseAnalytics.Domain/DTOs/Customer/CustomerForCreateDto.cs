@@ -2,9 +2,11 @@
 {
     public class CustomerForCreateDto
     {
-        public string FirstName { get; set; }
-        public string? LastName { get; set; }
-        public string? Company { get; set; }
-        public string? Address { get; set; }
+        public string FullName { get; set; }
+        public string? CompanyName { get; set; }
+        public decimal? Balance { get; set; }
+        public bool IsActive { get; set; }
+        public string? ContactPerson { get; set; }
+        public string? ContactPersonPhone { get; set; }
     }
 }

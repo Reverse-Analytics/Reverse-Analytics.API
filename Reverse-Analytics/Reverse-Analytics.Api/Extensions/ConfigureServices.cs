@@ -15,16 +15,15 @@ namespace Reverse_Analytics.Api.Extensions
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<ICommonRepository, CommonRepository>();
+            services.AddScoped<IAddressRepository, AddressRepository>();
+            services.AddScoped<IPhoneRepository, PhoneRepository>();
+            services.AddScoped<IDebtRepository, DebtRepository>();
             services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();
-            services.AddScoped<ICustomerPhoneRepository, CustomerPhoneRepository>();
-            services.AddScoped<ICustomerDebtRepository, CustomerDebtRepository>();
-            services.AddScoped<IOrderRepository, OrderRepository>();
-            services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+            services.AddScoped<ISaleRepository, SaleRepository>();
+            services.AddScoped<ISaleDetailRepository, SaleDetailRepository>();
             services.AddScoped<ISupplierRepository, SupplierRepository>();
-            services.AddScoped<ISupplierPhoneRepository, SupplierPhoneRepository>();
-            services.AddScoped<ISupplierDebtRepository, SupplierDebtRepository>();
             services.AddScoped<ISupplyRepository, SupplyRepository>();
             services.AddScoped<ISupplyDetailRepository, SupplyDetailRepository>();
 
@@ -41,7 +40,7 @@ namespace Reverse_Analytics.Api.Extensions
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), builder =>
                 builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
-            services.AddDbContext<ApplicationIdentityContext>(options =>
+            services.AddDbContext<ApplicationIdentityDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultIdentityConnection"), builder =>
                 builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 #endif

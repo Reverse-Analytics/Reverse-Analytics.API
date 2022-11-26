@@ -10,30 +10,16 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
         {
             builder.ToTable("Customer");
 
-            builder.HasKey(p => p.Id);
+            builder.HasMany(c => c.Sales)
+                .WithOne(s => s.Customer)
+                .HasForeignKey(s => s.CustomerId);
 
-            builder.Property(p => p.FirstName)
-                .HasMaxLength(150)
-                .IsRequired();
-            builder.Property(p => p.LastName)
-                .HasMaxLength(200)
-                .IsRequired(false);
-            builder.Property(p => p.CompanyName)
+            builder.Property(p => p.ContactPerson)
                 .HasMaxLength(250)
                 .IsRequired(false);
-            builder.Property(p => p.Address)
-                .HasMaxLength(500)
+            builder.Property(p => p.ContactPersonPhone)
+                .HasMaxLength(250)
                 .IsRequired(false);
-
-            builder.HasMany(c => c.Orders)
-                .WithOne(o => o.Customer)
-                .HasForeignKey(o => o.CustomerId);
-            builder.HasMany(c => c.CustomerPhones)
-                .WithOne(cp => cp.Customer)
-                .HasForeignKey(cp => cp.CustomerId);
-            builder.HasMany(c => c.CustomerDebts)
-                .WithOne(cd => cd.Customer)
-                .HasForeignKey(cd => cd.CustomerId);
         }
     }
 }

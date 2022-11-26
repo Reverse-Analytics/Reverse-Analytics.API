@@ -45,6 +45,27 @@ namespace Reverse_Analytics.Api.Controllers
             }
         }
 
+        [HttpGet("{supplierId}")]
+        public async Task<ActionResult<IEnumerable<SupplyDto>>> GetAllSuppliesBySupplierIdAsync(int supplierId)
+        {
+            try
+            {
+                var supplies = await _service.GetAllSuppliesBySupplierIdAsync(supplierId);
+
+                if (supplies is null || !supplies.Any())
+                {
+                    return Ok($"Supplier with id: {supplierId} does not have any Supplies.");
+                }
+
+                return Ok(supplies);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error retrieving Supplies.", ex.Message);
+                return StatusCode(500, "There was an error retrieving Supplies.");
+            }
+        }
+
         [HttpGet("{supplyId}")]
         public async Task<ActionResult<SupplyDto>> GetSupplyByIdAsync(int supplyId)
         {
@@ -129,7 +150,7 @@ namespace Reverse_Analytics.Api.Controllers
 
         #endregion
 
-        #region Details
+        #region Supply Details
 
         [HttpGet("{supplyId}/details")]
         public async Task<ActionResult<IEnumerable<SupplyDetailDto>>> GetSupplyDetailsAsync(int supplyId)
@@ -152,27 +173,6 @@ namespace Reverse_Analytics.Api.Controllers
             }
         }
 
-        [HttpGet("{supplyId}/details/{detailId}")]
-        public async Task<ActionResult<SupplyDetailDto>> GetBySupplyAndDetailIdAsync(int supplyId, int detailId)
-        {
-            try
-            {
-                var supplyDetail = await _detailService.GetBySupplyAndDetailIdAsync(supplyId, detailId);
-
-                if(supplyDetail is null)
-                {
-                    return NotFound($"Supply with id: {supplyId} does not have Detail with id: {detailId}.");
-                }
-
-                return Ok(supplyDetail);
-            }
-            catch(Exception ex)
-            {
-                _logger.LogError($"Error while retrieving Details for Supply with id: {supplyId} and Detail id: {detailId}.", ex.Message);
-                return StatusCode(500, $"There was an error while retrieving details for Supply with id: {supplyId}.");
-            }
-        }
-
         [HttpPost("{supplyId}/details")]
         public async Task<ActionResult<SupplyDetailDto>> CreateSupplyDetailAsync([FromBody]SupplyDetailForCreateDto supplyDetailToCreate, int supplyId)
         {
@@ -181,11 +181,6 @@ namespace Reverse_Analytics.Api.Controllers
                 if (!ModelState.IsValid)
                 {
                     return BadRequest("Supply detail to create is not valid.");
-                }
-
-                if(supplyDetailToCreate.SupplyId != supplyId)
-                {
-                    return BadRequest($"Supply id: {supplyDetailToCreate.SupplyId} does not match with route id: {supplyId}.");
                 }
 
                 var createdSupplyDetail = await _detailService.CreateSupplyDetailAsync(supplyDetailToCreate);

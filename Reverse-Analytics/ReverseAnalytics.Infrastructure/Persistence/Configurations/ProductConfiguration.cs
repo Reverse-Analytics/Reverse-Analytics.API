@@ -16,16 +16,13 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
                 .WithMany(pc => pc.Products)
                 .HasForeignKey(p => p.CategoryId);
 
-            builder.HasMany(p => p.SaleDetails)
+            builder.HasMany(p => p.OrderDetails)
                 .WithOne(od => od.Product)
                 .HasForeignKey(od => od.ProductId);
             builder.HasMany(p => p.PurchaseDetails)
                 .WithOne(pd => pd.Product)
                 .HasForeignKey(pd => pd.ProductId);
 
-            builder.Property(p => p.ProductCode)
-                .HasMaxLength(50)
-                .IsRequired();
             builder.Property(p => p.ProductName)
                 .HasMaxLength(250)
                 .IsRequired();

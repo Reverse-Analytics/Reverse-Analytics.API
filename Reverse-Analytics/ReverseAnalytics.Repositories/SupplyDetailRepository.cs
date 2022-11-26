@@ -29,13 +29,5 @@ namespace ReverseAnalytics.Repositories
 
             return supplyDetails;
         }
-
-        public async Task<SupplyDetail> FindBySupplyAndDetailIdAsync(int supplyId, int detailId)
-        {
-            var supplyDetail = await _context.SupplyDetails
-                .FirstOrDefaultAsync(s => s.SupplyId == supplyId && s.Id == detailId);
-
-            return supplyDetail;
-        }
     }
 }

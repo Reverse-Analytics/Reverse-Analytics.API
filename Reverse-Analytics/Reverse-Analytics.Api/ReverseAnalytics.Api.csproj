@@ -46,8 +46,4 @@
     <ProjectReference Include="..\ReverseAnalytics.Services\ReverseAnalytics.Services.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Storage\" />
-  </ItemGroup>
-
 </Project>

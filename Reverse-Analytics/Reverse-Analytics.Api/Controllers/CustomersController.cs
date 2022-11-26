@@ -303,8 +303,8 @@ namespace Reverse_Analytics.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error while deleting phone for customer with id: {customerId} and phone id: {addressId}.", ex.Message);
-                return StatusCode(500, $"There was an error deleting phone for customer with id: {customerId} and phone id: {addressId}.");
+                _logger.LogError($"Error while deleting address for customer with id: {customerId} and address id: {addressId}.", ex.Message);
+                return StatusCode(500, $"There was an error deleting address for customer with id: {customerId} and address id: {addressId}.");
             }
         }
 

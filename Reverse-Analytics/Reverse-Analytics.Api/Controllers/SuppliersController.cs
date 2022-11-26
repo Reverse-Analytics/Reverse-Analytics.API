@@ -185,7 +185,7 @@ namespace Reverse_Analytics.Api.Controllers
         }
 
         [HttpPost("{supplierId}/addresses")]
-        public async Task<ActionResult<SupplierDto>> CreateSupplierAddressAsync([FromBody] AddressForCreateDto addressToCreate, int supplierId)
+        public async Task<ActionResult<AddressDto>> CreateSupplierAddressAsync([FromBody] AddressForCreateDto addressToCreate, int supplierId)
         {
             try
             {
@@ -272,8 +272,8 @@ namespace Reverse_Analytics.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error while deleting phone for Supplier with id: {supplierId} and phone id: {addressId}.", ex.Message);
-                return StatusCode(500, $"There was an error deleting phone for Supplier with id: {supplierId} and phone id: {addressId}.");
+                _logger.LogError($"Error while deleting address for Supplier with id: {supplierId} and address id: {addressId}.", ex.Message);
+                return StatusCode(500, $"There was an error deleting address for Supplier with id: {supplierId} and address id: {addressId}.");
             }
         }
 
@@ -441,7 +441,7 @@ namespace Reverse_Analytics.Api.Controllers
         }
 
         [HttpGet("{supplierId}/debts/{debtId}")]
-        public async Task<ActionResult<DebtDto>> GetDebtBySupplierAndDebtId(int supplierId, int debtId)
+        public async Task<ActionResult<DebtDto>> GetDebtBySupplierAndDebtIdAsync(int supplierId, int debtId)
         {
             try
             {
@@ -462,7 +462,7 @@ namespace Reverse_Analytics.Api.Controllers
         }
 
         [HttpPost("{supplierId}/debts")]
-        public async Task<ActionResult<DebtDto>> CreateSupplierDebt([FromBody] DebtForCreateDto debtToCreate, int supplierId)
+        public async Task<ActionResult<DebtDto>> CreateSupplierDebtAsync([FromBody] DebtForCreateDto debtToCreate, int supplierId)
         {
             try
             {

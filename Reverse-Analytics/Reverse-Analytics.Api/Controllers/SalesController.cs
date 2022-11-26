@@ -148,7 +148,7 @@ namespace Reverse_Analytics.Api.Controllers
 
         #endregion
 
-        #region Sale Details
+        #region Details
 
         [HttpGet("{id}/details")]
         public async Task<ActionResult<IEnumerable<SaleDetailDto>>> GetSaleDetailsAsync(int id)
@@ -171,29 +171,29 @@ namespace Reverse_Analytics.Api.Controllers
             }
         }
 
-        [HttpGet("{id}/details/{saleDetailId}")]
-        public async Task<ActionResult<SaleDetailDto>> GetSaleDetailByIdAsync(int id, int saleDetailId)
+        [HttpGet("{saleId}/details/{saleDetailId}")]
+        public async Task<ActionResult<SaleDetailDto>> GetSaleDetailByIdAsync(int saleId, int saleDetailId)
         {
             try
             {
-                var saleDetail = await _saleDetailService.GetSaleDetailByIdAsync(saleDetailId);
+                var saleDetail = await _saleDetailService.GetSaleDetailBySaleAndDetailIdAsync(saleId, saleDetailId);
 
                 if(saleDetail is null)
                 {
-                    return NotFound($"There is no Sale Detail with id: {saleDetailId}.");
+                    return NotFound($"Sale with id: {saleId} does not have Detail with id: {saleDetailId}.");
                 }
 
                 return Ok(saleDetail);
             }
             catch(Exception ex)
             {
-                _logger.LogError($"Error while retrieving Details for Sale with id: {id} and Details id: {saleDetailId}.", ex.Message);
+                _logger.LogError($"Error while retrieving Details for Sale with id: {saleId} and Details id: {saleDetailId}.", ex.Message);
                 return StatusCode(500, $"There was an error retrieving Sale Details with id: {saleDetailId}. Please, try again later.");
             }
         }
 
-        [HttpPost("{id}/details")]
-        public async Task<ActionResult<SaleDetailDto>> CreateSaleDetail([FromBody] SaleDetailForCreateDto saleDetailToCreate)
+        [HttpPost("{saleId}/details")]
+        public async Task<ActionResult<SaleDetailDto>> CreateSaleDetail([FromBody] SaleDetailForCreateDto saleDetailToCreate, int saleId)
         {
             try
             {
@@ -207,6 +207,11 @@ namespace Reverse_Analytics.Api.Controllers
                     return BadRequest("Sale Detail to create is not valid.");
                 }
 
+                if(saleDetailToCreate.SaleId != saleId)
+                {
+                    return BadRequest($"Sale id: {saleDetailToCreate.SaleId} does not match with route id: {saleId}.");
+                }
+
                 var createdSaleDetail = await _saleDetailService.CreateSaleDetailAsync(saleDetailToCreate);
 
                 return Ok(createdSaleDetail);
@@ -218,8 +223,8 @@ namespace Reverse_Analytics.Api.Controllers
             }
         }
 
-        [HttpPut("{id}/details/{saleDetailId}")]
-        public async Task<ActionResult> UpdateSaleDetailAsync([FromBody] SaleDetailForUpdateDto saleDetailToUpdate, int saleDetailId)
+        [HttpPut("{saleId}/details/{saleDetailId}")]
+        public async Task<ActionResult> UpdateSaleDetailAsync([FromBody] SaleDetailForUpdateDto saleDetailToUpdate, int saleId, int saleDetailId)
         {
             try
             {
@@ -236,6 +241,11 @@ namespace Reverse_Analytics.Api.Controllers
                 if(saleDetailId != saleDetailToUpdate.Id)
                 {
                     return BadRequest($"Sale Detail id: {saleDetailToUpdate.Id} does not match with route id: {saleDetailId}");
+                }
+
+                if(saleDetailToUpdate.SaleId != saleId)
+                {
+                    return BadRequest($"Sale id: {saleDetailToUpdate.SaleId} does not match with route id: {saleId}.");
                 }
 
                 await _saleDetailService.UpdateSaleDetailAsync(saleDetailToUpdate);

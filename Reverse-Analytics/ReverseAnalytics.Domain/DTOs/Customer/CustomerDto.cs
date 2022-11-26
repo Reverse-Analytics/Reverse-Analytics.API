@@ -1,28 +1,26 @@
-﻿using ReverseAnalytics.Domain.DTOs.CustomerDebt;
-using ReverseAnalytics.Domain.DTOs.CustomerPhone;
-using ReverseAnalytics.Domain.DTOs.Order;
-using ReverseAnalytics.Domain.Entities;
+﻿using ReverseAnalytics.Domain.DTOs.Address;
+using ReverseAnalytics.Domain.DTOs.Debt;
+using ReverseAnalytics.Domain.DTOs.Phone;
 
 namespace ReverseAnalytics.Domain.DTOs.CustomerPhoneDto
 {
     public class CustomerDto
     {
         public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string? LastName { get; set; }
+        public string FullName { get; set; }
         public string? CompanyName { get; set; }
-        public string? Address { get; set; }
+        public decimal? Balance { get; set; }
+        public bool IsActive { get; set; }
+        public string? ContactPerson { get; set; }
+        public string? ContactPersonPhone { get; set; }
 
-        public ICollection<CustomerPhone.CustomerPhoneDto> CustomerPhones { get; set; }
-        public ICollection<CustomerDebtDto> CustomerDebts { get; set; }
-        public ICollection<OrderDto> Orders { get; set; }
+        public ICollection<AddressDto> Addresses { get; set; }
+        public ICollection<DebtDto> Debts { get; set; }
+        public ICollection<PhoneDto> Phones { get; set; }
 
         public CustomerDto()
         {
-            FirstName = "";
-            CustomerPhones = new List<CustomerPhone.CustomerPhoneDto>();
-            CustomerDebts = new List<CustomerDebtDto>();
-            Orders = new List<OrderDto>();
+            FullName = "";
         }
     }
 }

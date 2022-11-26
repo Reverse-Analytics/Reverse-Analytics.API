@@ -2,16 +2,15 @@
 {
     public interface ICommonRepository
     {
+        public IAddressRepository Address { get; }
+        public IDebtRepository Debt { get; }
+        public IPhoneRepository Phone { get; }
         public IProductCategoryRepository ProductCategory { get; }
         public IProductRepository Product { get; }
         public ICustomerRepository Customer { get; }
-        public ICustomerPhoneRepository CustomerPhone { get; }
-        public ICustomerDebtRepository CustomerDebt { get; }
-        public IOrderRepository Order { get; }
-        public IOrderItemRepository OrderItem { get; }
+        public ISaleRepository Sale { get; }
+        public ISaleDetailRepository SaleDetail { get; }
         public ISupplierRepository Supplier { get; }
-        public ISupplierPhoneRepository SupplierPhone { get; }
-        public ISupplierDebtRepository SupplierDebt { get; }
         public ISupplyRepository Supply { get; }
         public ISupplyDetailRepository SupplyDetail { get; }
 

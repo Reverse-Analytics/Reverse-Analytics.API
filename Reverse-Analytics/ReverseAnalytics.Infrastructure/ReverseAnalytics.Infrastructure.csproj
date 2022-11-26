@@ -34,7 +34,6 @@
 
   <ItemGroup>
     <Folder Include="Persistence\Identity_Migrations\" />
-    <Folder Include="Persistence\Migrations\" />
   </ItemGroup>
 
 </Project>

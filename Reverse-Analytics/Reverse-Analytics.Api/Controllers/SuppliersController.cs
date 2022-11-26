@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ReverseAnalytics.Domain.DTOs.Address;
-using ReverseAnalytics.Domain.DTOs.Debt;
-using ReverseAnalytics.Domain.DTOs.Phone;
 using ReverseAnalytics.Domain.DTOs.Supplier;
-using ReverseAnalytics.Domain.Exceptions;
+using ReverseAnalytics.Domain.DTOs.SupplierDebt;
+using ReverseAnalytics.Domain.DTOs.SupplierPhone;
 using ReverseAnalytics.Domain.Interfaces.Services;
 
 namespace Reverse_Analytics.Api.Controllers
@@ -14,21 +12,18 @@ namespace Reverse_Analytics.Api.Controllers
     [Route("api/suppliers")]
     public class SuppliersController : ControllerBase
     {
-        private readonly ISupplierService _supplierService;
-        private readonly IAddressService _addressService;
-        private readonly IPhoneService _phoneService;
-        private readonly IDebtService _debtService;
+        private readonly ISupplierService _service;
+        private readonly ISupplierPhoneService _supplierPhoneService;
+        private readonly ISupplierDebtService _supplierDebtService;
         private readonly ILogger<SuppliersController> _logger;
 
-        public SuppliersController(ISupplierService supplierService, IAddressService addressService, 
-            IPhoneService phoneService, IDebtService debtService,
-            ILogger<SuppliersController> logger)
+        public SuppliersController(ISupplierService service, ISupplierPhoneService supplierPhoneService, 
+            ISupplierDebtService supplierDebtService, ILogger<SuppliersController> logger)
         {
-            _supplierService = supplierService;
-            _addressService = addressService;
-            _phoneService = phoneService;
-            _debtService = debtService;
-            _logger = logger;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _service = service ?? throw new ArgumentNullException(nameof(service));
+            _supplierPhoneService = supplierPhoneService ?? throw new ArgumentException(nameof(supplierPhoneService));
+            _supplierDebtService = supplierDebtService ?? throw new ArgumentException(nameof(supplierDebtService));
         }
 
         #region CRUD
@@ -38,7 +33,7 @@ namespace Reverse_Analytics.Api.Controllers
         {
             try
             {
-                var suppliers = await _supplierService.GetAllSuppliersAsync(searchString);
+                var suppliers = await _service.GetAllSuppliersAsync(searchString);
 
                 if (suppliers is null || !suppliers.Any())
                 {
@@ -59,7 +54,7 @@ namespace Reverse_Analytics.Api.Controllers
         {
             try
             {
-                var supplier = await _supplierService.GetSupplierByIdAsync(id);
+                var supplier = await _service.GetSupplierByIdAsync(id);
 
                 if (supplier is null)
                 {
@@ -85,7 +80,7 @@ namespace Reverse_Analytics.Api.Controllers
                     return BadRequest("Supplier to create is not valid.");
                 }
 
-                var createdSupplier = await _supplierService.CreateSupplierAsync(supplierToCreate);
+                var createdSupplier = await _service.CreateSupplierAsync(supplierToCreate);
 
                 return Ok(createdSupplier);
             }
@@ -111,7 +106,7 @@ namespace Reverse_Analytics.Api.Controllers
                     return BadRequest($"Route id: {id} does not match with Supplier id: {supplierToUpdate.Id}");
                 }
 
-                await _supplierService.UpdateSupplierAsync(supplierToUpdate);
+                await _service.UpdateSupplierAsync(supplierToUpdate);
 
                 return NoContent();
             }
@@ -127,7 +122,7 @@ namespace Reverse_Analytics.Api.Controllers
         {
             try
             {
-                await _supplierService.DeleteSupplierAsync(id);
+                await _service.DeleteSupplierAsync(id);
 
                 return NoContent();
             }
@@ -140,258 +135,94 @@ namespace Reverse_Analytics.Api.Controllers
 
         #endregion
 
-        #region Addresses
-
-        [HttpGet("{supplierId}/addresses")]
-        public async Task<ActionResult<IEnumerable<AddressDto>>> GetSupplierAddresses(int supplierId)
-        {
-            try
-            {
-                var addresses = await _addressService.GetAllByPersonIdAsync(supplierId);
-
-                if (addresses is null || !addresses.Any())
-                {
-                    return Ok($"Supplier with id: {supplierId} does not have any addresses.");
-                }
-
-                return Ok(addresses);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error while retrieving Supplier Addresses for Supplier with id: {supplierId}", ex.Message);
-                return StatusCode(500, "There was an error retrieving Supplier Addresses. Please, try again later.");
-            }
-        }
-
-        [HttpGet("{supplierId}/addresses/{addressId}")]
-        public async Task<ActionResult<IEnumerable<AddressDto>>> GetSupplierAddressById(int supplierId, int addressId)
-        {
-            try
-            {
-                var address = await _addressService.GetAddressByPersonAndAddressIdAsync(supplierId, addressId);
-
-                if (address is null)
-                {
-                    return NotFound($"Supplier with id: {supplierId} does not have an Address with id: {addressId}");
-                }
-
-                return Ok(address);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error while retrieving Supplier Address with Supplier id: {supplierId} and address id: {addressId}.", ex.Message);
-                return StatusCode(500, $"There was an error retrieving Supplier Address with Supplier id: {supplierId} and Address id: {addressId}.");
-            }
-        }
-
-        [HttpPost("{supplierId}/addresses")]
-        public async Task<ActionResult<AddressDto>> CreateSupplierAddressAsync([FromBody] AddressForCreateDto addressToCreate, int supplierId)
-        {
-            try
-            {
-                if (addressToCreate is null)
-                {
-                    return BadRequest("Supplier Address to create cannot be null.");
-                }
-
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest("Supplier Address to create is not valid.");
-                }
-
-                if (addressToCreate.PersonId != supplierId)
-                {
-                    return BadRequest($"Supplier Id: {addressToCreate.PersonId} does not match with route id: {supplierId}");
-                }
-
-                var createdAddress = await _addressService.CreateAddressAsync(addressToCreate);
-
-                if (createdAddress is null)
-                {
-                    return StatusCode(500,
-                        $"Something went wrong while adding address number for Supplier with id: {supplierId}. Please, try again later.");
-                }
-
-                return Ok(createdAddress);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error while adding address number for Supplier with id: {supplierId}.", ex.Message);
-                return StatusCode(500, $"There was an error adding address number for Supplier with id: {supplierId}.");
-            }
-        }
-
-        [HttpPut("{supplierId}/addresses/{addressId}")]
-        public async Task<ActionResult> UpdateSupplierAddressAsync([FromBody] AddressForUpdateDto addressToUpdate, int supplierId, int addressId)
-        {
-            try
-            {
-                if (addressToUpdate is null)
-                {
-                    return BadRequest("Supplier Address to update cannot be null.");
-                }
-
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest("Supplier Address to update is not valid.");
-                }
-
-                if (addressToUpdate.Id != addressId)
-                {
-                    return BadRequest($"Supplier id: {addressToUpdate.Id}, does not match with route id: {addressId}.");
-                }
-
-                if (addressToUpdate.PersonId != supplierId)
-                {
-                    return BadRequest($"Supplier id: {addressToUpdate.PersonId} does not match with route id: {supplierId}");
-                }
-
-                await _addressService.UpdateAddresAsync(addressToUpdate);
-
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error while updating address for Supplier with id: {supplierId}.", ex.Message);
-                return StatusCode(500, $"There was an error updating address number for Supplier with id: {supplierId}. Please, try again later.");
-            }
-        }
-
-        [HttpDelete("{supplierId}/addresses/{addressId}")]
-        public async Task<ActionResult> DeleteSupplierAddresssync(int supplierId, int addressId)
-        {
-            try
-            {
-                await _addressService.DeleteAddressAsync(addressId);
-                return NoContent();
-            }
-            catch (NotFoundException ex)
-            {
-                _logger.LogError($"Supplier address with Supplier id: {supplierId}, address id: {addressId} was not found while deleting.", ex.Message);
-                return NotFound($"Supplier address with id: {addressId} was not found.");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error while deleting address for Supplier with id: {supplierId} and address id: {addressId}.", ex.Message);
-                return StatusCode(500, $"There was an error deleting address for Supplier with id: {supplierId} and address id: {addressId}.");
-            }
-        }
-
-        #endregion
-
-        #region Phones
+        #region Supplier Phones
 
         [HttpGet("{supplierId}/phones")]
-        public async Task<ActionResult<IEnumerable<PhoneDto>>> GetPhonesBysupplierIdAsync(int supplierId)
+        public async Task<ActionResult<IEnumerable<SupplierPhoneDto>>> GetAllSupplierPhones(int supplierId)
         {
             try
             {
-                var phones = await _phoneService.GetAllByPersonIdAsync(supplierId);
+                var supplierPhones = await _supplierPhoneService.GetSupplierPhonesBySupplierIdAsync(supplierId);
 
-                if (phones is null || !phones.Any())
+                if (supplierPhones is null || !supplierPhones.Any())
                 {
                     return Ok($"Supplier with id: {supplierId} does not have any phone numbers.");
                 }
 
-                return Ok(phones);
+                return Ok(supplierPhones);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                _logger.LogError($"Error while retrieving Supplier Phones for Supplier with id: {supplierId}", ex.Message);
-                return StatusCode(500, "There was an error retrieving Supplier Phones. Please, try again later.");
+                _logger.LogError($"Error retreiving Phones for Supplier with id: {supplierId}.", ex.Message);
+                return StatusCode(500, $"There was an error retrieving Phones for Supplier with id: {supplierId}. Please, try again later.");
             }
         }
 
         [HttpGet("{supplierId}/phones/{phoneId}")]
-        public async Task<ActionResult<PhoneDto>> GetPhoneBySupplierAndPhoneIdAsync(int supplierId, int phoneId)
+        public async Task<ActionResult<SupplierPhoneDto>> GetSupplierPhoneById(int supplierId, int phoneId)
         {
             try
             {
-                var phone = await _phoneService.GetByPersonAndPhoneIdAsync(supplierId, phoneId);
+                var supplierPhone = await _supplierPhoneService.GetSupplierPhoneBySupplierAndPhoneIdAsync(supplierId, phoneId);
 
-                if(phone is null)
+                if(supplierPhone is null)
                 {
-                    return Ok($"Supplier with id: {supplierId} does not have phone with id: {phoneId}");
+                    return NotFound($"Supplier Phone with Supplier id: {supplierId} and Phone id: {phoneId} does not exist.");
                 }
 
-                return Ok(phone);
+                return Ok(supplierPhone);
             }
             catch(Exception ex)
             {
-                _logger.LogError($"Error while retrieving Phones for Supplier with id: {supplierId} and Phone id: {phoneId}", ex.Message);
-                return StatusCode(500, "There was an error retrieving Supplier Phones. Please, try again later.");
+                _logger.LogError($"Error retrieving Supplier Phone with Supplier id: {supplierId} & Phone id: {phoneId}.", ex.Message);
+                return StatusCode(500, $"There was an error retreiving Supplier Phone with Supplier id: {supplierId} & Phone id{phoneId}. Please, try again later.");
             }
         }
 
         [HttpPost("{supplierId}/phones")]
-        public async Task<ActionResult<PhoneDto>> CreateSupplierPhoneAsync([FromBody] PhoneForCreateDto phoneToCreate, int supplierId)
+        public async Task<ActionResult<SupplierPhoneDto>> CreateSupplierPhone(int supplierId, SupplierPhoneForCreate supplierPhoneToCreate)
         {
             try
             {
-                if (phoneToCreate is null)
+                if (supplierId != supplierPhoneToCreate.SupplierId)
                 {
-                    return BadRequest("Supplier Phone to create cannot be null.");
+                    return BadRequest($"Supplier id: {supplierPhoneToCreate.SupplierId} does not match with route id: {supplierId}.");
                 }
 
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest("Supplier Phone to create is not valid.");
-                }
+                var createdSupplierPhone = await _supplierPhoneService.CreateSupplierPhoneAsync(supplierPhoneToCreate);
 
-                if(phoneToCreate.PersonId != supplierId)
-                {
-                    return BadRequest($"Supplier Id: {phoneToCreate.PersonId} does not match with route id: {supplierId}");
-                }
-
-                var createdPhone = await _phoneService.CreatePhoneAsync(phoneToCreate);
-
-                if (createdPhone is null)
-                {
-                    return StatusCode(500, $"Something went wrong while adding phone number for Supplier with id: {supplierId}. Please, try again later.");
-                }
-
-                return Ok(createdPhone);
+                return Ok(createdSupplierPhone);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                _logger.LogError($"Error while adding phone number for Supplier with id: {supplierId}.", ex.Message);
-                return StatusCode(500, $"There was an error adding phone number for Supplier with id: {supplierId}.");
+                _logger.LogError($"Error while updating Supplier Phone for Supplier with id: {supplierId}.", ex.Message);
+                return StatusCode(500, $"There was an error creating a new Phone for Supplier with id: {supplierId}. Please, try again later.");
             }
         }
 
         [HttpPut("{supplierId}/phones/{phoneId}")]
-        public async Task<ActionResult> UpdateSupplierPhoneAsync([FromBody] PhoneForUpdateDto phoneToUpdate, int supplierId, int phoneId)
+        public async Task<ActionResult> UpdateSupplierPhoneAsync(int supplierId, int phoneId, SupplierPhoneForUpdate supplierToUpdate)
         {
             try
             {
-                if(phoneToUpdate is null)
+                if(supplierId != supplierToUpdate.SupplierId)
                 {
-                    return BadRequest("Supplier Phone to update cannot be null.");
+                    return BadRequest($"Route id: {supplierId} does not match with Supplier Id: {supplierToUpdate.SupplierId}.");
                 }
 
-                if (!ModelState.IsValid)
+                if(phoneId != supplierToUpdate.Id)
                 {
-                    return BadRequest("Supplier Phone to update is not valid.");
+                    return BadRequest($"Route id: {phoneId} does not match with Phone Id: {supplierToUpdate.Id}.");
                 }
 
-                if (phoneToUpdate.Id != phoneId)
-                {
-                    return BadRequest($"Phone id: {phoneToUpdate.Id}, does not match with route id: {phoneId}.");
-                }
-
-                if(phoneToUpdate.PersonId != supplierId)
-                {
-                    return BadRequest($"Supplier id: {phoneToUpdate.PersonId} does not match with route id: {supplierId}");
-                }
-
-                await _phoneService.UpdatePhoneAsync(phoneToUpdate);
+                await _supplierPhoneService.UpdateSupplierPhoneAsync(supplierToUpdate);
 
                 return NoContent();
             }
             catch(Exception ex)
             {
-                _logger.LogError($"Error while updating phone for Supplier with id: {supplierId}.", ex.Message);
-                return StatusCode(500, $"There was an error updating phone number for Supplier with id: {supplierId}. Please, try again later.");
+                _logger.LogError($"Error while updating Supplier Phone for supplier with id: {supplierId} and Phone id: {phoneId}.", ex.Message);
+                return StatusCode(500, $"There was an error updating Phone for Supplier with id: {supplierId} and Phone id: {phoneId}. Please, try again later.");
             }
         }
 
@@ -400,164 +231,123 @@ namespace Reverse_Analytics.Api.Controllers
         {
             try
             {
-                await _phoneService.DeletePhoneAsync(phoneId);
+                await _supplierPhoneService.DeleteSupplierPhoneAsync(phoneId);
+
                 return NoContent();
-            }
-            catch(NotFoundException ex)
-            {
-                _logger.LogError($"Supplier phone with Supplier id: {supplierId}, phone id: {phoneId} was not found while deleting.", ex.Message);
-                return NotFound($"Supplier phone with id: {phoneId} was not found.");
             }
             catch(Exception ex)
             {
-                _logger.LogError($"Error while deleting phone for Supplier with id: {supplierId} and phone id: {phoneId}.", ex.Message);
-                return StatusCode(500, $"There was an error deleting phone for Supplier with id: {supplierId} and phone id: {phoneId}.");
+                _logger.LogError($"Error while deleting Supplier Phone for Supplier with id: {supplierId} and Phone id: {phoneId}.", ex.Message);
+                return StatusCode(500, $"There was an error deleting Phone for Supplier with id: {supplierId} and Phone id: {phoneId}. Please, try again later.");
             }
         }
 
         #endregion
 
-        #region Debts
+        #region Supplier Debts
 
         [HttpGet("{supplierId}/debts")]
-        public async Task<ActionResult<IEnumerable<DebtDto>>> GetSupplierDebtsAsync(int supplierId)
+        public async Task<ActionResult<IEnumerable<SupplierDebtDto>>> GetAllSupplierDebtsBySupplierIdAsync(int supplierId)
         {
             try
             {
-                var debts = await _debtService.GetAllDebtsByPersonIdAsync(supplierId);
+                var supplierDebts = await _supplierDebtService.GetAllSupplierDebtsBySupplierIdAsync(supplierId);
 
-                if (debts is null || !debts.Any())
+                if(supplierDebts is null || !supplierDebts.Any())
                 {
-                    return Ok("This Supplier does not have any Debts.");
+                    return Ok($"Supplier with id: {supplierId} has no Debts.");
                 }
 
-                return Ok(debts);
+                return Ok(supplierDebts);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                _logger.LogError($"Error while retrieving Debts for Supplier with id: {supplierId}.", ex.Message);
-                return StatusCode(500, $"There was an error retrieving Debts for Supplier with id: {supplierId}. Please, try again later.");
+                _logger.LogError($"Error while retrieving Debts for supplier with id: {supplierId}.", ex.Message);
+                return StatusCode(500, $"There was an error while retrieving Debt for Supplier with Id: {supplierId}.");
             }
         }
-
+        
         [HttpGet("{supplierId}/debts/{debtId}")]
-        public async Task<ActionResult<DebtDto>> GetDebtBySupplierAndDebtIdAsync(int supplierId, int debtId)
+        public async Task<ActionResult<SupplierDebtDto>> GetSupplierDebtBySupplierAndDebtIdAsync(int supplierId, int debtId)
         {
             try
             {
-                var debt = await _debtService.GetByPersonAndDebtId(supplierId, debtId);
+                var supplierDebt = await _supplierDebtService.GetSupplierDebtBySupplierAndDebtIdAsync(supplierId, debtId);
 
-                if (debt is null)
+                if(supplierDebt is null)
                 {
-                    return NotFound($"Supplier with id: {supplierId} does not have Debt with id: {debtId}.");
+                    return Ok($"There is no Debt with id: {debtId} and Supplier id: {supplierId}.");
                 }
 
-                return Ok(debt);
+                return Ok(supplierDebt);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                _logger.LogError($"Error while retrieving Debt for Supplier with id: {supplierId} and Debt id: {debtId}.", ex.Message);
-                return StatusCode(500, $"There was an error retrieving Debts for Supplier with id: {supplierId} and Debt id: {debtId}. Please, try again later.");
+                _logger.LogError($"Error while retrieving Debts for supplier with id: {supplierId}.", ex.Message);
+                return StatusCode(500, $"There was an error while retrieving Debt for Supplier with id: {supplierId} and Debt id: {debtId}.");
             }
         }
 
         [HttpPost("{supplierId}/debts")]
-        public async Task<ActionResult<DebtDto>> CreateSupplierDebtAsync([FromBody] DebtForCreateDto debtToCreate, int supplierId)
+        public async Task<ActionResult<SupplierDebtDto>> CreateSupplierDebtAsync([FromBody] SupplierDebtForCreateDto supplierDebtToCreate, int supplierId)
         {
             try
             {
-                if (debtToCreate is null)
-                {
-                    return BadRequest("Supplier Debt cannot be null.");
-                }
-
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest("Supplier Debt to create is not valid.");
+                    return BadRequest($"Supplier Debt to create is not valid.");
                 }
 
-                if (debtToCreate.PersonId != supplierId)
-                {
-                    return BadRequest($"Supplier Id: {debtToCreate.PersonId} does not match with route id: {supplierId}");
-                }
-
-                var createdSupplierDebt = await _debtService.CreateDebtAsync(debtToCreate);
-
-                if (createdSupplierDebt is null)
-                {
-                    return StatusCode(500,
-                        "Something went wrong while creating new Supplier Debt. Please, try again later.");
-                }
+                var createdSupplierDebt = await _supplierDebtService.CreateSupplierDebtAsync(supplierDebtToCreate);
 
                 return Ok(createdSupplierDebt);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                _logger.LogError("Error while creating new Supplier Debt.", ex.Message);
-                return StatusCode(500, "There was an error creating new Supplier Debt. Please, try again later");
+                _logger.LogError($"Error while creating Debt for Supplier with id: {supplierId}.", ex.Message);
+                return StatusCode(500, $"There was an error while creating Debt for Supplier with Id: {supplierId}.");
             }
         }
 
         [HttpPut("{supplierId}/debts/{debtId}")]
-        public async Task<ActionResult> UpdateSupplierDebtAsync([FromBody] DebtForUpdateDto debtToUpdate, int supplierId, int debtId)
+        public async Task<ActionResult> UpdateSupplierDebt([FromBody]SupplierDebtForUpdateDto supplierDebtToUpdate, int supplierId, int debtId)
         {
             try
             {
-                if (debtToUpdate is null)
-                {
-                    return BadRequest("Debt to update cannot be null.");
-                }
-
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest($"Debt to update is not valid.");
+                    return BadRequest("Supplier Debt is not valid to update.");
                 }
 
-                if (debtId != debtToUpdate.Id)
+                if(supplierDebtToUpdate.Id != debtId)
                 {
-                    return BadRequest($"Debt id: {debtToUpdate.Id} does not match with route id: {debtId}.");
+                    return BadRequest($"Supplier Debt id: {supplierDebtToUpdate.Id} does not match with route id: {debtId}.");
                 }
 
-                if (supplierId != debtToUpdate.PersonId)
-                {
-                    return BadRequest($"Supplier id: {debtToUpdate.PersonId} does not match with route id: {supplierId}.");
-                }
-
-                await _debtService.UpdateDebtAsync(debtToUpdate);
+                await _supplierDebtService.UpdateSupplierDebtAsync(supplierDebtToUpdate);
 
                 return NoContent();
             }
-            catch (NotFoundException ex)
+            catch(Exception ex)
             {
-                _logger.LogError($"Supplier debt with id: {debtToUpdate?.Id} was not found while updating.", ex.Message);
-                return NotFound($"Supplier Debt with id: {debtToUpdate?.Id} does not exist.");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error while updating Supplier Debt with id: {debtToUpdate?.Id}", ex.Message);
-                return StatusCode(500,
-                    $"There was an error updating Supplier Debt with id: {debtToUpdate?.Id}. Please, try again later");
+                _logger.LogError($"Error while updating Debt for Supplier with id: {supplierId} and Debt id: {debtId}.", ex.Message);
+                return StatusCode(500, $"There was an error while updating Debt for Supplier with Id: {supplierId} and Debt id: {debtId}.");
             }
         }
 
         [HttpDelete("{supplierId}/debts/{debtId}")]
-        public async Task<ActionResult> DeleteSupplierDebtAsync(int debtId)
+        public async Task<ActionResult> DeleteSupplierDebt(int supplierId, int debtId)
         {
             try
             {
-                await _debtService.DeleteDebtAsync(debtId);
+                await _supplierDebtService.DeleteSupplierDebtAsync(debtId);
 
                 return NoContent();
             }
-            catch (NotFoundException ex)
+            catch(Exception ex)
             {
-                _logger.LogError($"Supplier Debt with id: {debtId} was not found while deleting.", ex.Message);
-                return NotFound($"Supplier Debt with id: {debtId} does not exist.");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error deleting Supplier Debt with id {debtId}.", ex.Message);
-                return StatusCode(500, $"There was an error deleting Supplier Debt with id: {debtId}. Please, try again later.");
+                _logger.LogError($"Error while deleting Debt for Supplier with id: {supplierId} and Debt id: {debtId}.", ex.Message);
+                return StatusCode(500, $"There was an error while deleting Debt for Supplier with Id: {supplierId} and Debt id: {debtId}.");
             }
         }
 

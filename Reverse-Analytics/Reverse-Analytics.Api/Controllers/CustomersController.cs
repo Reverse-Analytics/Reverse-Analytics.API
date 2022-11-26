@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ReverseAnalytics.Domain.DTOs.CustomerPhoneDto;
+using ReverseAnalytics.Domain.DTOs.CustomerPhone;
 using ReverseAnalytics.Domain.Exceptions;
 using ReverseAnalytics.Domain.Interfaces.Services;
+using ReverseAnalytics.Domain.DTOs.CustomerDebt;
 using Microsoft.AspNetCore.Authorization;
-using ReverseAnalytics.Domain.DTOs.Phone;
-using ReverseAnalytics.Domain.DTOs.Debt;
-using ReverseAnalytics.Domain.DTOs.Address;
 
 namespace Reverse_Analytics.Api.Controllers
 {
@@ -15,23 +14,21 @@ namespace Reverse_Analytics.Api.Controllers
     public class CustomersController : Controller
     {
         private readonly ICustomerService _customerService;
-        private readonly IAddressService _addressService;
-        private readonly IDebtService _debtService;
-        private readonly IPhoneService _phoneService;
+        private readonly ICustomerPhoneService _customerPhoneSerivce;
+        private readonly ICustomerDebtService _customerDebtService;
         private readonly ILogger<CustomersController> _logger;
-        
         private const int pageSize = 15;
 
-        public CustomersController(ICustomerService customerService, IAddressService addressService, IDebtService debtService, IPhoneService phoneService, ILogger<CustomersController> logger)
+        public CustomersController(ICustomerService customerService, ICustomerPhoneService customerPhoneService, 
+            ILogger<CustomersController> logger, ICustomerDebtService customerDebtService)
         {
             _customerService = customerService;
-            _addressService = addressService;
-            _debtService = debtService;
-            _phoneService = phoneService;
+            _customerPhoneSerivce = customerPhoneService;
             _logger = logger;
+            _customerDebtService = customerDebtService;
         }
 
-        #region CRUD
+        #region Customers
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CustomerDto>>> GetCustomersAsync(string? searchString, int pageNumber = 1, int pageSize = pageSize)
@@ -171,160 +168,21 @@ namespace Reverse_Analytics.Api.Controllers
 
         #endregion
 
-        #region Addresses
+        #region Customer Phones
 
-        [HttpGet("{customerId}/addresses")]
-        public async Task<ActionResult<IEnumerable<AddressDto>>> GetCustomerAddresses(int customerId)
+        [HttpGet("{customerId}/customerPhones")]
+        public async Task<ActionResult<IEnumerable<CustomerPhoneDto>>> GetCustomerPhonesAsync(int customerId)
         {
             try
             {
-                var addresses = await _addressService.GetAllByPersonIdAsync(customerId);
+                var customerPhones = await _customerPhoneSerivce.GetCustomerPhonesByCustomerIdAsync(customerId);
 
-                if (addresses is null || !addresses.Any())
-                {
-                    return Ok($"Customer with id: {customerId} does not have any addresses.");
-                }
-
-                return Ok(addresses);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error while retrieving Customer Addresses for Customer with id: {customerId}", ex.Message);
-                return StatusCode(500, "There was an error retrieving Customer Addresses. Please, try again later.");
-            }
-        }
-
-        [HttpGet("{customerId}/addresses/{addressId}")]
-        public async Task<ActionResult<IEnumerable<AddressDto>>> GetCustomerAddressById(int customerId, int addressId)
-        {
-            try
-            {
-                var address = await _addressService.GetAddressByPersonAndAddressIdAsync(customerId, addressId);
-
-                if(address is null)
-                {
-                    return NotFound($"Customer with id: {customerId} does not have an Address with id: {addressId}");
-                }
-
-                return Ok(address);
-            }
-            catch(Exception ex)
-            {
-                _logger.LogError($"Error while retrieving Customer Address with customer id: {customerId} and address id: {addressId}.", ex.Message);
-                return StatusCode(500, $"There was an error retrieving Customer Address with Customer id: {customerId} and Address id: {addressId}.");
-            }
-        }
-
-        [HttpPost("{customerId}/addresses")]
-        public async Task<ActionResult<CustomerDto>> CreateCustomerAddressAsync([FromBody] AddressForCreateDto addressToCreate, int customerId)
-        {
-            try
-            {
-                if (addressToCreate is null)
-                {
-                    return BadRequest("Customer Address to create cannot be null.");
-                }
-
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest("Customer Address to create is not valid.");
-                }
-
-                if (addressToCreate.PersonId != customerId)
-                {
-                    return BadRequest($"Customer Id: {addressToCreate.PersonId} does not match with route id: {customerId}");
-                }
-
-                var createdAddress = await _addressService.CreateAddressAsync(addressToCreate);
-
-                if (createdAddress is null)
-                {
-                    return StatusCode(500, 
-                        $"Something went wrong while adding address number for customer with id: {customerId}. Please, try again later.");
-                }
-
-                return Ok(createdAddress);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error while adding address number for Customer with id: {customerId}.", ex.Message);
-                return StatusCode(500, $"There was an error adding address number for Customer with id: {customerId}.");
-            }
-        }
-
-        [HttpPut("{customerId}/addresses/{addressId}")]
-        public async Task<ActionResult> UpdateCustomerAddressAsync([FromBody] AddressForUpdateDto addressToUpdate, int customerId, int addressId)
-        {
-            try
-            {
-                if (addressToUpdate is null)
-                {
-                    return BadRequest("Customer Address to update cannot be null.");
-                }
-
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest("Customer Address to update is not valid.");
-                }
-
-                if (addressToUpdate.Id != addressId)
-                {
-                    return BadRequest($"Customer id: {addressToUpdate.PersonId}, does not match with route id: {addressId}.");
-                }
-
-                if (addressToUpdate.PersonId != customerId)
-                {
-                    return BadRequest($"Customer id: {addressToUpdate.PersonId} does not match with route id: {customerId}");
-                }
-
-                await _addressService.UpdateAddresAsync(addressToUpdate);
-
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error while updating address for customer with id: {customerId}.", ex.Message);
-                return StatusCode(500, $"There was an error updating address number for customer with id: {customerId}. Please, try again later.");
-            }
-        }
-
-        [HttpDelete("{customerId}/addresses/{addressId}")]
-        public async Task<ActionResult> DeleteCustomerAddresssync(int customerId, int addressId)
-        {
-            try
-            {
-                await _addressService.DeleteAddressAsync(addressId);
-                return NoContent();
-            }
-            catch (NotFoundException ex)
-            {
-                _logger.LogError($"Customer address with customer id: {customerId}, address id: {addressId} was not found while deleting.", ex.Message);
-                return NotFound($"Customer address with id: {addressId} was not found.");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error while deleting address for customer with id: {customerId} and address id: {addressId}.", ex.Message);
-                return StatusCode(500, $"There was an error deleting address for customer with id: {customerId} and address id: {addressId}.");
-            }
-        }
-
-        #endregion
-
-        #region Phones
-
-        [HttpGet("{customerId}/phones")]
-        public async Task<ActionResult<IEnumerable<PhoneDto>>> GetPhonesByCustomerIdAsync(int customerId)
-        {
-            try
-            {
-                var phones = await _phoneService.GetAllByPersonIdAsync(customerId);
-
-                if (phones is null || !phones.Any())
+                if (customerPhones is null || !customerPhones.Any())
                 {
                     return Ok($"Customer with id: {customerId} does not have any phone numbers.");
                 }
 
-                return Ok(phones);
+                return Ok(customerPhones);
             }
             catch (Exception ex)
             {
@@ -333,33 +191,12 @@ namespace Reverse_Analytics.Api.Controllers
             }
         }
 
-        [HttpGet("{customerId}/phones/{phoneId}")]
-        public async Task<ActionResult<PhoneDto>> GetPhoneByCustomerAndPhoneIdAsync(int customerId, int phoneId)
+        [HttpPost("{customerId}/customerphones")]
+        public async Task<ActionResult<CustomerDto>> CreateCustomerPhoneAsync([FromBody] CustomerPhoneForCreate customerPhoneToCreate, int customerId)
         {
             try
             {
-                var phone = await _phoneService.GetByPersonAndPhoneIdAsync(customerId, phoneId);
-
-                if(phone is null)
-                {
-                    return Ok($"Customer with id: {customerId} does not have phone with id: {phoneId}");
-                }
-
-                return Ok(phone);
-            }
-            catch(Exception ex)
-            {
-                _logger.LogError($"Error while retrieving Phones for Customer with id: {customerId} and Phone id: {phoneId}", ex.Message);
-                return StatusCode(500, "There was an error retrieving Customer Phones. Please, try again later.");
-            }
-        }
-
-        [HttpPost("{customerId}/phones")]
-        public async Task<ActionResult<PhoneDto>> CreateCustomerPhoneAsync([FromBody] PhoneForCreateDto phoneToCreate, int customerId)
-        {
-            try
-            {
-                if (phoneToCreate is null)
+                if (customerPhoneToCreate is null)
                 {
                     return BadRequest("Customer Phone to create cannot be null.");
                 }
@@ -369,19 +206,14 @@ namespace Reverse_Analytics.Api.Controllers
                     return BadRequest("Customer Phone to create is not valid.");
                 }
 
-                if(phoneToCreate.PersonId != customerId)
-                {
-                    return BadRequest($"Customer Id: {phoneToCreate.PersonId} does not match with route id: {customerId}");
-                }
+                var customerPhoneDto = await _customerPhoneSerivce.CreateCustomerPhoneAsync(customerPhoneToCreate);
 
-                var createdPhone = await _phoneService.CreatePhoneAsync(phoneToCreate);
-
-                if (createdPhone is null)
+                if (customerPhoneToCreate is null)
                 {
                     return StatusCode(500, $"Something went wrong while adding phone number for customer with id: {customerId}. Please, try again later.");
                 }
 
-                return Ok(createdPhone);
+                return Ok(customerPhoneDto);
             }
             catch (Exception ex)
             {
@@ -390,12 +222,12 @@ namespace Reverse_Analytics.Api.Controllers
             }
         }
 
-        [HttpPut("{customerId}/phones/{phoneId}")]
-        public async Task<ActionResult> UpdateCustomerPhoneAsync([FromBody] PhoneForUpdateDto phoneToUpdate, int customerId, int phoneId)
+        [HttpPut("{customerId}/customerPhones/{phoneId}")]
+        public async Task<ActionResult> UpdateCustomerPhoneAsync([FromBody] CustomerPhoneForUpdate customerPhoneToUpdate, int customerId, int phoneId)
         {
             try
             {
-                if(phoneToUpdate is null)
+                if(customerPhoneToUpdate is null)
                 {
                     return BadRequest("Customer Phone to update cannot be null.");
                 }
@@ -405,17 +237,12 @@ namespace Reverse_Analytics.Api.Controllers
                     return BadRequest("Customer Phone to update is not valid.");
                 }
 
-                if (phoneToUpdate.Id != phoneId)
+                if (customerPhoneToUpdate.Id != phoneId)
                 {
-                    return BadRequest($"Phone id: {phoneToUpdate.Id}, does not match with route id: {phoneId}.");
+                    return BadRequest($"Customer id: {phoneId}, does not match with route id: {phoneId}.");
                 }
 
-                if(phoneToUpdate.PersonId != customerId)
-                {
-                    return BadRequest($"Customer id: {phoneToUpdate.PersonId} does not match with route id: {customerId}");
-                }
-
-                await _phoneService.UpdatePhoneAsync(phoneToUpdate);
+                await _customerPhoneSerivce.UpdateCustomerPhoneAsync(customerPhoneToUpdate);
 
                 return NoContent();
             }
@@ -426,12 +253,12 @@ namespace Reverse_Analytics.Api.Controllers
             }
         }
 
-        [HttpDelete("{customerId}/phones/{phoneId}")]
+        [HttpDelete("{customerId}/customerPhones/{phoneId}")]
         public async Task<ActionResult> DeleteCustomerPhoneAsync(int customerId, int phoneId)
         {
             try
             {
-                await _phoneService.DeletePhoneAsync(phoneId);
+                await _customerPhoneSerivce.DeleteCustomerPhoneAsync(phoneId);
                 return NoContent();
             }
             catch(NotFoundException ex)
@@ -448,56 +275,35 @@ namespace Reverse_Analytics.Api.Controllers
 
         #endregion
 
-        #region Debts
+        #region Customer Debts
 
         [HttpGet("{customerId}/debts")]
-        public async Task<ActionResult<IEnumerable<DebtDto>>> GetCustomerDebtsAsync(int customerId)
+        public async Task<ActionResult<IEnumerable<CustomerDebtDto>>> GetCustomerDebtsAsync(int customerId)
         {
             try
             {
-                var debts = await _debtService.GetAllDebtsByPersonIdAsync(customerId);
+                var customerDebts = await _customerDebtService.GetAllByCustomerId(customerId);
 
-                if (debts is null || !debts.Any())
+                if (customerDebts is null || !customerDebts.Any())
                 {
                     return Ok("This Customer does not have any Debts.");
                 }
 
-                return Ok(debts);
+                return Ok(customerDebts);
             }
             catch(Exception ex)
             {
-                _logger.LogError($"Error while retrieving Debts for Customer with id: {customerId}.", ex.Message);
+                _logger.LogError("Error while retrieving Debts for Customer with id: {id}.", ex.Message);
                 return StatusCode(500, $"There was an error retrieving Debts for Customer with id: {customerId}. Please, try again later.");
             }
         }
 
-        [HttpGet("{customerId}/debts/{debtId}")]
-        public async Task<ActionResult<DebtDto>> GetDebtByCustomerAndDebtId(int customerId, int debtId)
-        {
-            try
-            {
-                var debt = await _debtService.GetByPersonAndDebtId(customerId, debtId);
-
-                if(debt is null)
-                {
-                    return NotFound($"Customer with id: {customerId} does not have Debt with id: {debtId}.");
-                }
-
-                return Ok(debt);
-            }
-            catch(Exception ex)
-            {
-                _logger.LogError($"Error while retrieving Debt for Customer with id: {customerId} and Debt id: {debtId}.", ex.Message);
-                return StatusCode(500, $"There was an error retrieving Debts for Customer with id: {customerId} and Debt id: {debtId}. Please, try again later.");
-            }
-        }
-
         [HttpPost("{customerId}/debts")]
-        public async Task<ActionResult<DebtDto>> CreateCustomerDebt([FromBody] DebtForCreateDto debtToCreate, int customerId)
+        public async Task<ActionResult<CustomerDebtDto>> CreateCustomerDebt([FromBody] CustomerDebtForCreate customerDebtToCreate)
         {
             try
             {
-                if(debtToCreate is null)
+                if(customerDebtToCreate is null)
                 {
                     return BadRequest("Customer Debt cannot be null.");
                 }
@@ -507,12 +313,7 @@ namespace Reverse_Analytics.Api.Controllers
                     return BadRequest("Customer Debt to create is not valid.");
                 }
 
-                if(debtToCreate.PersonId != customerId)
-                {
-                    return BadRequest($"Customer Id: {debtToCreate.PersonId} does not match with route id: {customerId}");
-                }
-
-                var createdCustomerDebt = await _debtService.CreateDebtAsync(debtToCreate);
+                var createdCustomerDebt = await _customerDebtService.CreateCustomerDebtAsync(customerDebtToCreate);
 
                 if(createdCustomerDebt is null)
                 {
@@ -530,53 +331,48 @@ namespace Reverse_Analytics.Api.Controllers
         }
 
         [HttpPut("{customerId}/debts/{debtId}")]
-        public async Task<ActionResult> UpdateCustomerDebtAsync([FromBody] DebtForUpdateDto debtToUpdate, int customerId, int debtId)
+        public async Task<ActionResult> UpdateCustomerDebtAsync([FromBody] CustomerDebtForUpdate customerDebtToUpdate, int customerId, int debtId)
         {
             try
             {
-                if(debtToUpdate is null)
+                if(customerDebtToUpdate is null)
                 {
-                    return BadRequest("Debt to update cannot be null.");
+                    return BadRequest("Customer Debt to update cannot be null.");
                 }
 
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest($"Debt to update is not valid.");
+                    return BadRequest($"Customer Debt to update is not valid.");
                 }
 
-                if(debtId != debtToUpdate.Id)
+                if(debtId != customerDebtToUpdate.Id)
                 {
-                    return BadRequest($"Debt id: {debtToUpdate.Id} does not match with route id: {debtId}.");
+                    return BadRequest($"Customer Debt id: {customerDebtToUpdate.Id} does not match with route id: {debtId}.");
                 }
 
-                if(customerId != debtToUpdate.PersonId)
-                {
-                    return BadRequest($"Customer id: {debtToUpdate.PersonId} does not match with route id: {customerId}.");
-                }
-
-                await _debtService.UpdateDebtAsync(debtToUpdate);
+                await _customerDebtService.UpdateCustomerDebtAsync(customerDebtToUpdate);
 
                 return NoContent();
             }
             catch(NotFoundException ex)
             {
-                _logger.LogError($"Customer debt with id: {debtToUpdate?.Id} was not found while updating.", ex.Message);
-                return NotFound($"Customer Debt with id: {debtToUpdate?.Id} does not exist.");
+                _logger.LogError($"Customer debt with id: {customerDebtToUpdate?.Id} was not found while updating.", ex.Message);
+                return NotFound($"Customer Debt with id: {customerDebtToUpdate?.Id} does not exist.");
             }
             catch(Exception ex)
             {
-                _logger.LogError($"Error while updating Customer Debt with id: {debtToUpdate?.Id}", ex.Message);
+                _logger.LogError($"Error while updating Customer Debt with id: {customerDebtToUpdate?.Id}", ex.Message);
                 return StatusCode(500, 
-                    $"There was an error updating Customer Debt with id: {debtToUpdate?.Id}. Please, try again later");
+                    $"There was an error updating Customer Debt with id: {customerDebtToUpdate?.Id}. Please, try again later");
             }
         }
 
         [HttpDelete("{customerId}/debts/{debtId}")]
-        public async Task<ActionResult> DeleteCustomerDebtAsync(int debtId)
+        public async Task<ActionResult> DeleteCustomerDebtAsync(int customerId, int debtId)
         {
             try
             {
-                await _debtService.DeleteDebtAsync(debtId);
+                await _customerDebtService.DeleteCustomerDebtAsync(debtId);
 
                 return NoContent();
             }

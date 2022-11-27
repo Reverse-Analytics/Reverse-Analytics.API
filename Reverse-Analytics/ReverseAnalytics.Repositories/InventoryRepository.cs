@@ -4,7 +4,7 @@ using ReverseAnalytics.Infrastructure.Persistence;
 
 namespace ReverseAnalytics.Repositories
 {
-    internal class InventoryRepository : RepositoryBase<Inventory>, IInventoryRepository
+    public class InventoryRepository : RepositoryBase<Inventory>, IInventoryRepository
     {
         public InventoryRepository(ApplicationDbContext context)
             : base(context)

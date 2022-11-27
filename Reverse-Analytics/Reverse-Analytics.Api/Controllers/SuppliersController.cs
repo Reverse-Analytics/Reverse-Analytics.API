@@ -4,6 +4,7 @@ using ReverseAnalytics.Domain.DTOs.Address;
 using ReverseAnalytics.Domain.DTOs.Debt;
 using ReverseAnalytics.Domain.DTOs.Phone;
 using ReverseAnalytics.Domain.DTOs.Supplier;
+using ReverseAnalytics.Domain.DTOs.Supply;
 using ReverseAnalytics.Domain.Exceptions;
 using ReverseAnalytics.Domain.Interfaces.Services;
 
@@ -18,16 +19,18 @@ namespace Reverse_Analytics.Api.Controllers
         private readonly IAddressService _addressService;
         private readonly IPhoneService _phoneService;
         private readonly IDebtService _debtService;
+        private readonly ISupplyService _supplyService;
         private readonly ILogger<SuppliersController> _logger;
 
         public SuppliersController(ISupplierService supplierService, IAddressService addressService, 
-            IPhoneService phoneService, IDebtService debtService,
+            IPhoneService phoneService, IDebtService debtService, ISupplyService supplyService,
             ILogger<SuppliersController> logger)
         {
             _supplierService = supplierService;
             _addressService = addressService;
             _phoneService = phoneService;
             _debtService = debtService;
+            _supplyService = supplyService;
             _logger = logger;
         }
 
@@ -558,6 +561,124 @@ namespace Reverse_Analytics.Api.Controllers
             {
                 _logger.LogError($"Error deleting Supplier Debt with id {debtId}.", ex.Message);
                 return StatusCode(500, $"There was an error deleting Supplier Debt with id: {debtId}. Please, try again later.");
+            }
+        }
+
+        #endregion
+
+        #region Supplies
+
+        [HttpGet("{supplierId}/supplies")]
+        public async Task<ActionResult<IEnumerable<SupplyDto>>> GetAllSuppliesBySupplierIdAsync(int supplierId)
+        {
+            try
+            {
+                var supplies = await _supplyService.GetAllSuppliesBySupplierIdAsync(supplierId);
+
+                if (supplies is null || !supplies.Any())
+                {
+                    return Ok($"Supplier with id: {supplierId} has no Supplies.");
+                }
+
+                return Ok(supplies);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error retrieving Supplies for Supplier with id: {supplierId}.", ex.Message);
+                return StatusCode(500, $"There was an error retrieving Supplies for Supplier with id: {supplierId}.");
+            }
+        }
+
+        [HttpGet("{supplierId}/supplies/{supplyId}")]
+        public async Task<ActionResult<SupplyDto>> GetSupplyByIdAsync(int supplierId, int supplyId)
+        {
+            try
+            {
+                var supply = await _supplyService.GetBySupplierAndSupplyIdAsync(supplierId, supplyId);
+
+                if (supply is null)
+                {
+                    return NotFound($"Supplier with id: {supplierId} has no Supply with id: {supplyId}.");
+                }
+
+                return Ok(supply);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error retrieving Supply with id: {supplyId} and Supplier id: {supplierId}.", ex.Message);
+                return StatusCode(500, 
+                    $"There was an error retrieving Supply for Supplier with id: {supplierId} and Supply id: {supplyId}.");
+            }
+        }
+
+        [HttpPost("{supplierId}/supplies")]
+        public async Task<ActionResult<SupplyDto>> CreateSupplyAsync([FromBody] SupplyForCreate supplyToCreate, int supplierId)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Supply to create is not valid.");
+                }
+
+                if(supplyToCreate.SupplierId != supplierId)
+                {
+                    return BadRequest($"Supplier id: {supplyToCreate.SupplierId} does not match with route id: {supplierId}.");
+                }
+
+                var createdSupply = await _supplyService.CreateSupplyAsync(supplyToCreate);
+
+                return Ok(createdSupply);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error creating Supply.", ex.Message);
+                return StatusCode(500, "There was an error creating a new Supply.");
+            }
+        }
+
+        [HttpPut("{supplierId}/supplies/{supplyId}")]
+        public async Task<ActionResult> UpdateSupplyAsync([FromBody] SupplyForUpdate supplyToUpdate, int supplierId, int supplyId)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Supply to update is not valid.");
+                }
+
+                if (supplyToUpdate.Id != supplyId)
+                {
+                    return BadRequest($"Supply id: {supplyToUpdate.Id} does not match with route id: {supplyId}.");
+                }
+
+                if (supplyToUpdate.SupplierId != supplierId)
+                {
+                    return BadRequest($"Supplier id: {supplyToUpdate.SupplierId} does not match with route id: {supplierId}.");
+                }
+
+                await _supplyService.UpdateSupplyAsync(supplyToUpdate);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error updating Supplly with id: {supplyId}.", ex.Message);
+                return StatusCode(500, $"There was an error retrieving Supply with id: {supplyId}.");
+            }
+        }
+
+        [HttpDelete("{supplierId}/supplies/{supplyId}")]
+        public async Task<ActionResult> DeleteSupplyAsync(int supplyId)
+        {
+            try
+            {
+                await _supplyService.DeleteSupplyAsync(supplyId);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error deleting Supplly with id: {supplyId}.", ex.Message);
+                return StatusCode(500, $"There was an error retrieving Supply with id: {supplyId}.");
             }
         }
 

@@ -122,8 +122,8 @@ namespace Reverse_Analytics.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error updating Supplly with id: {supplyId}.", ex.Message);
-                return StatusCode(500, $"There was an error retrieving Supply with id: {supplyId}.");
+                _logger.LogError($"Error deleting Supplly with id: {supplyId}.", ex.Message);
+                return StatusCode(500, $"There was an error deleting Supply with id: {supplyId}.");
             }
         }
 

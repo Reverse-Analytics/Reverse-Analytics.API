@@ -21,6 +21,8 @@ namespace Reverse_Analytics.Api.Extensions
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<IInventoryService, InventoryService>();
+            services.AddScoped<IInventoryDetailService, InventoryDetailService>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }

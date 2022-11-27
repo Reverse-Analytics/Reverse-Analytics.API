@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using ReverseAnalytics.Domain.DTOs.Phone;
 using ReverseAnalytics.Domain.DTOs.Debt;
 using ReverseAnalytics.Domain.DTOs.Address;
+using ReverseAnalytics.Domain.DTOs.Sale;
 
 namespace Reverse_Analytics.Api.Controllers
 {
@@ -18,16 +19,19 @@ namespace Reverse_Analytics.Api.Controllers
         private readonly IAddressService _addressService;
         private readonly IDebtService _debtService;
         private readonly IPhoneService _phoneService;
+        private readonly ISaleService _saleService;
         private readonly ILogger<CustomersController> _logger;
         
         private const int pageSize = 15;
 
-        public CustomersController(ICustomerService customerService, IAddressService addressService, IDebtService debtService, IPhoneService phoneService, ILogger<CustomersController> logger)
+        public CustomersController(ICustomerService customerService, IAddressService addressService, IDebtService debtService, 
+            IPhoneService phoneService, ISaleService saleService, ILogger<CustomersController> logger)
         {
             _customerService = customerService;
             _addressService = addressService;
             _debtService = debtService;
             _phoneService = phoneService;
+            _saleService = saleService;
             _logger = logger;
         }
 
@@ -589,6 +593,141 @@ namespace Reverse_Analytics.Api.Controllers
             {
                 _logger.LogError($"Error deleting Customer Debt with id {debtId}.", ex.Message);
                 return StatusCode(500, $"There was an error deleting Customer Debt with id: {debtId}. Please, try again later.");
+            }
+        }
+
+        #endregion
+
+        #region Sales
+
+        [HttpGet("{customerId}/sales")]
+        public async Task<ActionResult<IEnumerable<SaleDto>>> GetSalesByCustomerIdAsync(int customerId)
+        {
+            try
+            {
+                var sales = await _saleService.GetAllByCustomerIdAsync(customerId);
+
+                if (sales is null || !sales.Any())
+                {
+                    return Ok("Customer has no Sales.");
+                }
+
+                return Ok(sales);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error while retrieving Sales.", ex.Message);
+                return StatusCode(500, $"There was an error retrieving Sales for Customer with id: {customerId}. Please, try agian later.");
+            }
+        }
+
+        [HttpGet("{customerId}/sales/{saleId}")]
+        public async Task<ActionResult<SaleDto>> GetSaleByCustomerAndSaleIdAsync(int customerId, int saleId)
+        {
+            try
+            {
+                var sale = await _saleService.GetByCustomerAndSaleIdAsync(customerId, saleId);
+
+                if (sale is null)
+                {
+                    return NotFound($"Customer with id: {customerId} has no Sale with id: {saleId}.");
+                }
+
+                return Ok(sale);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while retrieving Customer with id: {customerId} and Sale id: {saleId}.", ex.Message);
+                return StatusCode(500, 
+                    $"There was an error retrieving Sale for Customer with id: {customerId} and Sale id: {saleId}. Please, try again later.");
+            }
+        }
+
+        [HttpPost("{customerId}/sales")]
+        public async Task<ActionResult<SaleDto>> CreateSalesAsync([FromBody] SaleForCreateDto saleToCreate, int customerId)
+        {
+            try
+            {
+                if (saleToCreate is null)
+                {
+                    return BadRequest("Sale to create cannot be null.");
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Sale to create is not valid.");
+                }
+
+                if(saleToCreate.CustomerId != customerId)
+                {
+                    return BadRequest($"Customer id: {saleToCreate.CustomerId} does not match with route id: {customerId}");
+                }
+
+                var createdSale = await _saleService.CreateSaleAsync(saleToCreate);
+
+                if (createdSale is null)
+                {
+                    return StatusCode(500, "Something went wrong while creating new Sale. Please, try again.");
+                }
+
+                return Ok(createdSale);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error while creating new Sale.", ex.Message);
+                return StatusCode(500, $"There was an error creating new Sale. Please, try again later.");
+            }
+        }
+
+        [HttpPut("{customerId}/sales/{saleId}")]
+        public async Task<ActionResult> UpdateSaleAsync([FromBody] SaleForUpdateDto saleToUpdate, int customerId, int saleId)
+        {
+            try
+            {
+                if (saleToUpdate is null)
+                {
+                    return BadRequest("Sale to update cannot be null.");
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Sale to update is not valid.");
+                }
+
+                if (saleToUpdate.Id != saleId)
+                {
+                    return BadRequest($"Sale id: {saleToUpdate.Id} does not match with route id: {saleId}.");
+                }
+
+                if(saleToUpdate.CustomerId != customerId)
+                {
+                    return BadRequest($"Customer id: {saleToUpdate.CustomerId} does not match with route id: {customerId}");
+                }
+
+                await _saleService.UpdateSaleAsync(saleToUpdate);
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while updating Sale with id: {saleId}.", ex.Message);
+                return StatusCode(500, $"There was an error updating Sale with id: {saleId}. Please, try again later.");
+            }
+        }
+
+        [HttpDelete("{customerId}/sales/{saleId}")]
+        public async Task<ActionResult> DeleteSaleAsync(int saleId)
+        {
+            try
+            {
+                await _saleService.DeleteSaleAsync(saleId);
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while deleting Sale with id: {saleId}.", ex.Message);
+                return StatusCode(500, $"There was an error deleting Sale with id: {saleId}. Please, try again later.");
             }
         }
 

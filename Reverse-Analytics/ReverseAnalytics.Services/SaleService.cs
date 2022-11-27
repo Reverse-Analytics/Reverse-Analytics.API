@@ -38,6 +38,36 @@ namespace ReverseAnalytics.Services
             }
         }
 
+        public async Task<IEnumerable<SaleDto>> GetAllByCustomerIdAsync(int customerId)
+        {
+            try
+            {
+                var sales =await _repository.Sale.FindAllByCustomerIdAsync(customerId);
+                var saleDtos = _mapper.Map<IEnumerable<SaleDto>>(sales);
+
+                return saleDtos;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<SaleDto> GetByCustomerAndSaleIdAsync(int customerId, int saleId)
+        {
+            try
+            {
+                var sale = await _repository.Sale.FindByCustomerAndSaleIdAsync(customerId, saleId);
+                var saleDto = _mapper.Map<SaleDto>(sale);
+
+                return saleDto;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public async Task<SaleDto> GetSaleByIdAsync(int id)
         {
             try

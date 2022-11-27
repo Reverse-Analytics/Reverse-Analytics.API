@@ -1,6 +1,6 @@
 ﻿namespace ReverseAnalytics.Domain.DTOs.InventoryDetail
 {
-    public class InventoryForUpdateDto
+    public class InventoryDetailForUpdateDto
     {
         public int Id { get; set; }
         public double ProductsRemained { get; set; }

@@ -11,7 +11,7 @@ namespace ReverseAnalytics.Domain.Profiles
             CreateMap<InventoryDetail, InventoryDetailDto>();
             CreateMap<InventoryDetailDto, InventoryDetail>();
             CreateMap<InventoryDetailForCreateDto, InventoryDetail>();
-            CreateMap<InventoryForUpdateDto, InventoryDetail>();
+            CreateMap<InventoryDetailForUpdateDto, InventoryDetail>();
         }
     }
 }

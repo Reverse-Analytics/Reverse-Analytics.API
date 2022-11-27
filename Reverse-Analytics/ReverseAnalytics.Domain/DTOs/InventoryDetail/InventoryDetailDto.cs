@@ -2,6 +2,7 @@
 {
     public class InventoryDetailDto
     {
+        public int Id { get; set; }
         public double ProductsRemained { get; set; }
         public double EnoughForDays { get; set; }
 

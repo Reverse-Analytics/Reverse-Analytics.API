@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using ReverseAnalytics.Infrastructure.Persistence;
 using ReverseAnalytics.Infrastructure.Configurations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Reverse_Analytics.Api.Middlewares;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
@@ -61,6 +62,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
     app.SeedDatabase();
 }
+
+app.UseMiddleware<ErrorHandlerMiddeware>();
 
 app.UseHttpsRedirection();
 

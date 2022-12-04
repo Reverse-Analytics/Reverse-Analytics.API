@@ -52,14 +52,14 @@ namespace Reverse_Analytics.Api.Middlewares
             };
 
             await context.Response.WriteAsync(errorResponse.ToJson());
-            _logger.LogError(errorResponse.EventId, error, message);
+            _logger.LogError(errorResponse.EventId, error, context.Request.Path.ToString());
         }
 
         private static List<string> GetErrorsList(Exception? error, List<string> errorsList)
         {
             if(error is not null)
             {
-                errorsList.Add($"{error.GetType()}: {error.Message}");
+                errorsList.Add($"{error.GetType()}: '{error.Message}'");
 
                 return GetErrorsList(error.InnerException, errorsList);
             }

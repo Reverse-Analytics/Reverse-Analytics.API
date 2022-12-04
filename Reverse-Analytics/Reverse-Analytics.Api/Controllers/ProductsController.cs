@@ -13,58 +13,31 @@ namespace Reverse_Analytics.Api.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _service;
-        private readonly ILogger<ProductsController> _logger;
+
         const int pageSize = 20;
 
-        public ProductsController(ILogger<ProductsController> logger, IProductService service)
+        public ProductsController(IProductService service)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _service = service ?? throw new ArgumentNullException(nameof(service));
+            _service = service;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts(string? searchString, int? categoryId, int pageSize = pageSize, int pageNumber = 1)
+        public async Task<ActionResult<IEnumerable<Product>>> GetProductsAsync(string? searchString, int? categoryId, int pageSize = pageSize, int pageNumber = 1)
         {
-            try
-            {
-                var products = await _service.GetProductsAsync(searchString, categoryId, pageSize, pageNumber);
+            var products = await _service.GetProductsAsync(searchString, categoryId, pageSize, pageNumber);
 
-                if (products is null)
-                {
-                    return NotFound("No products were found.");
-                }
-
-                return Ok(products);
-            }
-            catch(Exception ex)
-            {
-                _logger.LogError(500, "Error retrieving products.", ex.Message);
-
-                return StatusCode(500, "There was an error retrieving products.");
-            }
+            return Ok(products);
         }
 
-        // GET api/<ProductController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetProduct(int id)
+        public async Task<ActionResult<Product>> GetProductByIdAsync(int id)
         {
-            try
-            {
-                var product = await _service.GetProductByIdAsync(id);
+            var product = await _service.GetProductByIdAsync(id);
 
-                if(product is null)
-                {
-                    return NotFound($"There is no product with id: {id}.");
-                }
+            if (product is null)
+                return NotFound($"Product with id: {id} does not exist.");
 
-                return Ok(product);
-            }
-            catch(Exception ex)
-            {
-                _logger.LogError($"Error while retrieving product with id: {id}", ex.Message);
-
-                return StatusCode(500, $"There was an error retrieving product with id: {id}.");
-            }
+            return Ok(product);
         }
 
         // POST api/<ProductController>

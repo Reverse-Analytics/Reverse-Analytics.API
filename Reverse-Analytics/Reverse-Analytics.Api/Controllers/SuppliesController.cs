@@ -52,7 +52,7 @@ namespace Reverse_Analytics.Api.Controllers
                 return StatusCode(500, 
                     "Something went wrong while creating new Supply. Please, try again later.");
 
-            return Ok(createdSupply);
+            return Created("Supply was successfully created.", createdSupply);
         }
 
         [HttpPut("{supplyId}")]

@@ -18,8 +18,6 @@ namespace Reverse_Analytics.Api.Controllers
             _productCategoryService = productCategoryService;
         }
 
-        #region CRUD
-
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductCategoryDto>>> GetCategories(string? searchQuery)
         {
@@ -46,10 +44,10 @@ namespace Reverse_Analytics.Api.Controllers
             var category = await _productCategoryService.CreateProductCategoryAsync(categoryToCreate);
 
             if (category is null)
-                return StatusCode(500, 
+                return StatusCode(500,
                     "Something went wrong while adding product category. Please, try again later.");
 
-            return Ok(category);
+            return Created("Category was successfully created.", category);
         }
 
         [HttpPut("{id}")]
@@ -71,7 +69,5 @@ namespace Reverse_Analytics.Api.Controllers
 
             return NoContent();
         }
-
-        #endregion
     }
 }

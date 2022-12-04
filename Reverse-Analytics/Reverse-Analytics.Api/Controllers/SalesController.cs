@@ -15,7 +15,7 @@ namespace Reverse_Analytics.Api.Controllers
         private readonly ISaleService _saleService;
         private readonly ISaleDetailService _saleDetailService;
 
-        const int pageSize = 15;
+        private const int PageSize = 15;
 
         public SalesController(ISaleService service, ISaleDetailService saleDetailService)
         {
@@ -108,6 +108,10 @@ namespace Reverse_Analytics.Api.Controllers
                 return BadRequest($"Sale id: {saleDetailToCreate.SaleId} does not match with route id: {saleId}.");
 
             var createdSaleDetail = await _saleDetailService.CreateSaleDetailAsync(saleDetailToCreate);
+
+            if (createdSaleDetail is null)
+                return StatusCode(500,
+                    "Something went wrong while creating new Sale. Please, try again later.");
 
             return Created("Sale detail was successfully created.", createdSaleDetail);
         }

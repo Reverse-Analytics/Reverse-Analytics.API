@@ -69,9 +69,7 @@ namespace Reverse_Analytics.Api.Controllers
         public async Task<ActionResult> UpdateUserAccountAsync(UserAccountForUpdateDto userAccountToUpdate, string id)
         {
             if (userAccountToUpdate.Id != id)
-            {
                 return BadRequest($"Account id: {userAccountToUpdate.Id} does not match with route id: {id}.");
-            }
 
             await _accountService.UpdateAccountAsync(userAccountToUpdate);
 

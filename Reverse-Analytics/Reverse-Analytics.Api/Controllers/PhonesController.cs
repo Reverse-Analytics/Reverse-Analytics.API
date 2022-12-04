@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Reverse_Analytics.Api.Filters;
 using ReverseAnalytics.Domain.DTOs.Phone;
 using ReverseAnalytics.Domain.Interfaces.Services;
 
 namespace Reverse_Analytics.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PhonesController : ControllerBase
@@ -45,7 +47,7 @@ namespace Reverse_Analytics.Api.Controllers
                 return StatusCode(500,
                         $"Something went wrong while adding phone number. Please, try again later.");
 
-            return Ok(createdPhone);
+            return Created("Phone number was sucessfully created.", createdPhone);
         }
 
         [HttpPut("{id}")]

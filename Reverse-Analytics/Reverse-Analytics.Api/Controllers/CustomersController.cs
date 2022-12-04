@@ -60,7 +60,7 @@ namespace Reverse_Analytics.Api.Controllers
             if (createdCustomer is null)
                 return StatusCode(500, "Something went wrong while creating new customer. Please, try again later.");
 
-            return Ok(createdCustomer);
+            return Created("Customer was successfully created.", createdCustomer);
         }
 
         [HttpPut("{customerId}")]
@@ -119,7 +119,7 @@ namespace Reverse_Analytics.Api.Controllers
                 return StatusCode(500,
                         $"Something went wrong while adding address number for customer with id: {customerId}. Please, try again later.");
 
-            return Ok(createdAddress);
+            return Created("Address was successfully created", createdAddress);
         }
 
         [HttpPut("{customerId}/addresses/{addressId}")]
@@ -153,9 +153,6 @@ namespace Reverse_Analytics.Api.Controllers
         {
             var phones = await _phoneService.GetAllByPersonIdAsync(customerId);
 
-            if (phones is null || !phones.Any())
-                return Ok($"Customer with id: {customerId} does not have any phone numbers.");
-
             return Ok(phones);
         }
 
@@ -183,7 +180,7 @@ namespace Reverse_Analytics.Api.Controllers
                 return StatusCode(500, 
                     $"Something went wrong while adding phone number for customer with id: {customerId}. Please, try again later.");
 
-            return Ok(createdPhone);
+            return Created("Phone was successfully created.", createdPhone);
         }
 
         [HttpPut("{customerId}/phones/{phoneId}")]
@@ -245,7 +242,7 @@ namespace Reverse_Analytics.Api.Controllers
                 return StatusCode(500,
                         "Something went wrong while creating new Customer Debt. Please, try again later.");
 
-            return Ok(createdCustomerDebt);
+            return Created("Debt was successfully created.", createdCustomerDebt);
         }
 
         [HttpPut("{customerId}/debts/{debtId}")]

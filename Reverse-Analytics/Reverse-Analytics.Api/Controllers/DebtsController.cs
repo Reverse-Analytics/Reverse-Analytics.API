@@ -44,12 +44,10 @@ namespace Reverse_Analytics.Api.Controllers
             var createdDebt = await _debtService.CreateDebtAsync(debtToCreate);
 
             if (createdDebt is null)
-            {
                 return StatusCode(500,
                     "Something went wrong while creating new Debt. Please, try again later.");
-            }
 
-            return Ok(createdDebt);
+            return Created("Debt was sucessfully created.", createdDebt);
         }
 
         [HttpPut("{id}")]

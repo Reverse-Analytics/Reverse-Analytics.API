@@ -43,7 +43,11 @@ namespace Reverse_Analytics.Api.Controllers
         {
             var createdAddress = await _addressService.CreateAddressAsync(addressToCreate);
 
-            return Ok(createdAddress);
+            if (createdAddress is null)
+                return StatusCode(500,
+                    "Something went wrong while creating new Address. Please, try again later.");
+
+            return Created("Address was successfully created.", createdAddress);
         }
 
         [HttpPut("{id}")]

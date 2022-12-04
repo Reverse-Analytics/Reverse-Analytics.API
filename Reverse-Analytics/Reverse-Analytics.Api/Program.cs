@@ -23,6 +23,7 @@ builder.Host.UseSerilog();
 // Add services to the container.
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.RegisterDependencyInjection();
+builder.Services.ConfigureValidationFilter();
 
 // Identity
 builder.Services.Configure<CustomTokenOptions>(builder.Configuration.GetSection("TokenOptions"));

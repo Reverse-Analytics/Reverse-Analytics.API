@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Reverse_Analytics.Api.Filters;
 using ReverseAnalytics.Domain.Interfaces.Repositories;
 using ReverseAnalytics.Infrastructure.Configurations;
 using ReverseAnalytics.Infrastructure.Persistence;
@@ -70,6 +72,15 @@ namespace Reverse_Analytics.Api.Extensions
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenOptions.SecurityKey))
                     };
                 });
+
+            return services;
+        }
+
+        public static IServiceCollection ConfigureValidationFilter(this IServiceCollection services)
+        {
+            services.Configure<ApiBehaviorOptions>(options =>
+                options.SuppressModelStateInvalidFilter = true);
+            services.AddScoped<ValidationFilterAttribute>();
 
             return services;
         }

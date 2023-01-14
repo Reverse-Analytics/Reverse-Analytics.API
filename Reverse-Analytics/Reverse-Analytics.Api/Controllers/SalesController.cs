@@ -26,7 +26,7 @@ namespace Reverse_Analytics.Api.Controllers
         #region CRUD
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SaleDto>>> GetSalesAsync(int pageSize = pageSize, int pageNumber = 1)
+        public async Task<ActionResult<IEnumerable<SaleDto>>> GetSalesAsync(int pageSize = PageSize, int pageNumber = 1)
         {
             var sales = await _saleService.GetAllSalesAsync(pageSize, pageNumber);
 

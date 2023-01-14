@@ -6,7 +6,7 @@ using ReverseAnalytics.Domain.Interfaces.Services;
 
 namespace Reverse_Analytics.Api.Controllers
 {
-    [Authorize]
+    // [Authorize]
     [ApiController]
     [Route("api/categories")]
     public class ProductCategoriesController : ControllerBase

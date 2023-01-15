@@ -1,4 +1,6 @@
-﻿namespace ReverseAnalytics.Domain.DTOs.Product
+﻿using ReverseAnalytics.Domain.DTOs.ProductCategory;
+
+namespace ReverseAnalytics.Domain.DTOs.Product
 {
     public class ProductDto
     {
@@ -10,6 +12,6 @@
         public decimal SalePrice { get; set; }
 
         public int CategoryId { get; set; }
-        public virtual Entities.ProductCategory Category { get; set; }
+        public virtual ProductCategoryDto Category { get; set; }
     }
 }

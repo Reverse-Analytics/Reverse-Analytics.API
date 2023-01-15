@@ -5,6 +5,7 @@ namespace ReverseAnalytics.Domain.DTOs.Product
     public class ProductDto
     {
         public int Id { get; set; }
+        public string ProductCode { get; set; } = string.Empty;
         public string ProductName { get; set; } = string.Empty;
         public double Volume { get; set; }
         public double Weight { get; set; }

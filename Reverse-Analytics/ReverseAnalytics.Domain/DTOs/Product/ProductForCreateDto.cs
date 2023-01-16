@@ -2,6 +2,7 @@
 {
     public class ProductForCreateDto
     {
+        public string ProductCode { get; set; } = string.Empty;
         public string ProductName { get; set; } = string.Empty;
         public double Volume { get; set; }
         public double Weight { get; set; }

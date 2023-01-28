@@ -2,7 +2,7 @@
 using ReverseAnalytics.Domain.DTOs.Debt;
 using ReverseAnalytics.Domain.DTOs.Phone;
 
-namespace ReverseAnalytics.Domain.DTOs.CustomerPhoneDto
+namespace ReverseAnalytics.Domain.DTOs.Customer
 {
     public class CustomerDto
     {

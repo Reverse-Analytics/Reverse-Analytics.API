@@ -44,10 +44,10 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("TEXT");
 
-                    b.Property<double>("Latitude")
+                    b.Property<double?>("Latitude")
                         .HasColumnType("REAL");
 
-                    b.Property<double>("Longtitude")
+                    b.Property<double?>("Longtitude")
                         .HasColumnType("REAL");
 
                     b.Property<int>("PersonId")
@@ -75,6 +75,9 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("DebtDate")
+                        .HasColumnType("date");
+
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("date");
 
@@ -84,11 +87,11 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime?>("PaidDate")
+                        .HasColumnType("date");
+
                     b.Property<int>("PersonId")
                         .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("date");
 
                     b.HasKey("Id");
 
@@ -137,11 +140,6 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("TEXT");
 
-                    b.Property<double>("EnoughForDays")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("REAL")
-                        .HasDefaultValue(0.0);
-
                     b.Property<int>("InventoryId")
                         .HasColumnType("INTEGER");
 
@@ -174,7 +172,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<decimal?>("Balance")
+                    b.Property<decimal>("Balance")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("money")
                         .HasDefaultValue(0m);
@@ -285,10 +283,15 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                     b.Property<decimal>("SupplyPrice")
                         .HasColumnType("money");
 
+                    b.Property<int>("UnitOfMeasurement")
+                        .HasColumnType("INTEGER");
+
                     b.Property<double?>("Volume")
+                        .HasPrecision(2)
                         .HasColumnType("REAL");
 
                     b.Property<double?>("Weight")
+                        .HasPrecision(2)
                         .HasColumnType("REAL");
 
                     b.HasKey("Id");
@@ -345,11 +348,15 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<decimal?>("DiscountPercentage")
-                        .HasColumnType("TEXT");
+                    b.Property<double>("DiscountPercentage")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("REAL")
+                        .HasDefaultValue(0.0);
 
-                    b.Property<decimal?>("DiscountTotal")
-                        .HasColumnType("money");
+                    b.Property<decimal>("DiscountTotal")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("money")
+                        .HasDefaultValue(0m);
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("TEXT");
@@ -369,6 +376,11 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER")
                         .HasDefaultValue(3);
+
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(0);
 
                     b.Property<decimal>("TotalDue")
                         .HasColumnType("money");
@@ -395,6 +407,12 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("TEXT");
 
+                    b.Property<double>("Discount")
+                        .ValueGeneratedOnAdd()
+                        .HasPrecision(2)
+                        .HasColumnType("REAL")
+                        .HasDefaultValue(0.0);
+
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("TEXT");
 
@@ -411,10 +429,8 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<decimal>("UnitPrice")
+                        .HasPrecision(2)
                         .HasColumnType("money");
-
-                    b.Property<decimal?>("UnitPriceDiscount")
-                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -431,14 +447,15 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Comment")
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("TEXT");
-
-                    b.Property<decimal?>("DebtAmount")
-                        .HasColumnType("money");
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("TEXT");
@@ -446,19 +463,25 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("PaymentAmount")
-                        .HasColumnType("money");
-
-                    b.Property<DateTime?>("PurchaseDate")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("ReceivedBy")
+                        .HasMaxLength(250)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(0);
 
                     b.Property<int>("SupplierId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime>("SupplyDate")
+                        .HasColumnType("TEXT");
+
                     b.Property<decimal>("TotalDue")
+                        .HasColumnType("money");
+
+                    b.Property<decimal>("TotalPaid")
                         .HasColumnType("money");
 
                     b.HasKey("Id");
@@ -498,9 +521,6 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("money");
 
-                    b.Property<decimal?>("UnitPriceDiscount")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
@@ -514,13 +534,10 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                 {
                     b.HasBaseType("ReverseAnalytics.Domain.Entities.Person");
 
-                    b.Property<string>("ContactPerson")
-                        .HasMaxLength(250)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ContactPersonPhone")
-                        .HasMaxLength(250)
-                        .HasColumnType("TEXT");
+                    b.Property<double>("Discount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("REAL")
+                        .HasDefaultValue(0.0);
 
                     b.ToTable("Customer", (string)null);
                 });
@@ -557,7 +574,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.InventoryDetail", b =>
                 {
                     b.HasOne("ReverseAnalytics.Domain.Entities.Inventory", "Inventory")
-                        .WithMany("Products")
+                        .WithMany("Details")
                         .HasForeignKey("InventoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -675,7 +692,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Inventory", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("Details");
                 });
 
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Person", b =>

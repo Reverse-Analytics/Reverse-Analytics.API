@@ -5,7 +5,6 @@ using Newtonsoft.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
 using ReverseAnalytics.Infrastructure.Persistence;
 using ReverseAnalytics.Infrastructure.Configurations;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Reverse_Analytics.Api.Middlewares;
 
 Log.Logger = new LoggerConfiguration()

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ReverseAnalytics.Domain.DTOs.CustomerPhoneDto;
+using ReverseAnalytics.Domain.DTOs.Customer;
 using ReverseAnalytics.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using ReverseAnalytics.Domain.DTOs.Phone;

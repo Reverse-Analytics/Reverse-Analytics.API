@@ -27,7 +27,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
                 .IsRequired();
             builder.Property(sd => sd.Discount)
                 .HasPrecision(2)
-                .IsRequired(false);
+                .HasDefaultValue(0);
         }
     }
 }

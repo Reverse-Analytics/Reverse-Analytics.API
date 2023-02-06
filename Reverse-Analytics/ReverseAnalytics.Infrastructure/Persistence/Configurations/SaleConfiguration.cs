@@ -35,9 +35,9 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
                 .IsRequired();
             builder.Property(s => s.DiscountTotal)
                 .HasColumnType("money")
-                .IsRequired(false);
+                .HasDefaultValue(0);
             builder.Property(s => s.DiscountPercentage)
-                .IsRequired(false);
+                .HasDefaultValue(0);
             builder.Property(s => s.SaleType)
                 .HasDefaultValue(SaleType.Other)
                 .IsRequired();

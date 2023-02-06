@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Reverse_Analytics.Api.Filters;
 using ReverseAnalytics.Domain.DTOs.Product;
-using ReverseAnalytics.Domain.Entities;
-using ReverseAnalytics.Domain.Exceptions;
 using ReverseAnalytics.Domain.Interfaces.Services;
 
 namespace Reverse_Analytics.Api.Controllers
@@ -13,154 +12,63 @@ namespace Reverse_Analytics.Api.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _service;
-        private readonly ILogger<ProductsController> _logger;
-        const int pageSize = 20;
 
-        public ProductsController(ILogger<ProductsController> logger, IProductService service)
+        private const int PageSize = 15;
+        public ProductsController(IProductService service)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _service = service ?? throw new ArgumentNullException(nameof(service));
+            _service = service;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts(string? searchString, int? categoryId, int pageSize = pageSize, int pageNumber = 1)
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProductsAsync(string? searchString, int? categoryId, int pageSize = PageSize, int pageNumber = 1)
         {
-            try
-            {
-                var products = await _service.GetProductsAsync(searchString, categoryId, pageSize, pageNumber);
+            var products = await _service.GetProductsAsync(searchString, categoryId, pageSize, pageNumber);
 
-                if (products is null)
-                {
-                    return NotFound("No products were found.");
-                }
-
-                return Ok(products);
-            }
-            catch(Exception ex)
-            {
-                _logger.LogError(500, "Error retrieving products.", ex.Message);
-
-                return StatusCode(500, "There was an error retrieving products.");
-            }
+            return Ok(products);
         }
 
-        // GET api/<ProductController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetProduct(int id)
+        public async Task<ActionResult<ProductDto>> GetProductByIdAsync(int id)
         {
-            try
-            {
-                var product = await _service.GetProductByIdAsync(id);
+            var product = await _service.GetProductByIdAsync(id);
 
-                if(product is null)
-                {
-                    return NotFound($"There is no product with id: {id}.");
-                }
+            if (product is null)
+                return NotFound($"Product with id: {id} does not exist.");
 
-                return Ok(product);
-            }
-            catch(Exception ex)
-            {
-                _logger.LogError($"Error while retrieving product with id: {id}", ex.Message);
-
-                return StatusCode(500, $"There was an error retrieving product with id: {id}.");
-            }
+            return Ok(product);
         }
 
-        // POST api/<ProductController>
         [HttpPost]
-        public async Task<ActionResult<ProductDto>> Post(ProductForCreateDto productToCreate)
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<ActionResult<ProductDto>> CreateProductAsync([FromBody] ProductForCreateDto productToCreate)
         {
-            try
-            {
-                if(productToCreate is null)
-                {
-                    return BadRequest("Product cannot be null.");
-                }
+            var product = await _service.CreateProductAsync(productToCreate);
 
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest("Product is not valid for creation.");
-                }
+            if (product is null)
+                return StatusCode(500, 
+                    "Something went wrong while creating new Product. Please, try again later.");
 
-                var product = await _service.CreateProductAsync(productToCreate);
-
-                if(product is null)
-                {
-                    return StatusCode(500, "Unknown error has occured while creating new product.");
-                }
-
-                return Ok(product);
-            }
-            catch(Exception ex)
-            {
-                _logger.LogError($"Error while creating a new product.", ex.Message);
-
-                return StatusCode(500, "There was an error creating a new product.");
-            }
+            return Created("Product was sucessfully created.", product);
         }
 
-        // PUT api/<ProductController>/5
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, ProductForUpdateDto productToUpdate)
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<ActionResult> UpdateProductAsync([FromBody] ProductForUpdateDto productToUpdate, int id)
         {
-            try
-            {
-                if (productToUpdate is null)
-                {
-                    return BadRequest("Product cannot be null.");
-                }
+            if (productToUpdate.Id != id)
+                return BadRequest($"Product id: {productToUpdate.Id} does not match with route id: {id}.");
 
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest("Product is not valid for updating.");
-                }
+            await _service.UpdateProductAsync(productToUpdate);
 
-                if (productToUpdate.Id != id)
-                {
-                    return BadRequest($"Product id: {productToUpdate.Id} does not match with route id: {id}.");
-                }
-
-                await _service.UpdateProductAsync(productToUpdate);
-                
-                return NoContent();
-            }
-            catch(NotFoundException ex)
-            {
-                _logger.LogError($"Unable to find product with id: {id} to update.", ex.Message);
-
-                return NotFound($"Product with id: {id} does not exist.");
-            }
-            catch(Exception ex)
-            {
-                _logger.LogError($"Error updating product with id: {id}.", ex.Message);
-
-                return StatusCode(500, "Unknown error has occured while updating the product.");
-            }
+            return NoContent();
         }
 
-        // DELETE api/<ProductController>/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> DeleteProductAsync(int id)
         {
-            try
-            {
-                await _service.DeleteProductAsync(id);
-                
-                return NoContent();
-            }
-            catch(NotFoundException ex)
-            {
-                _logger.LogError($"Unable to find product with id: {id} to delete.", ex.Message);
+            await _service.DeleteProductAsync(id);
 
-                return NotFound($"Product with id: {id} does not exist.");
-            }
-            catch(Exception ex)
-            {
-                _logger.LogError($"Error deleting product with id: {id}.", ex.Message);
-
-                return StatusCode(500, "Unknown error has occured while deleting the product.");
-            }
+            return NoContent();
         }
     }
 }

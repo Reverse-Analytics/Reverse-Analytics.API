@@ -12,7 +12,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
 
             builder.HasKey(i => i.Id);
 
-            builder.HasMany(i => i.Products)
+            builder.HasMany(i => i.Details)
                 .WithOne(ip => ip.Inventory)
                 .HasForeignKey(ip => ip.InventoryId);
 

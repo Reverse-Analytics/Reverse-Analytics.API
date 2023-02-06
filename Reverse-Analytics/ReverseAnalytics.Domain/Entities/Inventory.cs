@@ -6,13 +6,13 @@ namespace ReverseAnalytics.Domain.Entities
     {
         public string Name { get; set; }
 
-        public virtual ICollection<InventoryDetail> Products { get; set; }
+        public virtual ICollection<InventoryDetail> Details { get; set; }
 
         public Inventory(string name)
         {
             Name = name;
 
-            Products = new List<InventoryDetail>();
+            Details = new List<InventoryDetail>();
         }
     }
 }

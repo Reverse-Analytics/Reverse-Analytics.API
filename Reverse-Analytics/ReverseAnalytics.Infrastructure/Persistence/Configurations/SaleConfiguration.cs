@@ -33,14 +33,16 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
             builder.Property(s => s.TotalPaid)
                 .HasColumnType("money")
                 .IsRequired();
-            builder.Property(s => s.DiscountTotal)
+            builder.Property(s => s.Discount)
                 .HasColumnType("money")
-                .IsRequired(false);
+                .HasDefaultValue(0);
             builder.Property(s => s.DiscountPercentage)
-                .IsRequired(false);
+                .HasDefaultValue(0);
             builder.Property(s => s.SaleType)
                 .HasDefaultValue(SaleType.Other)
                 .IsRequired();
+            builder.Property(s => s.Status)
+                .HasDefaultValue(TransactionStatus.Finished);
         }
     }
 }

@@ -9,7 +9,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence
         public ApplicationIdentityDbContext(DbContextOptions<ApplicationIdentityDbContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
+            Database.Migrate();
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

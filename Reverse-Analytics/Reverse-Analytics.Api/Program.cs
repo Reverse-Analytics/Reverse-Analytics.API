@@ -5,14 +5,14 @@ using Newtonsoft.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
 using ReverseAnalytics.Infrastructure.Persistence;
 using ReverseAnalytics.Infrastructure.Configurations;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Reverse_Analytics.Api.Middlewares;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
     .WriteTo.Console()
     .WriteTo.File("logs/logs.txt", rollingInterval: RollingInterval.Day)
-    .WriteTo.File("logs/error_logs.txt", Serilog.Events.LogEventLevel.Error, rollingInterval: RollingInterval.Day)
-    .WriteTo.File("logs/error_logs.txt", Serilog.Events.LogEventLevel.Fatal, rollingInterval: RollingInterval.Day)
+    .WriteTo.File("logs/error_.txt", Serilog.Events.LogEventLevel.Error, rollingInterval: RollingInterval.Day)
+    .WriteTo.File("logs/error_.txt", Serilog.Events.LogEventLevel.Fatal, rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +22,7 @@ builder.Host.UseSerilog();
 // Add services to the container.
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.RegisterDependencyInjection();
+builder.Services.ConfigureValidationFilter();
 
 // Identity
 builder.Services.Configure<CustomTokenOptions>(builder.Configuration.GetSection("TokenOptions"));
@@ -61,6 +62,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
     app.SeedDatabase();
 }
+
+app.UseMiddleware<ErrorHandlerMiddeware>();
 
 app.UseHttpsRedirection();
 

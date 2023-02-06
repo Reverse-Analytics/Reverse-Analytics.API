@@ -1,10 +1,7 @@
-﻿using ReverseAnalytics.Domain.Common;
-
-namespace ReverseAnalytics.Domain.Entities
+﻿namespace ReverseAnalytics.Domain.Entities
 {
     public class Supplier : Person
     {
-
         public virtual ICollection<Supply> Supplies { get; set; }
 
         public Supplier()

@@ -20,12 +20,15 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
             builder.Property(d => d.Amount)
                 .HasColumnType("money")
                 .IsRequired();
-            builder.Property(d => d.StartDate)
+            builder.Property(d => d.DebtDate)
                 .HasColumnType("date")
                 .IsRequired();
             builder.Property(d => d.DueDate)
                 .HasColumnType("date")
                 .IsRequired();
+            builder.Property(d => d.PaidDate)
+                .HasColumnType("date")
+                .IsRequired(false);
         }
     }
 }

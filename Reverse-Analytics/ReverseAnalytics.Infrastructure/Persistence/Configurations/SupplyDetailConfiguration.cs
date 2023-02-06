@@ -24,8 +24,6 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
             builder.Property(p => p.UnitPrice)
                 .HasColumnType("money")
                 .IsRequired();
-            builder.Property(p => p.UnitPriceDiscount)
-                .IsRequired(false);
         }
     }
 }

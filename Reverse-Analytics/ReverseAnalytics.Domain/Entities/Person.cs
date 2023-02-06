@@ -6,7 +6,7 @@ namespace ReverseAnalytics.Domain.Entities
     {
         public string FullName { get; set; }
         public string? CompanyName { get; set; }
-        public decimal? Balance { get; set; }
+        public decimal Balance { get; set; }
         public bool IsActive { get; set; }
 
         public virtual ICollection<Address> Addresses { get; set; }

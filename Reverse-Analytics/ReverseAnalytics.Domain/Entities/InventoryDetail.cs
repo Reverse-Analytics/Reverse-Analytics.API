@@ -5,7 +5,6 @@ namespace ReverseAnalytics.Domain.Entities
     public class InventoryDetail : BaseAuditableEntity
     {
         public double ProductsRemained { get; set; }
-        public double EnoughForDays { get; set; }
 
         public int InventoryId { get; set; }
         public Inventory Inventory { get; set; }

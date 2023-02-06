@@ -70,7 +70,7 @@ namespace ReverseAnalytics.Services
             }
         }
 
-        public async Task<SupplyDto> CreateSupplyAsync(SupplyForCreate supplyToCreate)
+        public async Task<SupplyDto> CreateSupplyAsync(SupplyForCreateDto supplyToCreate)
         {
             try
             {
@@ -89,7 +89,7 @@ namespace ReverseAnalytics.Services
             }
         }
 
-        public async Task UpdateSupplyAsync(SupplyForUpdate supplyToUpdate)
+        public async Task UpdateSupplyAsync(SupplyForUpdateDto supplyToUpdate)
         {
             try
             {

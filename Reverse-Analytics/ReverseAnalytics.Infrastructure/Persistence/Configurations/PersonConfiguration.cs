@@ -33,11 +33,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
                 .IsRequired(false);
             builder.Property(p => p.Balance)
                 .HasColumnType("money")
-                .HasDefaultValue(0m)
-                .IsRequired(false);
-            builder.Property(p => p.IsActive)
-                .HasDefaultValue(true)
-                .IsRequired(true);
+                .HasDefaultValue(0m);
         }
     }
 }

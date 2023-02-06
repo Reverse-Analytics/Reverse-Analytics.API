@@ -13,16 +13,13 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
             builder.HasKey(ip => ip.Id);
 
             builder.HasOne(ip => ip.Inventory)
-                .WithMany(i => i.Products)
+                .WithMany(i => i.Details)
                 .HasForeignKey(ip => ip.InventoryId);
             builder.HasOne(ip => ip.Product)
                 .WithMany(p => p.InventoryProducts)
                 .HasForeignKey(ip => ip.ProductId);
 
             builder.Property(ip => ip.ProductsRemained)
-                .HasDefaultValue(0)
-                .IsRequired();
-            builder.Property(ip => ip.EnoughForDays)
                 .HasDefaultValue(0)
                 .IsRequired();
         }

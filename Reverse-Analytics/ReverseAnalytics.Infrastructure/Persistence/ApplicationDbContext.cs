@@ -23,12 +23,12 @@ namespace ReverseAnalytics.Infrastructure.Persistence
         public virtual DbSet<Inventory> Inventories { get; set; }
         public virtual DbSet<InventoryDetail> InventoryDetails { get; set; }
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, 
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
                                     AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor)
             : base(options)
         {
             _auditableEntitySaveChangesInterceptor = auditableEntitySaveChangesInterceptor;
-            Database.EnsureCreated();
+            Database.Migrate();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

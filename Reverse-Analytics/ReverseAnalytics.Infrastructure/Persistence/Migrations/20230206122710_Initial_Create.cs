@@ -35,7 +35,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                     FullName = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
                     CompanyName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
                     Balance = table.Column<decimal>(type: "money", nullable: false, defaultValue: 0m),
-                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: true),
+                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
                     Created = table.Column<DateTime>(type: "TEXT", nullable: false),
                     CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
                     LastModified = table.Column<DateTime>(type: "TEXT", nullable: true),
@@ -96,7 +96,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Discount = table.Column<double>(type: "REAL", nullable: false, defaultValue: 0.0)
+                    Discount = table.Column<double>(type: "REAL", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -220,7 +220,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                     TotalDue = table.Column<decimal>(type: "money", nullable: false),
                     TotalPaid = table.Column<decimal>(type: "money", nullable: false),
                     DiscountPercentage = table.Column<double>(type: "REAL", nullable: false, defaultValue: 0.0),
-                    DiscountTotal = table.Column<decimal>(type: "money", nullable: false, defaultValue: 0m),
+                    Discount = table.Column<decimal>(type: "money", nullable: false, defaultValue: 0m),
                     SaleDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     SaleType = table.Column<int>(type: "INTEGER", nullable: false, defaultValue: 3),
                     Status = table.Column<int>(type: "INTEGER", nullable: false, defaultValue: 0),
@@ -309,7 +309,6 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Quantity = table.Column<int>(type: "INTEGER", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "money", precision: 2, nullable: false),
-                    Discount = table.Column<double>(type: "REAL", precision: 2, nullable: false, defaultValue: 0.0),
                     SaleId = table.Column<int>(type: "INTEGER", nullable: false),
                     ProductId = table.Column<int>(type: "INTEGER", nullable: false),
                     Created = table.Column<DateTime>(type: "TEXT", nullable: false),

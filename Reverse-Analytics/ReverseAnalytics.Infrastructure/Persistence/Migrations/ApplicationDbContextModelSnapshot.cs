@@ -193,9 +193,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(true);
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("TEXT");
@@ -348,15 +346,15 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<decimal>("Discount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("money")
+                        .HasDefaultValue(0m);
+
                     b.Property<double>("DiscountPercentage")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("REAL")
                         .HasDefaultValue(0.0);
-
-                    b.Property<decimal>("DiscountTotal")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("money")
-                        .HasDefaultValue(0m);
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("TEXT");
@@ -406,12 +404,6 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("TEXT");
-
-                    b.Property<double>("Discount")
-                        .ValueGeneratedOnAdd()
-                        .HasPrecision(2)
-                        .HasColumnType("REAL")
-                        .HasDefaultValue(0.0);
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("TEXT");
@@ -535,9 +527,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                     b.HasBaseType("ReverseAnalytics.Domain.Entities.Person");
 
                     b.Property<double>("Discount")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("REAL")
-                        .HasDefaultValue(0.0);
+                        .HasColumnType("REAL");
 
                     b.ToTable("Customer", (string)null);
                 });

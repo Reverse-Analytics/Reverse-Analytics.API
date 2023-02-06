@@ -10,7 +10,7 @@ namespace ReverseAnalytics.Domain.Entities
         public decimal TotalDue { get; set; }
         public decimal TotalPaid { get; set; }
         public double DiscountPercentage { get; set; }
-        public decimal DiscountTotal { get; set; }
+        public decimal Discount { get; set; }
         public DateTime SaleDate { get; set; }
         public SaleType SaleType { get; set; }
         public TransactionStatus Status { get; set; }

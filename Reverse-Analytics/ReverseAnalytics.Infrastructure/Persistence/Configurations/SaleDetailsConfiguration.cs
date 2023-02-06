@@ -25,9 +25,6 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
                 .HasColumnType("money")
                 .HasPrecision(2)
                 .IsRequired();
-            builder.Property(sd => sd.Discount)
-                .HasPrecision(2)
-                .HasDefaultValue(0);
         }
     }
 }

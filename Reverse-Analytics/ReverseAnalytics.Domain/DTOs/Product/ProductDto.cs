@@ -1,14 +1,16 @@
 ﻿using ReverseAnalytics.Domain.DTOs.ProductCategory;
+using ReverseAnalytics.Domain.Enums;
 
 namespace ReverseAnalytics.Domain.DTOs.Product
 {
     public class ProductDto
     {
         public int Id { get; set; }
-        public string ProductCode { get; set; } = string.Empty;
-        public string ProductName { get; set; } = string.Empty;
-        public double Volume { get; set; }
-        public double Weight { get; set; }
+        public string ProductName { get; set; }
+        public string ProductCode { get; set; }
+        public UnitOfMeasurement UnitOfMeasurement { get; set; }
+        public double? Volume { get; set; }
+        public double? Weight { get; set; }
         public decimal SupplyPrice { get; set; }
         public decimal SalePrice { get; set; }
 

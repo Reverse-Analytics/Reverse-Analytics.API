@@ -1,9 +1,8 @@
-﻿using ReverseAnalytics.Domain.DTOs.Supplier;
-using System.Transactions;
+﻿using System.Transactions;
 
 namespace ReverseAnalytics.Domain.DTOs.Supply
 {
-    public class SupplyDto
+    public class SupplyForUpdateDto
     {
         public int Id { get; set; }
         public string? ReceivedBy { get; set; }
@@ -14,6 +13,5 @@ namespace ReverseAnalytics.Domain.DTOs.Supply
         public TransactionStatus Status { get; set; }
 
         public int SupplierId { get; set; }
-        public SupplierDto Supplier { get; set; }
     }
 }

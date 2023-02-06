@@ -44,7 +44,7 @@ namespace Reverse_Analytics.Api.Controllers
 
         [HttpPost]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<ActionResult<SupplyDto>> CreateSupplyAsync([FromBody] SupplyForCreate supplyToCreate)
+        public async Task<ActionResult<SupplyDto>> CreateSupplyAsync([FromBody] SupplyForCreateDto supplyToCreate)
         {
             var createdSupply = await _service.CreateSupplyAsync(supplyToCreate);
 
@@ -57,7 +57,7 @@ namespace Reverse_Analytics.Api.Controllers
 
         [HttpPut("{supplyId}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<ActionResult> UpdateSupplyAsync([FromBody] SupplyForUpdate supplyToUpdate, int supplyId)
+        public async Task<ActionResult> UpdateSupplyAsync([FromBody] SupplyForUpdateDto supplyToUpdate, int supplyId)
         {
             if (supplyToUpdate.Id != supplyId)
                 return BadRequest($"Supply id: {supplyToUpdate.Id} does not match with route id: {supplyId}.");

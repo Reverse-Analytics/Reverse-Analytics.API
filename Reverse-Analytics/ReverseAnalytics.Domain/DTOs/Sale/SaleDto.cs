@@ -1,4 +1,6 @@
-﻿using ReverseAnalytics.Domain.Enums;
+﻿using ReverseAnalytics.Domain.DTOs.Customer;
+using ReverseAnalytics.Domain.DTOs.SaleDetail;
+using ReverseAnalytics.Domain.Enums;
 
 namespace ReverseAnalytics.Domain.DTOs.Sale
 {
@@ -9,11 +11,15 @@ namespace ReverseAnalytics.Domain.DTOs.Sale
         public string? Comment { get; set; }
         public decimal TotalDue { get; set; }
         public decimal TotalPaid { get; set; }
-        public decimal? DiscountPercentage { get; set; }
+        public double? DiscountPercentage { get; set; }
         public decimal? DiscountTotal { get; set; }
         public DateTime SaleDate { get; set; }
         public SaleType SaleType { get; set; }
+        public TransactionStatus Status { get; set; }
 
         public int CustomerId { get; set; }
+        public virtual CustomerDto Customer { get; set; }
+
+        public virtual ICollection<SaleDetailDto> Details { get; set; }
     }
 }

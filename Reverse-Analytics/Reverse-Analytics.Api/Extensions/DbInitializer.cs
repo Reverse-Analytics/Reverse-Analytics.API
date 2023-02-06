@@ -42,22 +42,22 @@ namespace Reverse_Analytics.Api.Extensions
         {
             try
             {
-                //CreateProductCategories(context);
-                //CreateProducts(context);
-                //CreateCustomers(context);
-                //CreateCustomerAddress(context);
-                //CreateCustomerPhones(context);
-                //CreateCustomerDebts(context);
-                //CreateSales(context);
-                //CreateSaleDetails(context);
-                //CreateSuppliers(context);
-                //CreateSupplierAddresses(context);
-                //CreateSupplierPhones(context);
-                //CreateSupplierDebts(context);
-                //CreateSupplies(context);
-                //CreateSupplyDetails(context);
-                //CreateInventories(context);
-                //CreateInventoryDetails(context);
+                CreateProductCategories(context);
+                CreateProducts(context);
+                CreateCustomers(context);
+                CreateCustomerAddress(context);
+                CreateCustomerPhones(context);
+                CreateCustomerDebts(context);
+                CreateSales(context);
+                CreateSaleDetails(context);
+                CreateSuppliers(context);
+                CreateSupplierAddresses(context);
+                CreateSupplierPhones(context);
+                CreateSupplierDebts(context);
+                CreateSupplies(context);
+                CreateSupplyDetails(context);
+                CreateInventories(context);
+                CreateInventoryDetails(context);
                 //CreateRoles(identityContext);
                 //CreateUsers(identityContext, userManager);
             }
@@ -84,7 +84,6 @@ namespace Reverse_Analytics.Api.Extensions
             }
 
             context.ProductCategories.AddRange(productCategories);
-            context.SaveChanges();
         }
 
         private static void CreateProducts(ApplicationDbContext context)
@@ -93,6 +92,7 @@ namespace Reverse_Analytics.Api.Extensions
 
             var categories = context.ProductCategories.ToList();
             List<Product> products = new();
+            var enumValues = Enum.GetValues(typeof(SaleType));
 
             foreach (var category in categories)
             {
@@ -100,22 +100,23 @@ namespace Reverse_Analytics.Api.Extensions
 
                 for (int i = 0; i < numberOfProducts; i++)
                 {
+                    UnitOfMeasurement uom = (UnitOfMeasurement)enumValues.GetValue(_random.Next(enumValues.Length));
                     products.Add(
                         new Product()
                         {
                             ProductCode = _faker.Commerce.ProductAdjective(),
                             ProductName = _faker.Commerce.ProductName(),
-                            Volume = (double)(_random.NextDouble() * _random.Next(1, 20)),
-                            Weight = (double)(_random.NextDouble() * _random.Next(1, 100)),
+                            Volume = (double)(_random.NextDouble() * _random.Next(1, 500)),
+                            Weight = (double)(_random.NextDouble() * _random.Next(1, 600)),
                             SupplyPrice = Math.Round((decimal)_random.NextDouble() * 500, 2),
                             SalePrice = Math.Round((decimal)_random.NextDouble() * 800, 2),
+                            UnitOfMeasurement = uom,
                             CategoryId = category.Id
                         });
                 }
             }
 
             context.Products.AddRange(products);
-            context.SaveChanges();
         }
 
         private static void CreateCustomers(ApplicationDbContext context)
@@ -123,23 +124,17 @@ namespace Reverse_Analytics.Api.Extensions
             if (context.Customers.Any()) return;
 
             // Customers
-            List<Customer> customers = new();
+            List<Customer> customers = context.Customers.ToList();
 
             for (int i = 0; i < 500; i++)
             {
-                customers.Add(
-                    new Customer()
-                    {
-                        FullName = _faker.Person.FullName,
-                        CompanyName = _faker.Company.CompanyName(),
-                        Balance = _faker.Random.Decimal(0, 10000),
-                        IsActive = true,
-                        ContactPerson = _faker.Person.FullName,
-                        ContactPersonPhone = _faker.Phone.PhoneNumber()
-                    });
+                customers[i].FullName = _faker.Person.FullName;
+                customers[i].CompanyName = _faker.Company.CompanyName();
+                customers[i].Balance = _faker.Random.Decimal(0, 10000);
+                customers[i].Discount = _faker.Random.Double(0, 100);
+                customers[i].IsActive = _faker.Random.Bool();
             }
 
-            context.Customers.AddRange(customers);
             context.SaveChanges();
         }
 
@@ -169,7 +164,6 @@ namespace Reverse_Analytics.Api.Extensions
             }
 
             context.Addresses.AddRange(customerAddresses);
-            context.SaveChanges();
         }
 
         private static void CreateCustomerPhones(ApplicationDbContext context)
@@ -187,13 +181,13 @@ namespace Reverse_Analytics.Api.Extensions
                         new Phone()
                         {
                             PersonId = customer.Id,
-                            PhoneNumber = _faker.Phone.PhoneNumber()
+                            PhoneNumber = _faker.Phone.PhoneNumber(),
+                            IsPrimary = i == 0,
                         });
                 }
             }
 
             context.Phones.AddRange(customersPhones);
-            context.SaveChanges();
         }
 
         private static void CreateCustomerDebts(ApplicationDbContext context)
@@ -212,14 +206,14 @@ namespace Reverse_Analytics.Api.Extensions
                         {
                             PersonId = customer.Id,
                             Amount = _faker.Finance.Amount(),
-                            StartDate = _faker.Date.Between(DateTime.Now.AddMonths(-12), DateTime.Now),
-                            DueDate = _faker.Date.Between(DateTime.Now.AddMonths(2), DateTime.Now.AddMonths(12))
+                            DebtDate = _faker.Date.Between(DateTime.Now.AddMonths(-12), DateTime.Now),
+                            DueDate = _faker.Date.Between(DateTime.Now.AddMonths(2), DateTime.Now.AddMonths(12)),
+                            PaidDate = _faker.Date.Between(DateTime.Now.AddMonths(-12), DateTime.Now)
                         });
                 }
             }
 
             context.Debts.AddRange(supplierDebts);
-            context.SaveChanges();
         }
 
         private static void CreateSales(ApplicationDbContext context)
@@ -229,6 +223,7 @@ namespace Reverse_Analytics.Api.Extensions
             var customers = context.Customers.ToList();
             List<Sale> orders = new List<Sale>();
             var enumValues = Enum.GetValues(typeof(SaleType));
+            var statuses = Enum.GetValues(typeof(TransactionStatus));
 
             foreach (var customer in customers)
             {
@@ -238,9 +233,10 @@ namespace Reverse_Analytics.Api.Extensions
                 {
                     var totalDue = decimal.Round(_faker.Random.Decimal(10, 5000), 2);
                     var totalPaid = decimal.Round(_faker.Random.Decimal(0, totalDue), 2);
-                    var discountPercentage = decimal.Round(_faker.Random.Decimal(0, 100), 2);
-                    var discountTotal = decimal.Round((totalDue * discountPercentage) / 100, 2);
+                    var discountPercentage = _faker.Random.Double(0, 100);
+                    var discountTotal = decimal.Round((totalDue * (decimal)discountPercentage) / 100, 2);
                     SaleType type = (SaleType)enumValues.GetValue(_random.Next(enumValues.Length));
+                    TransactionStatus status = (TransactionStatus)statuses.GetValue(_random.Next(statuses.Length));
                     var saleDate = _faker.Date.Between(DateTime.Now.AddYears(-1), DateTime.Now.AddYears(1));
 
                     orders.Add(
@@ -252,15 +248,15 @@ namespace Reverse_Analytics.Api.Extensions
                             TotalDue = totalDue,
                             TotalPaid = totalPaid,
                             DiscountPercentage = discountPercentage,
-                            DiscountTotal = discountTotal,
+                            Discount = discountTotal,
                             Comment = _faker.Lorem.Sentence(null, 50),
+                            Status = status,
                             CustomerId = customer.Id
                         });
                 }
             }
 
             context.Sales.AddRange(orders);
-            context.SaveChanges();
         }
 
         private static void CreateSaleDetails(ApplicationDbContext context)
@@ -282,7 +278,6 @@ namespace Reverse_Analytics.Api.Extensions
                         {
                             Quantity = _random.Next(1, 20),
                             UnitPrice = decimal.Round(_faker.Random.Decimal(5, 500), 2),
-                            UnitPriceDiscount = decimal.Round(_faker.Random.Decimal(0, 100), 2),
                             SaleId = sale.Id,
                             ProductId = products[_random.Next(0, products.Count)]?.Id ?? 1
                         });
@@ -290,7 +285,6 @@ namespace Reverse_Analytics.Api.Extensions
             }
 
             context.SaleDetails.AddRange(orderItems);
-            context.SaveChanges();
         }
 
         private static void CreateSuppliers(ApplicationDbContext context)
@@ -312,7 +306,6 @@ namespace Reverse_Analytics.Api.Extensions
             }
 
             context.Suppliers.AddRange(suppliers);
-            context.SaveChanges();
         }
 
         private static void CreateSupplierAddresses(ApplicationDbContext context)
@@ -339,7 +332,6 @@ namespace Reverse_Analytics.Api.Extensions
             }
 
             context.Addresses.AddRange(supplierAddresses);
-            context.SaveChanges();
         }
 
         private static void CreateSupplierPhones(ApplicationDbContext context)
@@ -363,7 +355,6 @@ namespace Reverse_Analytics.Api.Extensions
             }
 
             context.Phones.AddRange(supplierPhones);
-            context.SaveChanges();
         }
 
         private static void CreateSupplierDebts(ApplicationDbContext context)
@@ -382,14 +373,13 @@ namespace Reverse_Analytics.Api.Extensions
                         {
                             PersonId = supplier.Id,
                             Amount = _faker.Finance.Amount(),
-                            StartDate = _faker.Date.Between(DateTime.Now.AddMonths(-12), DateTime.Now),
+                            DebtDate = _faker.Date.Between(DateTime.Now.AddMonths(-12), DateTime.Now),
                             DueDate = _faker.Date.Between(DateTime.Now.AddMonths(2), DateTime.Now.AddMonths(12))
                         });
                 }
             }
 
             context.Debts.AddRange(supplierDebts);
-            context.SaveChanges();
         }
 
         private static void CreateSupplies(ApplicationDbContext context)
@@ -398,6 +388,7 @@ namespace Reverse_Analytics.Api.Extensions
 
             var suppliers = context.Suppliers.ToList();
             List<Supply> supplies = new();
+            var statuses = Enum.GetValues(typeof(TransactionStatus));
 
             foreach (var supplier in suppliers)
             {
@@ -407,23 +398,23 @@ namespace Reverse_Analytics.Api.Extensions
                 {
                     var totalDue = decimal.Round(_faker.Random.Decimal(10, 5000), 2);
                     var paidAmount = decimal.Round(_faker.Random.Decimal(100, totalDue), 2);
-                    var debtAmount = totalDue - paidAmount;
+                    TransactionStatus status = (TransactionStatus)statuses.GetValue(_random.Next(statuses.Length));
 
                     supplies.Add(
                         new Supply()
                         {
                             TotalDue = totalDue,
-                            PaymentAmount = paidAmount,
-                            DebtAmount = debtAmount,
+                            TotalPaid = paidAmount,
                             ReceivedBy = _faker.Name.FirstName(),
-                            PurchaseDate = _faker.Date.Between(new DateTime(DateTime.Now.Year, 1, 1), DateTime.Now),
+                            SupplyDate = _faker.Date.Between(new DateTime(DateTime.Now.Year, 1, 1), DateTime.Now),
+                            Comment = _faker.Lorem.Text(),
+                            Status = status,
                             SupplierId = supplier.Id
                         });
                 }
             }
 
             context.Supplies.AddRange(supplies);
-            context.SaveChanges();
         }
 
         private static void CreateSupplyDetails(ApplicationDbContext context)
@@ -444,7 +435,7 @@ namespace Reverse_Analytics.Api.Extensions
                     {
                         Quantity = _random.Next(1, 20),
                         UnitPrice = decimal.Round(_faker.Random.Decimal(5, 500), 2),
-                        UnitPriceDiscount = decimal.Round(_faker.Random.Decimal(0, 100), 2),
+
                         SupplyId = supply.Id,
                         ProductId = products[_random.Next(0, products.Count)]?.Id ?? 1
                     });
@@ -461,13 +452,12 @@ namespace Reverse_Analytics.Api.Extensions
 
             List<Inventory> inventories = new List<Inventory>();
 
-            for(int i = 0; i < 5; i++)
+            for (int i = 0; i < 5; i++)
             {
                 inventories.Add(new Inventory(_faker.Lorem.Word()));
             }
 
             context.Inventories.AddRange(inventories);
-            context.SaveChanges();
         }
 
         private static void CreateInventoryDetails(ApplicationDbContext context)
@@ -478,18 +468,17 @@ namespace Reverse_Analytics.Api.Extensions
             var products = context.Products.ToList();
             List<InventoryDetail> inventoryDetails = new List<InventoryDetail>();
 
-            foreach(var inventory in inventories)
+            foreach (var inventory in inventories)
             {
                 var randomProducts = GetRandomProducts(products);
 
-                foreach(var product in randomProducts)
+                foreach (var product in randomProducts)
                 {
                     inventoryDetails.Add(new InventoryDetail()
                     {
                         InventoryId = inventory.Id,
                         ProductId = product.Id,
-                        ProductsRemained = _faker.Random.Double(0, 5000),
-                        EnoughForDays = _faker.Random.Int(0, 30)
+                        ProductsRemained = _faker.Random.Double(0, 5000)
                     });
                 }
             }
@@ -498,61 +487,61 @@ namespace Reverse_Analytics.Api.Extensions
             context.SaveChanges();
         }
 
-        private static void CreateRoles(ApplicationIdentityDbContext context)
-        {
-            if (context.Roles.Any()) return;
+        //private static void CreateRoles(ApplicationIdentityDbContext context)
+        //{
+        //    if (context.Roles.Any()) return;
 
-            List<IdentityRole> roles = new();
+        //    List<IdentityRole> roles = new();
 
-            roles.Add(new IdentityRole
-            {
-                Name = "Visitor",
-                NormalizedName = "VISITOR"
-            });
-            roles.Add(new IdentityRole
-            {
-                Name = "Regular",
-                NormalizedName = "REGULAR"
-            });
-            roles.Add(new IdentityRole
-            {
-                Name = "Accountant",
-                NormalizedName = "ACCOUNTANT"
-            });
-            roles.Add(new IdentityRole
-            {
-                Name = "Manager",
-                NormalizedName = "MANAGER"
-            });
-            roles.Add(new IdentityRole
-            {
-                Name = "Administrator",
-                NormalizedName = "ADMINISTRATOR"
-            });
+        //    roles.Add(new IdentityRole
+        //    {
+        //        Name = "Visitor",
+        //        NormalizedName = "VISITOR"
+        //    });
+        //    roles.Add(new IdentityRole
+        //    {
+        //        Name = "Regular",
+        //        NormalizedName = "REGULAR"
+        //    });
+        //    roles.Add(new IdentityRole
+        //    {
+        //        Name = "Accountant",
+        //        NormalizedName = "ACCOUNTANT"
+        //    });
+        //    roles.Add(new IdentityRole
+        //    {
+        //        Name = "Manager",
+        //        NormalizedName = "MANAGER"
+        //    });
+        //    roles.Add(new IdentityRole
+        //    {
+        //        Name = "Administrator",
+        //        NormalizedName = "ADMINISTRATOR"
+        //    });
 
-            context.Roles.AddRange(roles);
-            context.SaveChanges();
-        }
+        //    context.Roles.AddRange(roles);
+        //    context.SaveChanges();
+        //}
 
-        private static void CreateUsers(ApplicationIdentityDbContext context, UserManager<IdentityUser> userManager)
-        {
-            if (context.Users.Any()) return;
+        //private static void CreateUsers(ApplicationIdentityDbContext context, UserManager<IdentityUser> userManager)
+        //{
+        //    if (context.Users.Any()) return;
 
-            var roles = context.Roles.ToList();
+        //    var roles = context.Roles.ToList();
 
-            for (int i = 0; i < 20; i++)
-            {
-                var role = roles.ElementAt(_random.Next(0, roles.Count));
+        //    for (int i = 0; i < 20; i++)
+        //    {
+        //        var role = roles.ElementAt(_random.Next(0, roles.Count));
 
-                var user = new IdentityUser
-                {
-                    UserName = _faker.Internet.UserName(),
-                };
+        //        var user = new IdentityUser
+        //        {
+        //            UserName = _faker.Internet.UserName(),
+        //        };
 
-                userManager.CreateAsync(user, $"qwerty{i}").Wait();
-                userManager.AddToRoleAsync(user, role.Name).Wait();
-            }
-        }
+        //        userManager.CreateAsync(user, $"qwerty{i}").Wait();
+        //        userManager.AddToRoleAsync(user, role.Name).Wait();
+        //    }
+        //}
 
         private static List<Product> GetRandomProducts(List<Product> products)
         {

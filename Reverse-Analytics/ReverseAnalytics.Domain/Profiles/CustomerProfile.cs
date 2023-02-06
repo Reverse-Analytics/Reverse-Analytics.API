@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ReverseAnalytics.Domain.DTOs.CustomerPhoneDto;
+using ReverseAnalytics.Domain.DTOs.Customer;
 using ReverseAnalytics.Domain.Entities;
 
 namespace ReverseAnalytics.Domain.Profiles

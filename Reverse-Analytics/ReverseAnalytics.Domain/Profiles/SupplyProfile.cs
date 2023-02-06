@@ -10,8 +10,8 @@ namespace ReverseAnalytics.Domain.Profiles
         {
             CreateMap<Supply, SupplyDto>();
             CreateMap<SupplyDto, Supply>();
-            CreateMap<SupplyForCreate, Supply>();
-            CreateMap<SupplyForUpdate, Supply>();
+            CreateMap<SupplyForCreateDto, Supply>();
+            CreateMap<SupplyForUpdateDto, Supply>();
         }
     }
 }

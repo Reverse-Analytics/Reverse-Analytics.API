@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using ReverseAnalytics.Domain.DTOs.CustomerPhoneDto;
+using ReverseAnalytics.Domain.DTOs.Address;
+using ReverseAnalytics.Domain.DTOs.Customer;
 using ReverseAnalytics.Domain.Entities;
 using ReverseAnalytics.Domain.Exceptions;
 using ReverseAnalytics.Domain.Interfaces.Repositories;
@@ -99,14 +100,36 @@ namespace ReverseAnalytics.Services
                 }
 
                 var createdEntity = _repository.Customer.Create(customerEntity);
-                await _repository.Customer.SaveChangesAsync();
-
+                
                 var customerDto = _mapper.Map<CustomerDto>(createdEntity);
 
                 if(customerDto is null)
                 {
                     throw new AutoMapperMappingException($"Could not map {typeof(Customer)} to {typeof(CustomerDto)}.");
                 }
+
+                if (!string.IsNullOrEmpty(customerToCreate.Address))
+                {
+                    var address = new Address()
+                    {
+                        AddressDetails = customerToCreate.Address,
+                    };
+
+                    _repository.Address.Create(address);
+                }
+
+                if (!string.IsNullOrEmpty(customerToCreate.PhoneNumber))
+                {
+                    var phone = new Phone()
+                    {
+                        PhoneNumber = customerToCreate.PhoneNumber,
+                        IsPrimary = true
+                    };
+
+                    _repository.Phone.Create(phone);
+                }
+
+                await _repository.Customer.SaveChangesAsync();
 
                 return customerDto;
             }
@@ -177,6 +200,5 @@ namespace ReverseAnalytics.Services
                 throw new Exception($"There was an error deleting Customer with id: {id}", ex);
             }
         }
-
     }
 }

@@ -6,7 +6,6 @@ namespace ReverseAnalytics.Domain.Entities
     {
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }
-        public decimal? UnitPriceDiscount { get; set; }
 
         public int SupplyId { get; set; }
         public virtual Supply Supply { get; set; }

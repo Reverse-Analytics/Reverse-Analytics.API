@@ -41,6 +41,8 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
             builder.Property(s => s.SaleType)
                 .HasDefaultValue(SaleType.Other)
                 .IsRequired();
+            builder.Property(s => s.Status)
+                .HasDefaultValue(TransactionStatus.Finished);
         }
     }
 }

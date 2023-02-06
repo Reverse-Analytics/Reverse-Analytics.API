@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ReverseAnalytics.Domain.Entities;
+using ReverseAnalytics.Domain.Enums;
 
 namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
 {
@@ -20,17 +21,20 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
                 .WithOne(pd => pd.Supply)
                 .HasForeignKey(pd => pd.SupplyId);
 
+            builder.Property(p => p.ReceivedBy)
+                .HasMaxLength(250)
+                .IsRequired(false);
+            builder.Property(p => p.Comment)
+                .HasMaxLength(500)
+                .IsRequired(false);
             builder.Property(p => p.TotalDue)
                 .HasColumnType("money")
                 .IsRequired();
-            builder.Property(p => p.PaymentAmount)
+            builder.Property(p => p.TotalPaid)
                 .HasColumnType("money")
                 .IsRequired();
-            builder.Property(p => p.DebtAmount)
-                .HasColumnType("money")
-                .IsRequired(false);
-            builder.Property(p => p.ReceivedBy)
-                .IsRequired(false);
+            builder.Property(p => p.Status)
+                .HasDefaultValue(TransactionStatus.Finished);
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using ReverseAnalytics.Domain.DTOs.Address;
-using ReverseAnalytics.Domain.DTOs.Debt;
-using ReverseAnalytics.Domain.DTOs.Phone;
+﻿using ReverseAnalytics.Domain.DTOs.Debt;
 
 namespace ReverseAnalytics.Domain.DTOs.Customer
 {
@@ -9,12 +7,12 @@ namespace ReverseAnalytics.Domain.DTOs.Customer
         public int Id { get; set; }
         public string FullName { get; set; }
         public string? CompanyName { get; set; }
+        public string? Address { get; set; }
+        public string? PhoneNumber { get; set; }
         public decimal Balance { get; set; }
         public bool IsActive { get; set; }
 
-        public ICollection<AddressDto> Addresses { get; set; }
         public ICollection<DebtDto> Debts { get; set; }
-        public ICollection<PhoneDto> Phones { get; set; }
 
         public CustomerDto()
         {

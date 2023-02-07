@@ -34,6 +34,8 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     FullName = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
                     CompanyName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
+                    PhoneNumber = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
+                    Address = table.Column<string>(type: "TEXT", maxLength: 250, nullable: true),
                     Balance = table.Column<decimal>(type: "money", nullable: false, defaultValue: 0m),
                     IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
                     Created = table.Column<DateTime>(type: "TEXT", nullable: false),
@@ -61,33 +63,6 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Product_Category", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Address",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    AddressDetails = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
-                    AddressLandMark = table.Column<string>(type: "TEXT", maxLength: 250, nullable: true),
-                    Longtitude = table.Column<double>(type: "REAL", nullable: true),
-                    Latitude = table.Column<double>(type: "REAL", nullable: true),
-                    PersonId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Created = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "TEXT", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Address", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Address_Person_PersonId",
-                        column: x => x.PersonId,
-                        principalTable: "Person",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -133,32 +108,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                         column: x => x.PersonId,
                         principalTable: "Person",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Phone",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    PhoneNumber = table.Column<string>(type: "TEXT", maxLength: 13, nullable: false),
-                    IsPrimary = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: false),
-                    PersonId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Created = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "TEXT", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Phone", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Phone_Person_PersonId",
-                        column: x => x.PersonId,
-                        principalTable: "Person",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -366,11 +316,6 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Address_PersonId",
-                table: "Address",
-                column: "PersonId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Debt_PersonId",
                 table: "Debt",
                 column: "PersonId");
@@ -384,11 +329,6 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                 name: "IX_Inventory_Detail_ProductId",
                 table: "Inventory_Detail",
                 column: "ProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Phone_PersonId",
-                table: "Phone",
-                column: "PersonId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Product_CategoryId",
@@ -429,16 +369,10 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Address");
-
-            migrationBuilder.DropTable(
                 name: "Debt");
 
             migrationBuilder.DropTable(
                 name: "Inventory_Detail");
-
-            migrationBuilder.DropTable(
-                name: "Phone");
 
             migrationBuilder.DropTable(
                 name: "Sale_Detail");

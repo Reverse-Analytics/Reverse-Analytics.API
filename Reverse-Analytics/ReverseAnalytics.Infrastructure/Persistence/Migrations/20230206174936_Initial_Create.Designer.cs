@@ -11,56 +11,13 @@ using ReverseAnalytics.Infrastructure.Persistence;
 namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230206122710_Initial_Create")]
+    [Migration("20230206174936_Initial_Create")]
     partial class Initial_Create
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.5");
-
-            modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Address", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("AddressDetails")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("AddressLandMark")
-                        .HasMaxLength(250)
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("TEXT");
-
-                    b.Property<double?>("Latitude")
-                        .HasColumnType("REAL");
-
-                    b.Property<double?>("Longtitude")
-                        .HasColumnType("REAL");
-
-                    b.Property<int>("PersonId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PersonId");
-
-                    b.ToTable("Address", (string)null);
-                });
 
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Debt", b =>
                 {
@@ -174,6 +131,10 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Address")
+                        .HasMaxLength(250)
+                        .HasColumnType("TEXT");
+
                     b.Property<decimal>("Balance")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("money")
@@ -203,47 +164,13 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("PhoneNumber")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.ToTable("Person", (string)null);
-                });
-
-            modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Phone", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("IsPrimary")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(false);
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("PersonId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PersonId");
-
-                    b.ToTable("Phone", (string)null);
                 });
 
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Product", b =>
@@ -541,23 +468,12 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                     b.ToTable("Supplier", (string)null);
                 });
 
-            modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Address", b =>
-                {
-                    b.HasOne("ReverseAnalytics.Domain.Entities.Person", "Person")
-                        .WithMany("Addresses")
-                        .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Person");
-                });
-
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Debt", b =>
                 {
                     b.HasOne("ReverseAnalytics.Domain.Entities.Person", "Person")
                         .WithMany("Debts")
                         .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
                     b.Navigation("Person");
@@ -580,17 +496,6 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                     b.Navigation("Inventory");
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Phone", b =>
-                {
-                    b.HasOne("ReverseAnalytics.Domain.Entities.Person", "Person")
-                        .WithMany("Phones")
-                        .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Person");
                 });
 
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Product", b =>
@@ -689,11 +594,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Person", b =>
                 {
-                    b.Navigation("Addresses");
-
                     b.Navigation("Debts");
-
-                    b.Navigation("Phones");
                 });
 
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Product", b =>

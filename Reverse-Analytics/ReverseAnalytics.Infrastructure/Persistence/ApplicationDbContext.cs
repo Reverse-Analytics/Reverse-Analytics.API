@@ -9,8 +9,6 @@ namespace ReverseAnalytics.Infrastructure.Persistence
     {
         private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
 
-        public virtual DbSet<Address> Addresses { get; set; }
-        public virtual DbSet<Phone> Phones { get; set; }
         public virtual DbSet<Debt> Debts { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductCategory> ProductCategories { get; set; }

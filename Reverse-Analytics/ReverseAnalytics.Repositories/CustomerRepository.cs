@@ -15,7 +15,7 @@ namespace ReverseAnalytics.Repositories
         public async Task<IEnumerable<Customer>> FindAllCustomers(string? searchString, int pageNumber, int pageSize)
         {
             var customers = _context.Customers
-                .Include(c => c.Addresses)
+                .Include(x => x.Debts)
                 .AsNoTracking()
                 .AsQueryable();
 

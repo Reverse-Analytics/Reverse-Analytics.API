@@ -12,23 +12,21 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
 
             builder.HasKey(p => p.Id);
 
-            builder.HasMany(p => p.Addresses)
-                .WithOne(a => a.Person)
-                .HasForeignKey(a => a.PersonId)
-                .OnDelete(DeleteBehavior.Cascade);
-            builder.HasMany(p => p.Phones)
-                .WithOne(pn => pn.Person)
-                .HasForeignKey(pn => pn.PersonId)
-                .OnDelete(DeleteBehavior.Cascade);
             builder.HasMany(p => p.Debts)
                 .WithOne(d => d.Person)
                 .HasForeignKey(d => d.PersonId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.SetNull);
 
             builder.Property(p => p.FullName)
                 .HasMaxLength(250)
                 .IsRequired();
             builder.Property(p => p.CompanyName)
+                .HasMaxLength(50)
+                .IsRequired(false);
+            builder.Property(p => p.Address)
+                .HasMaxLength(250)
+                .IsRequired(false);
+            builder.Property(p => p.PhoneNumber)
                 .HasMaxLength(50)
                 .IsRequired(false);
             builder.Property(p => p.Balance)

@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using ReverseAnalytics.Domain.DTOs.Address;
 using ReverseAnalytics.Domain.DTOs.Customer;
 using ReverseAnalytics.Domain.Entities;
 using ReverseAnalytics.Domain.Exceptions;
@@ -25,25 +24,25 @@ namespace ReverseAnalytics.Services
             {
                 var customers = await _repository.Customer.FindAllCustomers(searchString, pageNumber, pageSize);
 
-                if(customers is null)
+                if (customers is null)
                 {
                     return null;
                 }
 
-                var customerDtos = _mapper.Map<IEnumerable<CustomerDto>?>(customers);
+                var customerDtos = _mapper.Map<IEnumerable<CustomerDto>>(customers);
 
-                if(customerDtos is null)
+                if (customerDtos is null)
                 {
                     throw new AutoMapperMappingException($"Could not map {typeof(Customer)} entities to type {typeof(CustomerDto)}.");
                 }
 
                 return customerDtos;
             }
-            catch(AutoMapperMappingException ex)
+            catch (AutoMapperMappingException ex)
             {
                 throw ex;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception("There was an error retrieving Customers.", ex);
             }
@@ -55,29 +54,29 @@ namespace ReverseAnalytics.Services
             {
                 var customer = await _repository.Customer.FindByIdAsync(id);
 
-                if(customer is null)
+                if (customer is null)
                 {
                     throw new NotFoundException($"Customer with id: {id} was not found.");
                 }
 
                 var customerDto = _mapper.Map<CustomerDto>(customer);
 
-                if(customerDto is null)
+                if (customerDto is null)
                 {
                     throw new AutoMapperMappingException($"Could not map {typeof(Customer)} to type {typeof(CustomerDto)}");
                 }
 
                 return customerDto;
             }
-            catch(NotFoundException ex)
+            catch (NotFoundException ex)
             {
                 throw ex;
             }
-            catch(AutoMapperMappingException ex)
+            catch (AutoMapperMappingException ex)
             {
                 throw ex;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception($"There was an error retrieving customer with id: {id}.", ex);
             }
@@ -100,48 +99,27 @@ namespace ReverseAnalytics.Services
                 }
 
                 var createdEntity = _repository.Customer.Create(customerEntity);
-                
+
                 var customerDto = _mapper.Map<CustomerDto>(createdEntity);
 
-                if(customerDto is null)
+                if (customerDto is null)
                 {
                     throw new AutoMapperMappingException($"Could not map {typeof(Customer)} to {typeof(CustomerDto)}.");
-                }
-
-                if (!string.IsNullOrEmpty(customerToCreate.Address))
-                {
-                    var address = new Address()
-                    {
-                        AddressDetails = customerToCreate.Address,
-                    };
-
-                    _repository.Address.Create(address);
-                }
-
-                if (!string.IsNullOrEmpty(customerToCreate.PhoneNumber))
-                {
-                    var phone = new Phone()
-                    {
-                        PhoneNumber = customerToCreate.PhoneNumber,
-                        IsPrimary = true
-                    };
-
-                    _repository.Phone.Create(phone);
                 }
 
                 await _repository.Customer.SaveChangesAsync();
 
                 return customerDto;
             }
-            catch (ArgumentNullException ex) 
+            catch (ArgumentNullException ex)
             {
                 throw ex;
             }
-            catch(AutoMapperMappingException ex)
+            catch (AutoMapperMappingException ex)
             {
                 throw ex;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception("There was an error adding new Customer.", ex);
             }
@@ -151,14 +129,14 @@ namespace ReverseAnalytics.Services
         {
             try
             {
-                if(customerToUpdate is null)
+                if (customerToUpdate is null)
                 {
                     throw new ArgumentNullException(nameof(customerToUpdate));
                 }
 
                 var customerEntity = _mapper.Map<Customer>(customerToUpdate);
 
-                if(customerEntity is null)
+                if (customerEntity is null)
                 {
                     throw new AutoMapperMappingException($"Could not map {typeof(CustomerForUpdateDto)} to type {typeof(Customer)}.");
                 }
@@ -166,19 +144,19 @@ namespace ReverseAnalytics.Services
                 _repository.Customer.Update(customerEntity);
                 await _repository.Customer.SaveChangesAsync();
             }
-            catch(ArgumentNullException ex)
+            catch (ArgumentNullException ex)
             {
                 throw ex;
             }
-            catch(AutoMapperMappingException ex)
+            catch (AutoMapperMappingException ex)
             {
                 throw ex;
             }
-            catch(NotFoundException ex)
+            catch (NotFoundException ex)
             {
                 throw ex;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception("There was an error updating Customer.", ex);
             }
@@ -191,11 +169,11 @@ namespace ReverseAnalytics.Services
                 _repository.Customer.Delete(id);
                 await _repository.Customer.SaveChangesAsync();
             }
-            catch(NotFoundException ex)
+            catch (NotFoundException ex)
             {
                 throw ex;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception($"There was an error deleting Customer with id: {id}", ex);
             }

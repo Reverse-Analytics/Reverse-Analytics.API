@@ -15,7 +15,6 @@ namespace ReverseAnalytics.Repositories
         public async Task<IEnumerable<Debt>> FindAllByPersonIdAsync(int personId)
         {
             var debts = await _context.Debts
-                .Where(d => d.PersonId == personId)
                 .ToListAsync();
 
             return debts;
@@ -23,7 +22,7 @@ namespace ReverseAnalytics.Repositories
 
         public async Task<Debt> FindByPersonAndDebtIdAsync(int personId, int phoneId)
         {
-            var debt = await _context.Debts.FirstOrDefaultAsync(p => p.Id == phoneId && p.PersonId == personId);
+            var debt = await _context.Debts.FirstOrDefaultAsync(p => p.Id == phoneId);
 
             return debt;
         }

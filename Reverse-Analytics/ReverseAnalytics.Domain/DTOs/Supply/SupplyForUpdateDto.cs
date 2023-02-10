@@ -1,4 +1,4 @@
-﻿using System.Transactions;
+﻿using ReverseAnalytics.Domain.Enums;
 
 namespace ReverseAnalytics.Domain.DTOs.Supply
 {
@@ -10,7 +10,7 @@ namespace ReverseAnalytics.Domain.DTOs.Supply
         public DateTime? SupplyDate { get; set; }
         public decimal TotalDue { get; set; }
         public decimal TotalPaid { get; set; }
-        public TransactionStatus Status { get; set; }
+        public TransactionStatusType Status { get; set; }
 
         public int SupplierId { get; set; }
     }

@@ -12,11 +12,6 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
 
             builder.HasKey(p => p.Id);
 
-            builder.HasMany(p => p.Debts)
-                .WithOne(d => d.Person)
-                .HasForeignKey(d => d.PersonId)
-                .OnDelete(DeleteBehavior.SetNull);
-
             builder.Property(p => p.FullName)
                 .HasMaxLength(250)
                 .IsRequired();
@@ -31,6 +26,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
                 .IsRequired(false);
             builder.Property(p => p.Balance)
                 .HasColumnType("money")
+                .HasPrecision(2)
                 .HasDefaultValue(0m);
         }
     }

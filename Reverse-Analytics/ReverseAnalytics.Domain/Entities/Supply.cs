@@ -1,8 +1,16 @@
-﻿namespace ReverseAnalytics.Domain.Entities
+﻿using ReverseAnalytics.Domain.Common;
+using ReverseAnalytics.Domain.Enums;
+
+namespace ReverseAnalytics.Domain.Entities
 {
-    public class Supply : Transaction
+    public class Supply : BaseAuditableEntity
     {
         public string? ReceivedBy { get; set; }
+        public string? Comment { get; set; }
+        public DateTime SupplyDate { get; set; }
+        public decimal TotalDue { get; set; }
+        public decimal TotalPaid { get; set; }
+        public TransactionStatus Status { get; set; }
 
         public int SupplierId { get; set; }
         public virtual Supplier Supplier { get; set; }

@@ -1,11 +1,11 @@
-using Microsoft.AspNetCore.Identity;
+using Reverse_Analytics.Api.Extensions;
+using Serilog;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Reverse_Analytics.Api.Extensions;
-using Reverse_Analytics.Api.Middlewares;
-using ReverseAnalytics.Infrastructure.Configurations;
+using Microsoft.AspNetCore.Identity;
 using ReverseAnalytics.Infrastructure.Persistence;
-using Serilog;
+using ReverseAnalytics.Infrastructure.Configurations;
+using Reverse_Analytics.Api.Middlewares;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
@@ -45,7 +45,7 @@ builder.Services.AddControllers(options =>
     {
         // Use the default property (Pascal) casing
         options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
     })
     .AddXmlDataContractSerializerFormatters();
 

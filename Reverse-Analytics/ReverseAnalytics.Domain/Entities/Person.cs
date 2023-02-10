@@ -11,6 +11,8 @@ namespace ReverseAnalytics.Domain.Entities
         public decimal Balance { get; set; }
         public bool IsActive { get; set; }
 
+        public virtual ICollection<Debt> Debts { get; set; }
+
         public Person()
         {
         }
@@ -18,6 +20,8 @@ namespace ReverseAnalytics.Domain.Entities
         public Person(string fullName)
         {
             FullName = fullName;
+
+            Debts = new List<Debt>();
         }
     }
 }

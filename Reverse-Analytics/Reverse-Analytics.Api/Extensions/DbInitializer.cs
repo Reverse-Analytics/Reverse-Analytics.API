@@ -42,20 +42,20 @@ namespace Reverse_Analytics.Api.Extensions
         {
             try
             {
-                CreateProductCategories(context);
-                CreateProducts(context);
-                CreateCustomers(context);
-                CreateCustomerDebts(context);
-                CreateSales(context);
-                CreateSaleDetails(context);
-                CreateSuppliers(context);
-                CreateSupplierDebts(context);
-                CreateSupplies(context);
-                CreateSupplyDetails(context);
-                CreateInventories(context);
-                CreateInventoryDetails(context);
-                CreateRoles(identityContext);
-                CreateUsers(identityContext, userManager);
+                //CreateProductCategories(context);
+                //CreateProducts(context);
+                //CreateCustomers(context);
+                //CreateSales(context);
+                //CreateSaleDetails(context);
+                //CreateSaleDebts(context);
+                //CreateSuppliers(context);
+                //CreateSupplyDebts(context);
+                //CreateSupplies(context);
+                //CreateSupplyDetails(context);
+                //CreateInventories(context);
+                //CreateInventoryDetails(context);
+                //CreateRoles(identityContext);
+                //CreateUsers(identityContext, userManager);
             }
             catch (Exception ex)
             {
@@ -141,33 +141,6 @@ namespace Reverse_Analytics.Api.Extensions
             context.SaveChanges();
         }
 
-        private static void CreateCustomerDebts(ApplicationDbContext context)
-        {
-            var customers = context.Customers.ToList();
-            List<Debt> supplierDebts = new();
-
-            foreach (var customer in customers)
-            {
-                int numberOfDebts = _random.Next(0, 10);
-
-                for (int i = 0; i < numberOfDebts; i++)
-                {
-                    supplierDebts.Add(
-                        new Debt()
-                        {
-                            PersonId = customer.Id,
-                            Amount = _faker.Finance.Amount(50000, 5000000),
-                            DebtDate = _faker.Date.Between(DateTime.Now.AddMonths(-12), DateTime.Now),
-                            DueDate = _faker.Date.Between(DateTime.Now.AddMonths(2), DateTime.Now.AddMonths(12)),
-                            PaidDate = _faker.Date.Between(DateTime.Now.AddMonths(-12), DateTime.Now)
-                        });
-                }
-            }
-
-            context.Debts.AddRange(supplierDebts);
-            context.SaveChanges();
-        }
-
         private static void CreateSales(ApplicationDbContext context)
         {
             if (context.Sales.Any()) return;
@@ -189,15 +162,14 @@ namespace Reverse_Analytics.Api.Extensions
                     sales.Add(
                         new Sale()
                         {
-                            Receipt = _faker.Commerce.Random.Number(0, 5000).ToString(),
-                            Comment = _faker.Lorem.Sentence(null, 50),
-                            SaleType = _faker.Random.Enum<SaleType>(),
-                            SaleDate = _faker.Date.Between(DateTime.Now.AddYears(-1), DateTime.Now.AddYears(1)),
                             TotalDue = totalDue,
                             TotalPaid = totalPaid,
-                            DiscountPercentage = discountPercentage,
+                            TransactionDate = _faker.Date.Between(DateTime.Now.AddYears(-1), DateTime.Now),
+                            Comments = _faker.Lorem.Sentence(),
+                            Status = _faker.Random.Enum<TransactionStatusType>(),
+                            Receipt = _faker.Random.Guid().ToString(),
                             Discount = discountTotal,
-                            Status = _faker.Random.Enum<TransactionStatus>(),
+                            SaleType = _faker.Random.Enum<SaleType>(),
                             CustomerId = customer.Id
                         });
                 }
@@ -217,7 +189,7 @@ namespace Reverse_Analytics.Api.Extensions
 
             foreach (var sale in sales)
             {
-                var orderItemsCount = _random.Next(1, 30);
+                var orderItemsCount = _random.Next(1, 15);
 
                 for (int i = 0; i < orderItemsCount; i++)
                 {
@@ -233,6 +205,39 @@ namespace Reverse_Analytics.Api.Extensions
             }
 
             context.SaleDetails.AddRange(orderItems);
+            context.SaveChanges();
+        }
+
+        private static void CreateSaleDebts(ApplicationDbContext context)
+        {
+            if (context.Debts.Any()) return;
+
+            List<Debt> debts = new List<Debt>();
+            var sales = context.Sales.ToList();
+
+            foreach (var sale in sales)
+            {
+                if (_faker.Random.Bool())
+                {
+                    var totalAmount = sale.TotalDue - sale.TotalPaid;
+                    var remainedAmount = _faker.Random.Decimal(0, totalAmount);
+
+                    DateTime? paidDate = remainedAmount == 0 ? _faker.Date.Between(sale.TransactionDate, DateTime.Now.AddMonths(5)) : null;
+                    DebtStatus status = remainedAmount == 0 ? DebtStatus.Closed : DebtStatus.PaymentRequired;
+
+                    debts.Add(new Debt()
+                    {
+                        TotalAmount = totalAmount,
+                        Remained = remainedAmount,
+                        PaidDate = paidDate,
+                        DueDate = _faker.Date.Between(sale.TransactionDate, DateTime.Now.AddMonths(5)),
+                        Status = status,
+                        TransactionId = sale.Id
+                    });
+                }
+            }
+
+            context.Debts.AddRange(debts);
             context.SaveChanges();
         }
 
@@ -260,33 +265,6 @@ namespace Reverse_Analytics.Api.Extensions
             context.SaveChanges();
         }
 
-        private static void CreateSupplierDebts(ApplicationDbContext context)
-        {
-            var suppliers = context.Suppliers.ToList();
-            List<Debt> supplierDebts = new();
-
-            foreach (var supplier in suppliers)
-            {
-                int numberOfDebts = _random.Next(0, 10);
-
-                for (int i = 0; i < numberOfDebts; i++)
-                {
-                    supplierDebts.Add(
-                        new Debt()
-                        {
-                            PersonId = supplier.Id,
-                            Amount = _faker.Finance.Amount(),
-                            DebtDate = _faker.Date.Between(DateTime.Now.AddMonths(-12), DateTime.Now),
-                            DueDate = _faker.Date.Between(DateTime.Now.AddMonths(2), DateTime.Now.AddMonths(12)),
-                            PaidDate = _faker.Date.Between(DateTime.Now.AddMonths(-12), DateTime.Now)
-                        });
-                }
-            }
-
-            context.Debts.AddRange(supplierDebts);
-            context.SaveChanges();
-        }
-
         private static void CreateSupplies(ApplicationDbContext context)
         {
             if (context.Supplies.Any()) return;
@@ -301,17 +279,17 @@ namespace Reverse_Analytics.Api.Extensions
                 for (int i = 0; i < suppliesCount; i++)
                 {
                     var totalDue = decimal.Round(_faker.Random.Decimal(10, 5000), 2);
-                    var paidAmount = decimal.Round(_faker.Random.Decimal(100, totalDue), 2);
+                    var totalPaid = decimal.Round(_faker.Random.Decimal(100, totalDue), 2);
 
                     supplies.Add(
                         new Supply()
                         {
                             TotalDue = totalDue,
-                            TotalPaid = paidAmount,
+                            TotalPaid = totalPaid,
+                            TransactionDate = _faker.Date.Between(DateTime.Now.AddYears(-1), DateTime.Now),
+                            Comments = _faker.Lorem.Sentence(),
+                            Status = _faker.Random.Enum<TransactionStatusType>(),
                             ReceivedBy = _faker.Name.FirstName(),
-                            SupplyDate = _faker.Date.Between(new DateTime(DateTime.Now.Year, 1, 1), DateTime.Now),
-                            Comment = _faker.Lorem.Text(),
-                            Status = _faker.Random.Enum<TransactionStatus>(),
                             SupplierId = supplier.Id
                         });
                 }
@@ -331,7 +309,7 @@ namespace Reverse_Analytics.Api.Extensions
 
             foreach (var supply in supplies)
             {
-                int suppliesCount = _random.Next(1, 25);
+                int suppliesCount = _random.Next(1, 15);
 
                 for (int i = 0; i < suppliesCount; i++)
                 {
@@ -347,6 +325,38 @@ namespace Reverse_Analytics.Api.Extensions
             }
 
             context.SupplyDetails.AddRange(supplyDetails);
+            context.SaveChanges();
+        }
+
+        private static void CreateSupplyDebts(ApplicationDbContext context)
+        {
+            if (context.Debts.Any()) return;
+
+            List<Debt> debts = new List<Debt>();
+            var supplies = context.Supplies.ToList();
+
+            foreach (var supply in supplies)
+            {
+                if (_faker.Random.Bool())
+                {
+                    var totalAmount = supply.TotalDue - supply.TotalPaid;
+                    var remainedAmount = _faker.Random.Decimal(0, totalAmount);
+
+                    DateTime? paidDate = remainedAmount == 0 ? _faker.Date.Between(supply.TransactionDate, DateTime.Now.AddMonths(5)) : null;
+                    DebtStatus status = remainedAmount == 0 ? DebtStatus.Closed : DebtStatus.PaymentRequired;
+
+                    debts.Add(new Debt()
+                    {
+                        TotalAmount = totalAmount,
+                        Remained = remainedAmount,
+                        PaidDate = paidDate,
+                        DueDate = _faker.Date.Between(supply.TransactionDate, DateTime.Now.AddMonths(5)),
+                        Status = status
+                    });
+                }
+            }
+
+            context.Debts.AddRange(debts);
             context.SaveChanges();
         }
 

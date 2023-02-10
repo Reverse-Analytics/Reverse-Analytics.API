@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ReverseAnalytics.Domain.Entities;
+using ReverseAnalytics.Domain.Enums;
 
 namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
 {
@@ -12,23 +13,26 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
 
             builder.HasKey(d => d.Id);
 
-            builder.HasOne(d => d.Person)
-                .WithMany(p => p.Debts)
-                .HasForeignKey(d => d.PersonId)
-                .OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(x => x.Transaction)
+                .WithOne(d => d.Debt)
+                .HasForeignKey<Debt>(d => d.TransactionId);
 
-            builder.Property(d => d.Amount)
+            builder.Property(d => d.TotalAmount)
                 .HasColumnType("money")
+                .HasPrecision(2)
                 .IsRequired();
-            builder.Property(d => d.DebtDate)
-                .HasColumnType("date")
+            builder.Property(d => d.Remained)
+                .HasColumnType("money")
+                .HasPrecision(2)
                 .IsRequired();
             builder.Property(d => d.DueDate)
                 .HasColumnType("date")
-                .IsRequired();
+                .IsRequired(false);
             builder.Property(d => d.PaidDate)
                 .HasColumnType("date")
                 .IsRequired(false);
+            builder.Property(e => e.Status)
+                .HasDefaultValue(DebtStatus.PaymentRequired);
         }
     }
 }

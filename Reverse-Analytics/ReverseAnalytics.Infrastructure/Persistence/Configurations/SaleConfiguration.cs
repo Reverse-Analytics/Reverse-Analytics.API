@@ -11,6 +11,8 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
         {
             builder.ToTable("Sale");
 
+            builder.HasKey(s => s.Id);
+
             builder.HasOne(s => s.Customer)
                 .WithMany(c => c.Sales)
                 .HasForeignKey(s => s.CustomerId);
@@ -22,12 +24,25 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
             builder.Property(s => s.Receipt)
                 .IsRequired()
                 .HasMaxLength(250);
+            builder.Property(s => s.Comment)
+                .IsRequired(false)
+                .HasMaxLength(500);
+            builder.Property(s => s.TotalDue)
+                .HasColumnType("money")
+                .IsRequired();
+            builder.Property(s => s.TotalPaid)
+                .HasColumnType("money")
+                .IsRequired();
             builder.Property(s => s.Discount)
                 .HasColumnType("money")
+                .HasDefaultValue(0);
+            builder.Property(s => s.DiscountPercentage)
                 .HasDefaultValue(0);
             builder.Property(s => s.SaleType)
                 .HasDefaultValue(SaleType.Other)
                 .IsRequired();
+            builder.Property(s => s.Status)
+                .HasDefaultValue(TransactionStatus.Finished);
         }
     }
 }

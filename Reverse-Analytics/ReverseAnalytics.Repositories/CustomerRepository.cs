@@ -16,7 +16,6 @@ namespace ReverseAnalytics.Repositories
         {
             var customers = _context.Customers
                 .Include(x => x.Debts)
-                .Include(x => x.Sales)
                 .AsNoTracking()
                 .AsQueryable();
 

@@ -18,6 +18,6 @@ namespace ReverseAnalytics.Domain.Entities
 
         public virtual ICollection<SaleDetail> OrderDetails { get; set; }
         public virtual ICollection<SaleDebt> SaleDebts { get; set; }
-        public virtual ICollection<RefundDetail> RefundDetails { get; set; }
+        public virtual ICollection<Refund> Refunds { get; set; }
     }
 }

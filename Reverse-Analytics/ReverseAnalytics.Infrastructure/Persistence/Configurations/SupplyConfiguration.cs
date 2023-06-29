@@ -14,10 +14,6 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
                 .WithMany(s => s.Supplies)
                 .HasForeignKey(p => p.SupplierId);
 
-            builder.HasMany(p => p.SupplyDetails)
-                .WithOne(pd => pd.Supply)
-                .HasForeignKey(pd => pd.SupplyId);
-
             builder.Property(p => p.ReceivedBy)
                 .HasMaxLength(500)
                 .IsRequired(false);

@@ -8,6 +8,9 @@ namespace ReverseAnalytics.Domain.Entities
         public string? Reason { get; set; }
         public string? ReceivedBy { get; set; }
 
+        public int SaleId { get; set; }
+        public virtual Sale Sale { get; set; }
+
         public ICollection<RefundDetail> RefundDetails { get; set; }
     }
 }

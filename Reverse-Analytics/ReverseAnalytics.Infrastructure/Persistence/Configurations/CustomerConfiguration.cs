@@ -10,12 +10,29 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
         {
             builder.ToTable("Customer");
 
-            builder.HasMany(c => c.Sales)
-                .WithOne(s => s.Customer)
-                .HasForeignKey(s => s.CustomerId);
+            builder.HasKey(x => x.Id);
 
-            builder.Property(c => c.Discount)
-                .HasPrecision(2);
+            builder.Property(x => x.FullName)
+                .HasMaxLength(150)
+                .IsRequired();
+            builder.Property(x => x.Address)
+                .HasMaxLength(500)
+                .IsRequired(false);
+            builder.Property(x => x.PhoneNumber)
+                .HasMaxLength(13)
+                .IsRequired(false);
+            builder.Property(x => x.Balance)
+                .HasDefaultValue(0)
+                .HasPrecision(2)
+                .HasColumnType("money")
+                .IsRequired();
+            builder.Property(x => x.Discount)
+                .HasDefaultValue(0)
+                .HasPrecision(2)
+                .IsRequired();
+            builder.Property(x => x.IsActive)
+                .HasDefaultValue(true)
+                .IsRequired();
         }
     }
 }

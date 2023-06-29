@@ -15,19 +15,24 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
                 .WithMany(c => c.Sales)
                 .HasForeignKey(s => s.CustomerId);
 
-            builder.HasMany(s => s.OrderDetails)
-                .WithOne(od => od.Sale)
-                .HasForeignKey(od => od.SaleId);
-
             builder.Property(s => s.Receipt)
-                .IsRequired()
-                .HasMaxLength(250);
-            builder.Property(s => s.Discount)
-                .HasColumnType("money")
-                .HasDefaultValue(0);
-            builder.Property(s => s.SaleType)
-                .HasDefaultValue(SaleType.Other)
+                .HasMaxLength(250)
                 .IsRequired();
+            builder.Property(x => x.Comments)
+                .HasMaxLength(500)
+                .IsRequired(false);
+            builder.Property(x => x.TotalDue)
+                .HasColumnType("money")
+                .IsRequired();
+            builder.Property(x => x.TotalPaid)
+                .HasColumnType("money")
+                .IsRequired();
+            builder.Property(x => x.TotalDiscount)
+                .HasColumnType("money")
+                .IsRequired();
+            builder.Property(x => x.SaleType)
+                .HasDefaultValue(SaleType.Other);
+
         }
     }
 }

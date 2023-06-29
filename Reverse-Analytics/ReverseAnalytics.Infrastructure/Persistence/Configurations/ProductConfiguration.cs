@@ -10,32 +10,28 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
         {
             builder.ToTable("Product");
 
-            builder.HasKey(p => p.Id);
+            builder.HasKey(x => x.Id);
 
-            builder.HasOne(p => p.Category)
+            builder.HasOne(x => x.Category)
                 .WithMany(pc => pc.Products)
-                .HasForeignKey(p => p.CategoryId);
+                .HasForeignKey(x => x.CategoryId);
 
-            builder.HasMany(p => p.SaleDetails)
-                .WithOne(od => od.Product)
-                .HasForeignKey(od => od.ProductId);
-            builder.HasMany(p => p.PurchaseDetails)
-                .WithOne(pd => pd.Product)
-                .HasForeignKey(pd => pd.ProductId);
-
-            builder.Property(p => p.ProductCode)
+            builder.Property(x => x.ProductCode)
                 .HasMaxLength(50)
                 .IsRequired();
-            builder.Property(p => p.ProductName)
+            builder.Property(x => x.ProductName)
                 .HasMaxLength(250)
                 .IsRequired();
-            builder.Property(p => p.Volume)
+            builder.Property(x => x.Description)
+                .HasMaxLength(5000)
+                .IsRequired(false);
+            builder.Property(x => x.Volume)
                 .HasPrecision(2);
-            builder.Property(p => p.Weight)
+            builder.Property(x => x.Weight)
                 .HasPrecision(2);
-            builder.Property(p => p.SupplyPrice)
+            builder.Property(x => x.SupplyPrice)
                 .HasColumnType("money");
-            builder.Property(p => p.SalePrice)
+            builder.Property(x => x.SalePrice)
                 .HasColumnType("money");
         }
     }

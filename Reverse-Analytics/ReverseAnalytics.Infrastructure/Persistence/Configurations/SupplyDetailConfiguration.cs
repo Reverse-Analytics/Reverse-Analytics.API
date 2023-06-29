@@ -13,15 +13,15 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
             builder.HasKey(sd => sd.Id);
 
             builder.HasOne(sd => sd.Supply)
-                .WithMany(p => p.SupplyDetails)
+                .WithMany(s => s.SupplyDetails)
                 .HasForeignKey(sd => sd.SupplyId);
             builder.HasOne(sd => sd.Product)
                 .WithMany(p => p.PurchaseDetails)
                 .HasForeignKey(sd => sd.ProductId);
 
-            builder.Property(p => p.Quantity)
+            builder.Property(sd => sd.Quantity)
                 .IsRequired();
-            builder.Property(p => p.UnitPrice)
+            builder.Property(sd => sd.UnitPrice)
                 .HasColumnType("money")
                 .IsRequired();
         }

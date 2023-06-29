@@ -10,9 +10,9 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
         {
             builder.ToTable("Product_Category");
 
-            builder.HasKey(x => x.Id);
+            builder.HasKey(pc => pc.Id);
 
-            builder.Property(x => x.CategoryName)
+            builder.Property(pc => pc.CategoryName)
                 .HasMaxLength(150)
                 .IsRequired();
         }

@@ -11,12 +11,12 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
         {
             builder.ToTable("Supply_Debt");
 
-            builder.HasKey(x => x.Id);
+            builder.HasKey(sd => sd.Id);
 
-            builder.Property(x => x.TotalDue)
+            builder.Property(sd => sd.TotalDue)
                 .HasColumnType("money")
                 .IsRequired();
-            builder.Property(x => x.Status)
+            builder.Property(sd => sd.Status)
                 .HasDefaultValue(DebtStatus.PaymentRequired);
         }
     }

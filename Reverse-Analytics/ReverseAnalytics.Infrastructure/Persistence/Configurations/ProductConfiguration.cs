@@ -10,28 +10,28 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
         {
             builder.ToTable("Product");
 
-            builder.HasKey(x => x.Id);
+            builder.HasKey(p => p.Id);
 
-            builder.HasOne(x => x.Category)
+            builder.HasOne(p => p.Category)
                 .WithMany(pc => pc.Products)
-                .HasForeignKey(x => x.CategoryId);
+                .HasForeignKey(p => p.CategoryId);
 
-            builder.Property(x => x.ProductCode)
+            builder.Property(p => p.ProductCode)
                 .HasMaxLength(50)
                 .IsRequired();
-            builder.Property(x => x.ProductName)
+            builder.Property(p => p.ProductName)
                 .HasMaxLength(250)
                 .IsRequired();
-            builder.Property(x => x.Description)
+            builder.Property(p => p.Description)
                 .HasMaxLength(5000)
                 .IsRequired(false);
-            builder.Property(x => x.Volume)
+            builder.Property(p => p.Volume)
                 .HasPrecision(2);
-            builder.Property(x => x.Weight)
+            builder.Property(p => p.Weight)
                 .HasPrecision(2);
-            builder.Property(x => x.SupplyPrice)
+            builder.Property(p => p.SupplyPrice)
                 .HasColumnType("money");
-            builder.Property(x => x.SalePrice)
+            builder.Property(p => p.SalePrice)
                 .HasColumnType("money");
         }
     }

@@ -10,11 +10,11 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
         {
             builder.ToTable(nameof(Refund));
 
-            builder.HasKey(x => x.Id);
+            builder.HasKey(r => r.Id);
 
-            builder.HasOne(x => x.Sale)
-                .WithMany(r => r.Refunds)
-                .HasForeignKey(x => x.SaleId)
+            builder.HasOne(r => r.Sale)
+                .WithMany(s => s.Refunds)
+                .HasForeignKey(r => r.SaleId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

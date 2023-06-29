@@ -18,19 +18,19 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
             builder.Property(s => s.Receipt)
                 .HasMaxLength(250)
                 .IsRequired();
-            builder.Property(x => x.Comments)
+            builder.Property(s => s.Comments)
                 .HasMaxLength(500)
                 .IsRequired(false);
-            builder.Property(x => x.TotalDue)
+            builder.Property(s => s.TotalDue)
                 .HasColumnType("money")
                 .IsRequired();
-            builder.Property(x => x.TotalPaid)
+            builder.Property(s => s.TotalPaid)
                 .HasColumnType("money")
                 .IsRequired();
-            builder.Property(x => x.TotalDiscount)
+            builder.Property(s => s.TotalDiscount)
                 .HasColumnType("money")
                 .IsRequired();
-            builder.Property(x => x.SaleType)
+            builder.Property(s => s.SaleType)
                 .HasDefaultValue(SaleType.Other);
 
         }

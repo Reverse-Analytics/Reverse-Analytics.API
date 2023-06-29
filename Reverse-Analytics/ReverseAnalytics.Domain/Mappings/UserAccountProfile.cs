@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using ReverseAnalytics.Domain.DTOs.UserAccount;
 
-namespace ReverseAnalytics.Domain.Profiles
+namespace ReverseAnalytics.Domain.Mappings
 {
     internal class UserAccountProfile : Profile
     {

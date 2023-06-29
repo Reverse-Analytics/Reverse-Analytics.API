@@ -1,13 +1,8 @@
-﻿namespace ReverseAnalytics.Domain.DTOs.Supplier
+﻿using ReverseAnalytics.Domain.DTOs.Supply;
+
+namespace ReverseAnalytics.Domain.DTOs.Supplier
 {
-    public class SupplierDto
-    {
-        public int Id { get; set; }
-        public string FullName { get; set; }
-        public string? CompanyName { get; set; }
-        public string? Address { get; set; }
-        public string? PhoneNumber { get; set; }
-        public decimal Balance { get; set; }
-        public bool IsActive { get; set; }
-    }
+    public record SupplierDto(int Id, string FullName, string? Company,
+        string? PhoneNumber, decimal Balance, bool IsActive,
+        ICollection<SupplyDto> Supplies);
 }

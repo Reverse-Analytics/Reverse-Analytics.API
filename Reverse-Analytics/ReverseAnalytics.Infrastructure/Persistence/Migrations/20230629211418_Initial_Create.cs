@@ -140,7 +140,9 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     ReceivedBy = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
+                    Comment = table.Column<string>(type: "TEXT", maxLength: 2500, nullable: true),
                     TotalDue = table.Column<decimal>(type: "TEXT", nullable: false),
+                    TotalPaid = table.Column<decimal>(type: "TEXT", nullable: false),
                     SupplyDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     SupplierId = table.Column<int>(type: "INTEGER", nullable: false),
                     Created = table.Column<DateTime>(type: "TEXT", nullable: false),

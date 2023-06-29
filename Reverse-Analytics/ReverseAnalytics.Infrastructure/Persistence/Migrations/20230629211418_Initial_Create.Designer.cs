@@ -11,7 +11,7 @@ using ReverseAnalytics.Infrastructure.Persistence;
 namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230629191229_Initial_Create")]
+    [Migration("20230629211418_Initial_Create")]
     partial class Initial_Create
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -432,6 +432,10 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Comment")
+                        .HasMaxLength(2500)
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("TEXT");
 
@@ -455,6 +459,9 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("TotalDue")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("TotalPaid")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

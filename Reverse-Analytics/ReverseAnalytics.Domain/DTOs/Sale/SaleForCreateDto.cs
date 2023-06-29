@@ -1,26 +1,8 @@
-﻿using ReverseAnalytics.Domain.DTOs.SaleDetail;
-using ReverseAnalytics.Domain.Enums;
+﻿using ReverseAnalytics.Domain.Enums;
 
 namespace ReverseAnalytics.Domain.DTOs.Sale
 {
-    public class SaleForCreateDto
-    {
-        public string Receipt { get; set; }
-        public string? Comment { get; set; }
-        public decimal TotalDue { get; set; }
-        public decimal TotalPaid { get; set; }
-        public double? DiscountPercentage { get; set; }
-        public decimal? DiscountTotal { get; set; }
-        public DateTime SaleDate { get; set; }
-        public SaleType SaleType { get; set; }
-
-        public int CustomerId { get; set; }
-
-        public ICollection<SaleDetailDto> SaleDetails { get; set; }
-
-        public SaleForCreateDto()
-        {
-            SaleDetails = new List<SaleDetailDto>();
-        }
-    }
+    public record SaleForCreateDto(string Receipt, string? Comments,
+        string? SoldBy, decimal TotalDue, decimal TotalPaid, decimal TotalDiscount,
+        SaleType SaleType, DateTime SaleDate, int CustomerId);
 }

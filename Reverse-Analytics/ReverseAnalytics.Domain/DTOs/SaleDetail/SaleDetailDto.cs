@@ -3,17 +3,6 @@ using ReverseAnalytics.Domain.DTOs.Sale;
 
 namespace ReverseAnalytics.Domain.DTOs.SaleDetail
 {
-    public class SaleDetailDto
-    {
-        public int Id { get; set; }
-        public int Quantity { get; set; }
-        public decimal UnitPrice { get; set; }
-        public double Discount { get; set; }
-
-        public int SaleId { get; set; }
-        public virtual SaleDto Sale { get; set; }
-
-        public int ProductId { get; set; }
-        public virtual ProductDto Product { get; set; }
-    }
+    public record SaleDetailDto(int Id, int Quantity, decimal UnitPrice, double Discount,
+        SaleDto Sale, ProductDto Product);
 }

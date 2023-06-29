@@ -107,20 +107,12 @@ namespace ReverseAnalytics.Services
 
             if(request.NewPassword != request.ConfirmPassword)
             {
-                return new PasswordResetResponse
-                {
-                    IsSuccess = false,
-                    Message = "New password does not match to its confirmation."
-                };
+                return new PasswordResetResponse(false, "New password does not match to its confirmation.", default);
             }
 
             if(user is null)
             {
-                return new PasswordResetResponse
-                {
-                    IsSuccess = false,
-                    Message = "User not found."
-                };
+                return new PasswordResetResponse(false, "User not found.", default);
             }
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
@@ -128,23 +120,14 @@ namespace ReverseAnalytics.Services
 
             if (!result.Succeeded)
             {
-                return new PasswordResetResponse
-                {
-                    IsSuccess = false,
-                    Message = "Password reset failed, see erros for more details.",
-                    Errors = result.Errors.Select(e => new ResponseError
+                return new PasswordResetResponse(false, "Password reset failed, see erros for more details.", result.Errors.Select(e => new ResponseError
                     {
                         Description = e.Description,
                         Code = e.Code
-                    }).ToList()
-                };
+                    }).ToList());
             }
 
-            return new PasswordResetResponse
-            {
-                IsSuccess = true,
-                Message = "Password was successfully updated."
-            };
+            return new PasswordResetResponse(true, "Password was successfully updated.", default);
         }
 
         public async Task DeleteAccountAsync(string id)

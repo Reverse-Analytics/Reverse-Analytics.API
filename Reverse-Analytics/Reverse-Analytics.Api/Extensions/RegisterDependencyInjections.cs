@@ -7,7 +7,6 @@ namespace Reverse_Analytics.Api.Extensions
     {
         public static void RegisterDependencyInjection(this IServiceCollection services)
         {
-            services.AddScoped<IDebtService, DebtService>();
             services.AddScoped<IProductCategoryService, ProductCategoryService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICustomerService, CustomerService>();

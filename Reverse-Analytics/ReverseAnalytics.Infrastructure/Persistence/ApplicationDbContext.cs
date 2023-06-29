@@ -9,7 +9,6 @@ namespace ReverseAnalytics.Infrastructure.Persistence
     {
         private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
 
-        public virtual DbSet<Debt> Debts { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductCategory> ProductCategories { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
@@ -18,8 +17,6 @@ namespace ReverseAnalytics.Infrastructure.Persistence
         public virtual DbSet<Supplier> Suppliers { get; set; }
         public virtual DbSet<Supply> Supplies { get; set; }
         public virtual DbSet<SupplyDetail> SupplyDetails { get; set; }
-        public virtual DbSet<Inventory> Inventories { get; set; }
-        public virtual DbSet<InventoryDetail> InventoryDetails { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
                                     AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor)

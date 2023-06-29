@@ -17,7 +17,6 @@ namespace Reverse_Analytics.Api.Extensions
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<ICommonRepository, CommonRepository>();
-            services.AddScoped<IDebtRepository, DebtRepository>();
             services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();

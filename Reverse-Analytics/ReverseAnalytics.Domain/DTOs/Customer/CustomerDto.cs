@@ -1,5 +1,4 @@
-﻿using ReverseAnalytics.Domain.DTOs.Debt;
-using ReverseAnalytics.Domain.DTOs.Sale;
+﻿using ReverseAnalytics.Domain.DTOs.Sale;
 
 namespace ReverseAnalytics.Domain.DTOs.Customer
 {
@@ -13,7 +12,6 @@ namespace ReverseAnalytics.Domain.DTOs.Customer
         public decimal Balance { get; set; }
         public bool IsActive { get; set; }
 
-        public virtual ICollection<DebtDto> Debts { get; set; }
         public virtual ICollection<SaleDto> Sales { get; set; }
 
         public CustomerDto()

@@ -10,34 +10,18 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Inventory",
+                name: "Customer",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 150, nullable: false),
-                    Created = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "TEXT", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Inventory", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Person",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    FullName = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
-                    CompanyName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
-                    PhoneNumber = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
-                    Address = table.Column<string>(type: "TEXT", maxLength: 250, nullable: true),
+                    FullName = table.Column<string>(type: "TEXT", maxLength: 150, nullable: false),
+                    Address = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
+                    PhoneNumber = table.Column<string>(type: "TEXT", maxLength: 13, nullable: true),
+                    Company = table.Column<string>(type: "TEXT", nullable: true),
                     Balance = table.Column<decimal>(type: "money", precision: 2, nullable: false, defaultValue: 0m),
-                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Discount = table.Column<double>(type: "REAL", precision: 2, nullable: false, defaultValue: 0.0),
+                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: true),
                     Created = table.Column<DateTime>(type: "TEXT", nullable: false),
                     CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
                     LastModified = table.Column<DateTime>(type: "TEXT", nullable: true),
@@ -45,7 +29,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Person", x => x.Id);
+                    table.PrimaryKey("PK_Customer", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -66,16 +50,16 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Transaction",
+                name: "Supplier",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    TotalDue = table.Column<decimal>(type: "money", precision: 2, nullable: false),
-                    TotalPaid = table.Column<decimal>(type: "money", precision: 2, nullable: false),
-                    TransactionDate = table.Column<DateTime>(type: "date", nullable: false),
-                    Comments = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
-                    Status = table.Column<int>(type: "INTEGER", nullable: false, defaultValue: 0),
+                    FullName = table.Column<string>(type: "TEXT", maxLength: 150, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "TEXT", maxLength: 13, nullable: true),
+                    Company = table.Column<string>(type: "TEXT", nullable: true),
+                    Balance = table.Column<decimal>(type: "money", precision: 2, nullable: false, defaultValue: 0m),
+                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: true),
                     Created = table.Column<DateTime>(type: "TEXT", nullable: false),
                     CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
                     LastModified = table.Column<DateTime>(type: "TEXT", nullable: true),
@@ -83,42 +67,36 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Transaction", x => x.Id);
+                    table.PrimaryKey("PK_Supplier", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Customer",
+                name: "Sale",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Discount = table.Column<double>(type: "REAL", precision: 2, nullable: false)
+                    Receipt = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
+                    Comments = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
+                    SoldBy = table.Column<string>(type: "TEXT", nullable: true),
+                    TotalDue = table.Column<decimal>(type: "money", nullable: false),
+                    TotalPaid = table.Column<decimal>(type: "money", nullable: false),
+                    TotalDiscount = table.Column<decimal>(type: "money", nullable: false),
+                    SaleType = table.Column<int>(type: "INTEGER", nullable: false, defaultValue: 3),
+                    SaleDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CustomerId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Created = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Customer", x => x.Id);
+                    table.PrimaryKey("PK_Sale", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Customer_Person_Id",
-                        column: x => x.Id,
-                        principalTable: "Person",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Supplier",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Supplier", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Supplier_Person_Id",
-                        column: x => x.Id,
-                        principalTable: "Person",
+                        name: "FK_Sale_Customer_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customer",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -131,11 +109,13 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     ProductName = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
                     ProductCode = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
-                    UnitOfMeasurement = table.Column<int>(type: "INTEGER", nullable: false),
+                    Description = table.Column<string>(type: "TEXT", maxLength: 5000, nullable: true),
+                    SalePrice = table.Column<decimal>(type: "money", nullable: false),
+                    SupplyPrice = table.Column<decimal>(type: "money", nullable: true),
+                    QuantityInStock = table.Column<double>(type: "REAL", nullable: false),
                     Volume = table.Column<double>(type: "REAL", precision: 2, nullable: true),
                     Weight = table.Column<double>(type: "REAL", precision: 2, nullable: true),
-                    SupplyPrice = table.Column<decimal>(type: "money", nullable: false),
-                    SalePrice = table.Column<decimal>(type: "money", nullable: false),
+                    UnitOfMeasurement = table.Column<int>(type: "INTEGER", nullable: false),
                     CategoryId = table.Column<int>(type: "INTEGER", nullable: false),
                     Created = table.Column<DateTime>(type: "TEXT", nullable: false),
                     CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
@@ -154,69 +134,19 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Debt",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    TotalAmount = table.Column<decimal>(type: "money", precision: 2, nullable: false),
-                    Remained = table.Column<decimal>(type: "money", precision: 2, nullable: false),
-                    PaidDate = table.Column<DateTime>(type: "date", nullable: true),
-                    DueDate = table.Column<DateTime>(type: "date", nullable: true),
-                    Status = table.Column<int>(type: "INTEGER", nullable: false, defaultValue: 0),
-                    TransactionId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Created = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "TEXT", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Debt", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Debt_Transaction_TransactionId",
-                        column: x => x.TransactionId,
-                        principalTable: "Transaction",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Sale",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Receipt = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
-                    Discount = table.Column<decimal>(type: "money", nullable: false, defaultValue: 0m),
-                    SaleType = table.Column<int>(type: "INTEGER", nullable: false, defaultValue: 3),
-                    CustomerId = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Sale", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Sale_Customer_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customer",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Sale_Transaction_Id",
-                        column: x => x.Id,
-                        principalTable: "Transaction",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Supply",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     ReceivedBy = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
-                    SupplierId = table.Column<int>(type: "INTEGER", nullable: false)
+                    TotalDue = table.Column<decimal>(type: "TEXT", nullable: false),
+                    SupplyDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    SupplierId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Created = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -227,23 +157,18 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                         principalTable: "Supplier",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Supply_Transaction_Id",
-                        column: x => x.Id,
-                        principalTable: "Transaction",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Inventory_Detail",
+                name: "Refund",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    ProductsRemained = table.Column<double>(type: "REAL", nullable: false, defaultValue: 0.0),
-                    InventoryId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ProductId = table.Column<int>(type: "INTEGER", nullable: false),
+                    RefundDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Reason = table.Column<string>(type: "TEXT", nullable: true),
+                    ReceivedBy = table.Column<string>(type: "TEXT", nullable: true),
+                    SaleId = table.Column<int>(type: "INTEGER", nullable: false),
                     Created = table.Column<DateTime>(type: "TEXT", nullable: false),
                     CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
                     LastModified = table.Column<DateTime>(type: "TEXT", nullable: true),
@@ -251,19 +176,40 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Inventory_Detail", x => x.Id);
+                    table.PrimaryKey("PK_Refund", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Inventory_Detail_Inventory_InventoryId",
-                        column: x => x.InventoryId,
-                        principalTable: "Inventory",
+                        name: "FK_Refund_Sale_SaleId",
+                        column: x => x.SaleId,
+                        principalTable: "Sale",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Sale_Debt",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TotalDue = table.Column<decimal>(type: "money", nullable: false),
+                    DueDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ClosedDate = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    Status = table.Column<int>(type: "INTEGER", nullable: false, defaultValue: 0),
+                    SaleId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Created = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sale_Debt", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Inventory_Detail_Product_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Product",
+                        name: "FK_Sale_Debt_Sale_SaleId",
+                        column: x => x.SaleId,
+                        principalTable: "Sale",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -274,6 +220,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Quantity = table.Column<int>(type: "INTEGER", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "money", precision: 2, nullable: false),
+                    Discount = table.Column<decimal>(type: "TEXT", nullable: false),
                     SaleId = table.Column<int>(type: "INTEGER", nullable: false),
                     ProductId = table.Column<int>(type: "INTEGER", nullable: false),
                     Created = table.Column<DateTime>(type: "TEXT", nullable: false),
@@ -294,6 +241,33 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                         name: "FK_Sale_Detail_Sale_SaleId",
                         column: x => x.SaleId,
                         principalTable: "Sale",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Supply_Debt",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TotalDue = table.Column<decimal>(type: "money", nullable: false),
+                    DueDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ClosedDate = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    Status = table.Column<int>(type: "INTEGER", nullable: false, defaultValue: 0),
+                    SupplyId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Created = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Supply_Debt", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Supply_Debt_Supply_SupplyId",
+                        column: x => x.SupplyId,
+                        principalTable: "Supply",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -330,21 +304,36 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Debt_TransactionId",
-                table: "Debt",
-                column: "TransactionId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Inventory_Detail_InventoryId",
-                table: "Inventory_Detail",
-                column: "InventoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Inventory_Detail_ProductId",
-                table: "Inventory_Detail",
-                column: "ProductId");
+            migrationBuilder.CreateTable(
+                name: "Refund_Detail",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Quantity = table.Column<int>(type: "INTEGER", nullable: false),
+                    RefundId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ProductId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Created = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Refund_Detail", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Refund_Detail_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_Refund_Detail_Refund_RefundId",
+                        column: x => x.RefundId,
+                        principalTable: "Refund",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Product_CategoryId",
@@ -352,9 +341,29 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Refund_SaleId",
+                table: "Refund",
+                column: "SaleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Refund_Detail_ProductId",
+                table: "Refund_Detail",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Refund_Detail_RefundId",
+                table: "Refund_Detail",
+                column: "RefundId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Sale_CustomerId",
                 table: "Sale",
                 column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Sale_Debt_SaleId",
+                table: "Sale_Debt",
+                column: "SaleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Sale_Detail_ProductId",
@@ -372,6 +381,11 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                 column: "SupplierId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Supply_Debt_SupplyId",
+                table: "Supply_Debt",
+                column: "SupplyId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Supply_Detail_ProductId",
                 table: "Supply_Detail",
                 column: "ProductId");
@@ -385,22 +399,22 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Debt");
+                name: "Refund_Detail");
 
             migrationBuilder.DropTable(
-                name: "Inventory_Detail");
+                name: "Sale_Debt");
 
             migrationBuilder.DropTable(
                 name: "Sale_Detail");
 
             migrationBuilder.DropTable(
+                name: "Supply_Debt");
+
+            migrationBuilder.DropTable(
                 name: "Supply_Detail");
 
             migrationBuilder.DropTable(
-                name: "Inventory");
-
-            migrationBuilder.DropTable(
-                name: "Sale");
+                name: "Refund");
 
             migrationBuilder.DropTable(
                 name: "Product");
@@ -409,7 +423,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                 name: "Supply");
 
             migrationBuilder.DropTable(
-                name: "Customer");
+                name: "Sale");
 
             migrationBuilder.DropTable(
                 name: "Product_Category");
@@ -418,10 +432,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                 name: "Supplier");
 
             migrationBuilder.DropTable(
-                name: "Transaction");
-
-            migrationBuilder.DropTable(
-                name: "Person");
+                name: "Customer");
         }
     }
 }

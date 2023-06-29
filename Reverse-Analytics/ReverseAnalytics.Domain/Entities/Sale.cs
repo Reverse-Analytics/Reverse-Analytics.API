@@ -1,8 +1,9 @@
-﻿using ReverseAnalytics.Domain.Enums;
+﻿using ReverseAnalytics.Domain.Common;
+using ReverseAnalytics.Domain.Enums;
 
 namespace ReverseAnalytics.Domain.Entities
 {
-    public class Sale
+    public class Sale : BaseAuditableEntity
     {
         public string Receipt { get; set; }
         public string? Comments { get; set; }

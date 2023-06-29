@@ -15,7 +15,6 @@ namespace ReverseAnalytics.Domain.DTOs.Sale
         public decimal? DiscountTotal { get; set; }
         public DateTime SaleDate { get; set; }
         public SaleType SaleType { get; set; }
-        public TransactionStatusType Status { get; set; }
 
         public int CustomerId { get; set; }
         public virtual CustomerDto Customer { get; set; }

@@ -2,7 +2,6 @@
 {
     public interface ICommonRepository
     {
-        public IDebtRepository Debt { get; }
         public IProductCategoryRepository ProductCategory { get; }
         public IProductRepository Product { get; }
         public ICustomerRepository Customer { get; }

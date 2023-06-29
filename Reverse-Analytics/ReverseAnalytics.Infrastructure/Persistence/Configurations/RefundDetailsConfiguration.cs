@@ -10,7 +10,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
         {
             builder.ToTable("Refund_Detail");
 
-            builder.HasKey(x => x.Refund);
+            builder.HasKey(x => x.Id);
 
             builder.HasOne(x => x.Refund)
                 .WithMany(r => r.RefundDetails)

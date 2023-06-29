@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Reverse_Analytics.Api.Filters;
 using ReverseAnalytics.Domain.DTOs.Supply;
 using ReverseAnalytics.Domain.DTOs.SupplyDetail;
@@ -7,7 +6,7 @@ using ReverseAnalytics.Domain.Interfaces.Services;
 
 namespace Reverse_Analytics.Api.Controllers
 {
-    [Authorize]
+    // [Authorize]
     [ApiController]
     [Route("api/supplies")]
     public class SuppliesController : ControllerBase
@@ -49,7 +48,7 @@ namespace Reverse_Analytics.Api.Controllers
             var createdSupply = await _service.CreateSupplyAsync(supplyToCreate);
 
             if (createdSupply is null)
-                return StatusCode(500, 
+                return StatusCode(500,
                     "Something went wrong while creating new Supply. Please, try again later.");
 
             return Created("Supply was successfully created.", createdSupply);
@@ -100,7 +99,7 @@ namespace Reverse_Analytics.Api.Controllers
 
         [HttpPost("{supplyId}/details")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<ActionResult<SupplyDetailDto>> CreateSupplyDetailAsync([FromBody]SupplyDetailForCreateDto supplyDetailToCreate, int supplyId)
+        public async Task<ActionResult<SupplyDetailDto>> CreateSupplyDetailAsync([FromBody] SupplyDetailForCreateDto supplyDetailToCreate, int supplyId)
         {
             if (supplyDetailToCreate.SupplyId != supplyId)
                 return BadRequest($"Supply id: {supplyDetailToCreate.SupplyId} does not match with route id: {supplyId}.");

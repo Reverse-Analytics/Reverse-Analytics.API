@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Reverse_Analytics.Api.Filters;
 using ReverseAnalytics.Domain.DTOs.Product;
 using ReverseAnalytics.Domain.Interfaces.Services;
 
 namespace Reverse_Analytics.Api.Controllers
 {
-    [Authorize]
+    // [Authorize]
     [ApiController]
     [Route("api/Products")]
     public class ProductsController : ControllerBase
@@ -45,7 +44,7 @@ namespace Reverse_Analytics.Api.Controllers
             var product = await _service.CreateProductAsync(productToCreate);
 
             if (product is null)
-                return StatusCode(500, 
+                return StatusCode(500,
                     "Something went wrong while creating new Product. Please, try again later.");
 
             return Created("Product was sucessfully created.", product);

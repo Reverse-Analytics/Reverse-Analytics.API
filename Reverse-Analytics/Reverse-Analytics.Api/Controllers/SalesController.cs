@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Reverse_Analytics.Api.Filters;
 using ReverseAnalytics.Domain.DTOs.Sale;
 using ReverseAnalytics.Domain.DTOs.SaleDetail;
@@ -7,7 +6,7 @@ using ReverseAnalytics.Domain.Interfaces.Services;
 
 namespace Reverse_Analytics.Api.Controllers
 {
-    [Authorize]
+    // [Authorize]
     [ApiController]
     [Route("api/sales")]
     public class SalesController : ControllerBase
@@ -51,7 +50,7 @@ namespace Reverse_Analytics.Api.Controllers
             var createdSale = await _saleService.CreateSaleAsync(saleToCreate);
 
             if (createdSale is null)
-                return StatusCode(500, 
+                return StatusCode(500,
                     "Something went wrong while creating new Sale. Please, try again.");
 
             return Created("Sale was successfully created.", createdSale);
@@ -120,7 +119,7 @@ namespace Reverse_Analytics.Api.Controllers
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<ActionResult> UpdateSaleDetailAsync([FromBody] SaleDetailForUpdateDto saleDetailToUpdate, int saleId, int saleDetailId)
         {
-            if (saleDetailToUpdate.Id != saleId) 
+            if (saleDetailToUpdate.Id != saleId)
                 return BadRequest($"Sale Detail id: {saleDetailToUpdate.Id} does not match with route id: {saleDetailId}.");
 
             if (saleDetailToUpdate.SaleId != saleId)

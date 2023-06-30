@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Reverse_Analytics.Api.Filters;
 using ReverseAnalytics.Domain.DTOs.Sale;
+using ReverseAnalytics.Domain.DTOs.SaleDebt;
 using ReverseAnalytics.Domain.DTOs.SaleDetail;
 using ReverseAnalytics.Domain.Interfaces.Services;
 
@@ -13,13 +14,15 @@ namespace Reverse_Analytics.Api.Controllers
     {
         private readonly ISaleService _saleService;
         private readonly ISaleDetailService _saleDetailService;
+        private readonly ISaleDebtService _saleDebtService;
 
         private const int PageSize = 15;
 
-        public SalesController(ISaleService service, ISaleDetailService saleDetailService)
+        public SalesController(ISaleService service, ISaleDetailService saleDetailService, ISaleDebtService saleDebtService)
         {
             _saleService = service;
             _saleDetailService = saleDetailService;
+            _saleDebtService = saleDebtService;
         }
 
         #region CRUD
@@ -134,6 +137,67 @@ namespace Reverse_Analytics.Api.Controllers
         public async Task<ActionResult> DeleteSaleDetailAsync(int saleDetailId)
         {
             await _saleDetailService.DeleteSaleDetailAsync(saleDetailId);
+
+            return NoContent();
+        }
+
+        #endregion
+
+        #region Debts
+
+        [HttpGet("{saleId}/debts")]
+        public async Task<ActionResult<IEnumerable<SaleDebtDto>>> GetSaleDebtsAsync(int saleId)
+        {
+            return Ok(await _saleDebtService.GetSaleDebtsBySaleIdAsync(saleId));
+        }
+
+        [HttpGet("{saleId}/debts/{debtId}")]
+        public async Task<ActionResult<SaleDebtDto>> GetSaleDebtByIdAsync(int debtId)
+        {
+            var debt = await _saleDebtService.GetSaleDebtByIdAsync(debtId);
+
+            return debt is null ?
+                NotFound($"Debt with id: {debtId} does not exist") :
+                Ok(debt);
+        }
+
+        [HttpPost("{saleId}/debts")]
+        public async Task<ActionResult<SaleDebtDto>> CreateSaleDebtAsync(int saleId,
+            [FromBody] SaleDebtForCreateDto saleDebtToCreate)
+        {
+            if (saleId != saleDebtToCreate.SaleId)
+            {
+                return BadRequest($"Route id: {saleId} does not match with Sale id: {saleDebtToCreate.SaleId}");
+            }
+
+            var createdDebt = await _saleDebtService.CreateSaleDebtAsync(saleDebtToCreate);
+
+            return Ok(createdDebt);
+        }
+
+        [HttpPut("{saleId}/debts/{debtId}")]
+        public async Task<ActionResult> UpdateSaleDebtAsync(int saleId, int debtId,
+            [FromBody] SaleDebtForUpdateDto saleDebtToUpdate)
+        {
+            if (saleId != saleDebtToUpdate.SaleId)
+            {
+                return BadRequest($"Route id: {saleId} does not match with Sale id: {saleDebtToUpdate.SaleId}");
+            }
+
+            if (debtId != saleDebtToUpdate.Id)
+            {
+                return BadRequest($"Route id: {debtId} does not match with Debt id: {saleDebtToUpdate.Id}");
+            }
+
+            await _saleDebtService.UpdateSaleDebtAsync(saleDebtToUpdate);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{saleId}/debts/{debtId}")]
+        public async Task<ActionResult> DeleteSaleDebtAsync(int debtId)
+        {
+            await _saleDebtService.DeleteSaleDebtAsync(debtId);
 
             return NoContent();
         }

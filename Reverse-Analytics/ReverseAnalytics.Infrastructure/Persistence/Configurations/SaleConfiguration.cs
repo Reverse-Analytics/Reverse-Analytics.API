@@ -23,12 +23,15 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
                 .IsRequired(false);
             builder.Property(s => s.TotalDue)
                 .HasColumnType("money")
+                .HasPrecision(18, 2)
                 .IsRequired();
             builder.Property(s => s.TotalPaid)
                 .HasColumnType("money")
+                .HasPrecision(18, 2)
                 .IsRequired();
             builder.Property(s => s.TotalDiscount)
                 .HasColumnType("money")
+                .HasPrecision(18, 2)
                 .IsRequired();
             builder.Property(s => s.SaleType)
                 .HasDefaultValue(SaleType.Other);

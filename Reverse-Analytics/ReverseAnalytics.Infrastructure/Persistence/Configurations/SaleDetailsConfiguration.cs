@@ -23,7 +23,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
                 .IsRequired();
             builder.Property(sd => sd.UnitPrice)
                 .HasColumnType("money")
-                .HasPrecision(2)
+                .HasPrecision(18, 2)
                 .IsRequired();
         }
     }

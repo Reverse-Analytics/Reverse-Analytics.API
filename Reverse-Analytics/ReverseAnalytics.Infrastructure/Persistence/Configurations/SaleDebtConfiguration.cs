@@ -16,10 +16,11 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
             builder.HasOne(sd => sd.Sale)
                 .WithMany(s => s.SaleDebts)
                 .HasForeignKey(sd => sd.SaleId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Property(sd => sd.TotalDue)
                 .HasColumnType("money")
+                .HasPrecision(18, 2)
                 .IsRequired();
             builder.Property(sd => sd.Status)
                 .HasDefaultValue(DebtStatus.PaymentRequired);

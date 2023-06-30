@@ -14,11 +14,11 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
                 .HasMaxLength(150)
                 .IsRequired();
             builder.Property(s => s.PhoneNumber)
-                .HasMaxLength(13)
+                .HasMaxLength(17)
                 .IsRequired(false);
             builder.Property(s => s.Balance)
                 .HasDefaultValue(0)
-                .HasPrecision(2)
+                .HasPrecision(18, 2)
                 .HasColumnType("money")
                 .IsRequired();
             builder.Property(s => s.IsActive)

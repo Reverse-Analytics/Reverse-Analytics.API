@@ -26,13 +26,15 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
                 .HasMaxLength(5000)
                 .IsRequired(false);
             builder.Property(p => p.Volume)
-                .HasPrecision(2);
+                .HasPrecision(18, 2);
             builder.Property(p => p.Weight)
-                .HasPrecision(2);
+                .HasPrecision(18, 2);
             builder.Property(p => p.SupplyPrice)
-                .HasColumnType("money");
+                .HasColumnType("money")
+                .HasPrecision(18, 2);
             builder.Property(p => p.SalePrice)
-                .HasColumnType("money");
+                .HasColumnType("money")
+                .HasPrecision(18, 2);
         }
     }
 }

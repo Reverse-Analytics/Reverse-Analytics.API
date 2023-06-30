@@ -20,7 +20,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
             builder.HasOne(rd => rd.Product)
                 .WithMany(r => r.RefundDetails)
                 .HasForeignKey(rd => rd.ProductId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

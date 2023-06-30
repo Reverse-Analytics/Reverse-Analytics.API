@@ -17,14 +17,18 @@ namespace Reverse_Analytics.Api.Extensions
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<ICommonRepository, CommonRepository>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<ICustomerRepository, CustomerRepository>();
-            services.AddScoped<ISaleRepository, SaleRepository>();
+            services.AddScoped<IRefundRepository, RefundRepository>();
+            services.AddScoped<IRefundDetailRepository, IRefundDetailRepository>();
+            services.AddScoped<ISaleDebtRepository, SaleDebtRepository>();
             services.AddScoped<ISaleDetailRepository, SaleDetailRepository>();
-            services.AddScoped<ISupplierRepository, SupplierRepository>();
-            services.AddScoped<ISupplyRepository, SupplyRepository>();
+            services.AddScoped<ISaleRepository, SaleRepository>();
+            services.AddScoped<ISupplyDebtRepository, SupplyDebtRepository>();
             services.AddScoped<ISupplyDetailRepository, SupplyDetailRepository>();
+            services.AddScoped<ISupplyRepository, SupplyRepository>();
+            services.AddScoped<ISupplierRepository, SupplierRepository>();
 
             services.AddScoped<AuditableEntitySaveChangesInterceptor>();
 

@@ -7,14 +7,18 @@ namespace Reverse_Analytics.Api.Extensions
     {
         public static void RegisterDependencyInjection(this IServiceCollection services)
         {
+            services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IProductCategoryService, ProductCategoryService>();
             services.AddScoped<IProductService, ProductService>();
-            services.AddScoped<ICustomerService, CustomerService>();
-            services.AddScoped<ISaleService, SaleService>();
+            services.AddScoped<IRefundDetailService, RefundDetailService>();
+            services.AddScoped<IRefundService, RefundService>();
+            services.AddScoped<ISaleDebtService, SaleDebtService>();
             services.AddScoped<ISaleDetailService, SaleDetailService>();
-            services.AddScoped<ISupplierService, SupplierService>();
-            services.AddScoped<ISupplyService, SupplyService>();
+            services.AddScoped<ISaleService, SaleService>();
+            services.AddScoped<ISupplyDebtService, SupplyDebtService>();
             services.AddScoped<ISupplyDetailService, SupplyDetailService>();
+            services.AddScoped<ISupplyService, SupplyService>();
+            services.AddScoped<ISupplierService, SupplierService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();

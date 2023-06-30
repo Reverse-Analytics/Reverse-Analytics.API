@@ -66,7 +66,7 @@ namespace ReverseAnalytics.Services
 
             var saleDebtEntity = _mapper.Map<SaleDebt>(saleDebtToUpdate);
 
-            _repository.SaleDebt.Update(saleDebtToUpdate);
+            _repository.SaleDebt.Update(saleDebtEntity);
             await _repository.SaveChangesAsync();
 
         }

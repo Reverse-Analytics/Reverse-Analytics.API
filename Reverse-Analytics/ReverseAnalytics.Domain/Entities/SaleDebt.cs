@@ -6,6 +6,7 @@ namespace ReverseAnalytics.Domain.Entities
     public class SaleDebt : BaseAuditableEntity
     {
         public decimal TotalDue { get; set; }
+        public decimal TotalPaid { get; set; }
         public DateTime DueDate { get; set; }
         public DateTime? ClosedDate { get; set; }
         public DebtStatus Status { get; set; }

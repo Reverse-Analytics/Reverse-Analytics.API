@@ -67,7 +67,7 @@ namespace ReverseAnalytics.Services
             try
             {
                 var saleEntity = _mapper.Map<Sale>(saleToCreate);
-                var saleDetails = _mapper.Map<ICollection<SaleDetail>>(saleToCreate);
+                var saleDetails = _mapper.Map<ICollection<SaleDetail>>(saleToCreate?.SaleDetails);
 
                 saleEntity = _repository.Sale.Create(saleEntity);
                 saleEntity.Receipt = Guid.NewGuid().ToString()[..8];

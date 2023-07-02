@@ -2,7 +2,22 @@
 
 namespace ReverseAnalytics.Domain.DTOs.Customer
 {
-    public record CustomerDto(int Id, string FullName, string? Address, string? PhoneNumber,
-        string? Company, decimal Balance, double Discount,
-        bool IsActive, ICollection<SaleDto> Sales);
+    public class CustomerDto
+    {
+        public int Id { get; set; }
+        public string FullName { get; set; }
+        public string? CompanyName { get; set; }
+        public string? Address { get; set; }
+        public string? PhoneNumber { get; set; }
+        public decimal Balance { get; set; }
+        public bool IsActive { get; set; }
+
+        public virtual ICollection<SaleDto> Sales { get; set; }
+
+        public CustomerDto()
+        {
+            FullName = string.Empty;
+            Sales = new List<SaleDto>();
+        }
+    }
 }

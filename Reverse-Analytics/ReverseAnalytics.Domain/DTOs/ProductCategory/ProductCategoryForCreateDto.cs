@@ -1,4 +1,12 @@
 ﻿namespace ReverseAnalytics.Domain.DTOs.ProductCategory
 {
-    public record ProductCategoryForCreateDto(string CategoryName);
+    public class ProductCategoryForCreateDto
+    {
+        public string CategoryName { get; set; }
+
+        public ProductCategoryForCreateDto(string categoryName)
+        {
+            CategoryName = categoryName;
+        }
+    }
 }

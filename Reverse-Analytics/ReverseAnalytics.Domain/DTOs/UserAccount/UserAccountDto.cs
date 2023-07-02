@@ -1,4 +1,8 @@
 ﻿namespace ReverseAnalytics.Domain.DTOs.UserAccount
 {
-    public record UserAccountDto(string Id, string UserName);
+    public class UserAccountDto
+    {
+        public string Id { get; set; }
+        public string UserName { get; set; }
+    }
 }

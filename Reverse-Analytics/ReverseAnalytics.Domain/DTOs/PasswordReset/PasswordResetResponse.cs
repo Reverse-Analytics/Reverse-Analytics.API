@@ -1,6 +1,11 @@
 ﻿namespace ReverseAnalytics.Domain.DTOs.PasswordReset
 {
-    public record PasswordResetResponse(bool IsSuccess, string Message, List<ResponseError> Errors);
+    public class PasswordResetResponse
+    {
+        public bool IsSuccess { get; set; }
+        public string Message { get; set; }
+        public List<ResponseError> Errors { get; set; }
+    }
 
     public class ResponseError
     {

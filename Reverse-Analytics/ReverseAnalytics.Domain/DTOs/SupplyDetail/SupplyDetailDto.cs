@@ -3,6 +3,16 @@ using ReverseAnalytics.Domain.DTOs.Supply;
 
 namespace ReverseAnalytics.Domain.DTOs.SupplyDetail
 {
-    public record SupplyDetailDto(int Id, int Quantity, decimal UnitPrice,
-        SupplyDto Supply, ProductDto Product);
+    public class SupplyDetailDto
+    {
+        public int Id { get; set; }
+        public int Quantity { get; set; }
+        public decimal UnitPrice { get; set; }
+
+        public int SupplyId { get; set; }
+        public SupplyDto Supply { get; set; }
+
+        public int ProductId { get; set; }
+        public ProductDto Product { get; set; }
+    }
 }

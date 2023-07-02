@@ -5,7 +5,7 @@ namespace ReverseAnalytics.Domain.Entities
     public class Supply : BaseAuditableEntity
     {
         public string? ReceivedBy { get; set; }
-        public string? Comment { get; set; }
+        public string? Comments { get; set; }
         public decimal TotalDue { get; set; }
         public decimal TotalPaid { get; set; }
         public DateTime SupplyDate { get; set; }

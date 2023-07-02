@@ -1,4 +1,15 @@
-﻿namespace ReverseAnalytics.Domain.DTOs.Refund
+﻿using ReverseAnalytics.Domain.DTOs.RefundDetail;
+
+namespace ReverseAnalytics.Domain.DTOs.Refund
 {
-    public record RefundForCreateDto(string? Reason, string? ReceivedBy, DateTime RefundDate, int SaleId);
+    public class RefundForCreateDto
+    {
+        public DateTime RefundDate { get; set; }
+        public string? Reason { get; set; }
+        public string? ReceivedBy { get; set; }
+
+        public int SaleId { get; set; }
+
+        public ICollection<RefundDetailDto> RefundDetails { get; set; }
+    }
 }

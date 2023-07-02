@@ -11,7 +11,7 @@ using ReverseAnalytics.Infrastructure.Persistence;
 namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230701114442_Initial_Create")]
+    [Migration("20230702172237_Initial_Create")]
     partial class Initial_Create
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -336,6 +336,9 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
                         .HasPrecision(18, 2)
                         .HasColumnType("money");
 
+                    b.Property<decimal>("TotalPaid")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.HasIndex("SaleId");
@@ -438,8 +441,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Comment")
-                        .HasMaxLength(2500)
+                    b.Property<string>("Comments")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("Created")
@@ -469,8 +471,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
                         .HasColumnType("money");
 
                     b.Property<decimal>("TotalPaid")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("money");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -514,6 +515,9 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
                     b.Property<decimal>("TotalDue")
                         .HasPrecision(18, 2)
                         .HasColumnType("money");
+
+                    b.Property<decimal>("TotalPaid")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 

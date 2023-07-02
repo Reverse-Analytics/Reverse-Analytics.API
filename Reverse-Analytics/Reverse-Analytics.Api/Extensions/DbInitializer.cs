@@ -240,7 +240,7 @@ namespace Reverse_Analytics.Api.Extensions
             var suppliers = context.Suppliers.Select(x => x.Id).ToList();
             var suppliesFaker = new Faker<Supply>("ru")
                 .RuleFor(x => x.ReceivedBy, f => f.Person.FirstName)
-                .RuleFor(x => x.Comment, f => f.Lorem.Sentence())
+                .RuleFor(x => x.Comments, f => f.Lorem.Sentence())
                 .RuleFor(x => x.TotalDue, f => f.Random.Decimal(100000, 5000000))
                 .RuleFor(x => x.TotalPaid, f => f.Random.Decimal(50000, 5500000))
                 .RuleFor(x => x.SupplyDate, f => f.Date.Between(minDate, maxDate))

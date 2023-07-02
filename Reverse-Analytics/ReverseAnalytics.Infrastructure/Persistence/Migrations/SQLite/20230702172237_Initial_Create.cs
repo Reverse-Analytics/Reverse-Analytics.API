@@ -140,9 +140,9 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     ReceivedBy = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
-                    Comment = table.Column<string>(type: "TEXT", maxLength: 2500, nullable: true),
+                    Comments = table.Column<string>(type: "TEXT", nullable: true),
                     TotalDue = table.Column<decimal>(type: "money", precision: 18, scale: 2, nullable: false),
-                    TotalPaid = table.Column<decimal>(type: "money", precision: 18, scale: 2, nullable: false),
+                    TotalPaid = table.Column<decimal>(type: "TEXT", nullable: false),
                     SupplyDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     SupplierId = table.Column<int>(type: "INTEGER", nullable: false),
                     Created = table.Column<DateTime>(type: "TEXT", nullable: false),
@@ -194,6 +194,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     TotalDue = table.Column<decimal>(type: "money", precision: 18, scale: 2, nullable: false),
+                    TotalPaid = table.Column<decimal>(type: "TEXT", nullable: false),
                     DueDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     ClosedDate = table.Column<DateTime>(type: "TEXT", nullable: true),
                     Status = table.Column<int>(type: "INTEGER", nullable: false, defaultValue: 0),
@@ -254,6 +255,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     TotalDue = table.Column<decimal>(type: "money", precision: 18, scale: 2, nullable: false),
+                    TotalPaid = table.Column<decimal>(type: "TEXT", nullable: false),
                     DueDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     ClosedDate = table.Column<DateTime>(type: "TEXT", nullable: true),
                     Status = table.Column<int>(type: "INTEGER", nullable: false, defaultValue: 0),

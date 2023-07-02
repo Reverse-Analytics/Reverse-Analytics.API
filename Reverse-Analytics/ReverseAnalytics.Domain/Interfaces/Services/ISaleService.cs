@@ -6,7 +6,7 @@ namespace ReverseAnalytics.Domain.Interfaces.Services
     {
         public Task<IEnumerable<SaleDto>> GetAllSalesAsync(int pageSize, int pageNumber);
         public Task<SaleDto> GetSaleByIdAsync(int id);
-        public Task<SaleDto> CreateSaleAsync(SaleForCreateDto SaleToCreate);
+        public Task<SaleDto> CreateSaleAsync(SaleForCreateDto saleToCreate);
         public Task UpdateSaleAsync(SaleForUpdateDto SaleToUpdate);
         public Task DeleteSaleAsync(int id);
     }

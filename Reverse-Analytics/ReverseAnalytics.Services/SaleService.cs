@@ -70,17 +70,18 @@ namespace ReverseAnalytics.Services
                 var saleDetails = _mapper.Map<ICollection<SaleDetail>>(saleToCreate);
 
                 saleEntity = _repository.Sale.Create(saleEntity);
+                saleEntity.Receipt = Guid.NewGuid().ToString()[..8];
 
-                if (saleDetails != null && saleDetails.Count > 0)
+                if (saleDetails != null && saleDetails.Any())
                 {
                     _repository.SaleDetail.CreateRange(saleDetails);
                 }
 
                 await _repository.SaveChangesAsync();
 
-                var SaleDto = _mapper.Map<SaleDto>(saleEntity);
+                var saleDto = _mapper.Map<SaleDto>(saleEntity);
 
-                return SaleDto;
+                return saleDto;
             }
             catch (AutoMapperMappingException ex)
             {

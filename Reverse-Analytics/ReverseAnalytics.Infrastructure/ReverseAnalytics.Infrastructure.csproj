@@ -33,8 +33,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Persistence\Identity_Migrations\" />
-    <Folder Include="Persistence\Migrations\" />
+    <Folder Include="Persistence\Identity_Migrations\SQLServer\" />
+    <Folder Include="Persistence\Identity_Migrations\SQLite\" />
+    <Folder Include="Persistence\Migrations\SQLite\" />
+    <Folder Include="Persistence\Migrations\SQLServer\" />
   </ItemGroup>
 
 </Project>

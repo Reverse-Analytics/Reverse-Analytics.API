@@ -2,5 +2,17 @@
 
 namespace ReverseAnalytics.Domain.DTOs.ProductCategory
 {
-    public record ProductCategoryDto(int Id, string CategoryName, ICollection<ProductDto> Products);
+
+    public class ProductCategoryDto
+    {
+        public int Id { get; set; }
+        public string CategoryName { get; set; }
+
+        public virtual ICollection<ProductDto> Products { get; set; }
+
+        public ProductCategoryDto()
+        {
+            Products = new HashSet<ProductDto>();
+        }
+    }
 }

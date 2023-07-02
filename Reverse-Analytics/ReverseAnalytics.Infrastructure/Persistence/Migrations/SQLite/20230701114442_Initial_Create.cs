@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
+namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
 {
     public partial class Initial_Create : Migration
     {
@@ -13,19 +13,19 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                 name: "Customer",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FullName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(17)", maxLength: 17, nullable: true),
-                    Company = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    FullName = table.Column<string>(type: "TEXT", maxLength: 150, nullable: false),
+                    Address = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
+                    PhoneNumber = table.Column<string>(type: "TEXT", maxLength: 17, nullable: true),
+                    Company = table.Column<string>(type: "TEXT", nullable: true),
                     Balance = table.Column<decimal>(type: "money", precision: 18, scale: 2, nullable: false, defaultValue: 0m),
-                    Discount = table.Column<double>(type: "float(18)", precision: 18, scale: 2, nullable: false, defaultValue: 0.0),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Discount = table.Column<double>(type: "REAL", precision: 18, scale: 2, nullable: false, defaultValue: 0.0),
+                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: true),
+                    Created = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -36,13 +36,13 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                 name: "Product_Category",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CategoryName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CategoryName = table.Column<string>(type: "TEXT", maxLength: 150, nullable: false),
+                    Created = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -53,17 +53,17 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                 name: "Supplier",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FullName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(17)", maxLength: 17, nullable: true),
-                    Company = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    FullName = table.Column<string>(type: "TEXT", maxLength: 150, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "TEXT", maxLength: 17, nullable: true),
+                    Company = table.Column<string>(type: "TEXT", nullable: true),
                     Balance = table.Column<decimal>(type: "money", precision: 18, scale: 2, nullable: false, defaultValue: 0m),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: true),
+                    Created = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -74,21 +74,21 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                 name: "Sale",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Receipt = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
-                    Comments = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    SoldBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Receipt = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
+                    Comments = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
+                    SoldBy = table.Column<string>(type: "TEXT", nullable: true),
                     TotalDue = table.Column<decimal>(type: "money", precision: 18, scale: 2, nullable: false),
                     TotalPaid = table.Column<decimal>(type: "money", precision: 18, scale: 2, nullable: false),
                     TotalDiscount = table.Column<decimal>(type: "money", precision: 18, scale: 2, nullable: false),
-                    SaleType = table.Column<int>(type: "int", nullable: false, defaultValue: 3),
-                    SaleDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CustomerId = table.Column<int>(type: "int", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    SaleType = table.Column<int>(type: "INTEGER", nullable: false, defaultValue: 3),
+                    SaleDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CustomerId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Created = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -105,22 +105,22 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                 name: "Product",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductName = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
-                    ProductCode = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: true),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    ProductName = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
+                    ProductCode = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "TEXT", maxLength: 5000, nullable: true),
                     SalePrice = table.Column<decimal>(type: "money", precision: 18, scale: 2, nullable: false),
                     SupplyPrice = table.Column<decimal>(type: "money", precision: 18, scale: 2, nullable: true),
-                    QuantityInStock = table.Column<double>(type: "float", nullable: false),
-                    Volume = table.Column<double>(type: "float(18)", precision: 18, scale: 2, nullable: true),
-                    Weight = table.Column<double>(type: "float(18)", precision: 18, scale: 2, nullable: true),
-                    UnitOfMeasurement = table.Column<int>(type: "int", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    QuantityInStock = table.Column<double>(type: "REAL", nullable: false),
+                    Volume = table.Column<double>(type: "REAL", precision: 18, scale: 2, nullable: true),
+                    Weight = table.Column<double>(type: "REAL", precision: 18, scale: 2, nullable: true),
+                    UnitOfMeasurement = table.Column<int>(type: "INTEGER", nullable: false),
+                    CategoryId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Created = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -137,18 +137,18 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                 name: "Supply",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ReceivedBy = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    Comment = table.Column<string>(type: "nvarchar(2500)", maxLength: 2500, nullable: true),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    ReceivedBy = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
+                    Comment = table.Column<string>(type: "TEXT", maxLength: 2500, nullable: true),
                     TotalDue = table.Column<decimal>(type: "money", precision: 18, scale: 2, nullable: false),
                     TotalPaid = table.Column<decimal>(type: "money", precision: 18, scale: 2, nullable: false),
-                    SupplyDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    SupplierId = table.Column<int>(type: "int", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    SupplyDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    SupplierId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Created = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -165,16 +165,16 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                 name: "Refund",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RefundDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Reason = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ReceivedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SaleId = table.Column<int>(type: "int", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    RefundDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Reason = table.Column<string>(type: "TEXT", nullable: true),
+                    ReceivedBy = table.Column<string>(type: "TEXT", nullable: true),
+                    SaleId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Created = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -191,17 +191,17 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                 name: "Sale_Debt",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     TotalDue = table.Column<decimal>(type: "money", precision: 18, scale: 2, nullable: false),
-                    DueDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ClosedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Status = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    SaleId = table.Column<int>(type: "int", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    DueDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ClosedDate = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    Status = table.Column<int>(type: "INTEGER", nullable: false, defaultValue: 0),
+                    SaleId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Created = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -218,17 +218,17 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                 name: "Sale_Detail",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Quantity = table.Column<int>(type: "INTEGER", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "money", precision: 18, scale: 2, nullable: false),
-                    Discount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    SaleId = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Discount = table.Column<decimal>(type: "TEXT", nullable: false),
+                    SaleId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ProductId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Created = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -251,17 +251,17 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                 name: "Supply_Debt",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     TotalDue = table.Column<decimal>(type: "money", precision: 18, scale: 2, nullable: false),
-                    DueDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ClosedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Status = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    SupplyId = table.Column<int>(type: "int", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    DueDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ClosedDate = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    Status = table.Column<int>(type: "INTEGER", nullable: false, defaultValue: 0),
+                    SupplyId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Created = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -278,16 +278,16 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                 name: "Supply_Detail",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Quantity = table.Column<int>(type: "INTEGER", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "money", nullable: false),
-                    SupplyId = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    SupplyId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ProductId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Created = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -310,15 +310,15 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
                 name: "Refund_Detail",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
-                    RefundId = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Quantity = table.Column<int>(type: "INTEGER", nullable: false),
+                    RefundId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ProductId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Created = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {

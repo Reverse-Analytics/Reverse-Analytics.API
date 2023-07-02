@@ -7,7 +7,7 @@ using ReverseAnalytics.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace ReverseAnalytics.Infrastructure.Persistence.Identity_Migrations
+namespace ReverseAnalytics.Infrastructure.Persistence.Identity_Migrations.SQLite
 {
     [DbContext(typeof(ApplicationIdentityDbContext))]
     partial class ApplicationIdentityDbContextModelSnapshot : ModelSnapshot

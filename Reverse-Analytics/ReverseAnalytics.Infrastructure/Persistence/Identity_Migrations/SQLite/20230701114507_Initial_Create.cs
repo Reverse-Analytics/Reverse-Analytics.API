@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ReverseAnalytics.Infrastructure.Persistence.Identity_Migrations
+namespace ReverseAnalytics.Infrastructure.Persistence.Identity_Migrations.SQLite
 {
     public partial class Initial_Create : Migration
     {

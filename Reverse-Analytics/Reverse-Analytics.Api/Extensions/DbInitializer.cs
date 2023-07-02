@@ -19,8 +19,10 @@ namespace Reverse_Analytics.Api.Extensions
             try
             {
                 var context = services.GetRequiredService<ApplicationDbContext>();
+                var identityContext = services.GetRequiredService<ApplicationIdentityDbContext>();
+                var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
 
-                DbSeeder.Initialize(context);
+                DbSeeder.Initialize(context, identityContext, userManager);
             }
             catch (Exception ex)
             {
@@ -38,7 +40,9 @@ namespace Reverse_Analytics.Api.Extensions
         private static readonly DateTime minDate = DateTime.Now.AddYears(-2);
         private static readonly DateTime maxDate = DateTime.Now;
 
-        public static void Initialize(ApplicationDbContext context)
+        public static void Initialize(ApplicationDbContext context,
+            ApplicationIdentityDbContext identityContext,
+            UserManager<IdentityUser> userManager)
         {
             try
             {
@@ -56,8 +60,8 @@ namespace Reverse_Analytics.Api.Extensions
                 CreateSupplyDebts(context);
                 //CreateInventories(context);
                 //CreateInventoryDetails(context);
-                //CreateRoles(identityContext);
-                //CreateUsers(identityContext, userManager);
+                CreateRoles(identityContext);
+                CreateUsers(identityContext, userManager);
             }
             catch (Exception ex)
             {
@@ -335,14 +339,6 @@ namespace Reverse_Analytics.Api.Extensions
                 userManager.CreateAsync(user, $"qwerty{i}").Wait();
                 userManager.AddToRoleAsync(user, role.Name).Wait();
             }
-        }
-
-        private static List<Product> GetRandomProducts(List<Product> products)
-        {
-            var half = products.Count / 2;
-            var start = _faker.Random.Int(0, half);
-
-            return new List<Product>(products.Skip(start).Take(half));
         }
     }
 }

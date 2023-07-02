@@ -8,10 +8,10 @@ using ReverseAnalytics.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace ReverseAnalytics.Infrastructure.Persistence.Identity_Migrations
+namespace ReverseAnalytics.Infrastructure.Persistence.Identity_Migrations.SQLite
 {
     [DbContext(typeof(ApplicationIdentityDbContext))]
-    [Migration("20221123225617_Initial_Create")]
+    [Migration("20230701114507_Initial_Create")]
     partial class Initial_Create
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

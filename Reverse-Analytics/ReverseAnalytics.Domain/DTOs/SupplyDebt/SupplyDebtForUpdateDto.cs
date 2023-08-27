@@ -2,5 +2,15 @@
 
 namespace ReverseAnalytics.Domain.DTOs.SupplyDebt
 {
-    public record SupplyDebtForUpdateDto(int Id, decimal TotalDue, DateTime DueDate, DateTime? ClosedDate, DebtStatus Status, int SupplyId);
+    public class SupplyDebtForUpdateDto
+    {
+        public int Id { get; set; }
+        public decimal TotalDue { get; set; }
+        public decimal Leftover { get; set; } = 0;
+        public DateTime DueDate { get; set; }
+        public DateTime? ClosedDate { get; set; }
+        public DebtStatus Status { get; set; }
+
+        public int SupplyId { get; set; }
+    }
 }

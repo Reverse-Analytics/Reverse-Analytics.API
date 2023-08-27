@@ -1,12 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using ReverseAnalytics.Domain.DTOs.Sale;
+using ReverseAnalytics.Domain.Entities;
 
 namespace ReverseAnalytics.Domain.Mappings
 {
-    internal class SaleMapping
+    public class SaleMapping : Profile
     {
+        public SaleMapping()
+        {
+            CreateMap<Sale, SaleDto>();
+            CreateMap<SaleDto, Sale>();
+            CreateMap<SaleForCreateDto, Sale>();
+            CreateMap<SaleForUpdateDto, Sale>();
+        }
     }
 }

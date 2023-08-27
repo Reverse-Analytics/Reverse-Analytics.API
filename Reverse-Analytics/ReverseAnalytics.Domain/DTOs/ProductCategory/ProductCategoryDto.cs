@@ -7,6 +7,7 @@ namespace ReverseAnalytics.Domain.DTOs.ProductCategory
     {
         public int Id { get; set; }
         public string CategoryName { get; set; }
+        public int NumberOfProducts { get; set; }
 
         public virtual ICollection<ProductDto> Products { get; set; }
 

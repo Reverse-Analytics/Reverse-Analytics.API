@@ -22,7 +22,7 @@ namespace Reverse_Analytics.Api.Controllers
         #region CRUD
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CustomerDto>>> GetCustomersAsync(string? searchString, int pageNumber = 1, int pageSize = pageSize)
+        public async Task<ActionResult<IEnumerable<CustomerDto>>> GetCustomersAsync(string? searchString, int pageNumber = 0, int pageSize = 0)
         {
             var customers = await _customerService.GetAllCustomerAsync(searchString, pageNumber, pageSize);
 

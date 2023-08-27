@@ -9,7 +9,7 @@ namespace Reverse_Analytics.Api.Controllers
 {
     // [Authorize]
     [ApiController]
-    [Route("api/sales")]
+    [Route("api/sales/")]
     public class SalesController : ControllerBase
     {
         private readonly ISaleService _saleService;
@@ -44,6 +44,14 @@ namespace Reverse_Analytics.Api.Controllers
                 return NotFound($"There is no Sale with id: {id}.");
 
             return Ok(sale);
+        }
+
+        [HttpGet("customers/{customerId}")]
+        public async Task<ActionResult<SaleDto>> GetSalesByCustomerIdAsync(int customerId)
+        {
+            var sales = await _saleService.GetSalesByCustomerIdAsync(customerId);
+
+            return Ok(sales);
         }
 
         [HttpPost]

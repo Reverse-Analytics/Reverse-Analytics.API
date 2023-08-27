@@ -17,7 +17,7 @@ namespace ReverseAnalytics.Repositories
 
         public async Task<IEnumerable<T>> FindAllAsync(int pageSize = 0, int pageNumber = 0)
         {
-            if(pageSize > 0 && pageNumber > 0)
+            if (pageSize > 0 && pageNumber > 0)
             {
                 return await _context.Set<T>()
                                  .AsNoTracking()
@@ -78,7 +78,7 @@ namespace ReverseAnalytics.Repositories
         {
             var entity = _context.Set<T>().Find(id);
 
-            if(entity == null)
+            if (entity == null)
             {
                 throw new NotFoundException($"There is no Entity {typeof(T)} with id: {id}.");
             }
@@ -88,10 +88,10 @@ namespace ReverseAnalytics.Repositories
 
         public async void DeleteRange(IEnumerable<int> ids)
         {
-            foreach(var id in ids)
+            foreach (var id in ids)
             {
                 bool entityExists = await EntityExistsAsync(id);
-               
+
                 if (!entityExists)
                 {
                     throw new Exception($"There is no Entity Type {typeof(T)} with id: {id}.");

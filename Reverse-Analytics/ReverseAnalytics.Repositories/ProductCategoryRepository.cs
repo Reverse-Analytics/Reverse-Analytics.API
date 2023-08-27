@@ -14,7 +14,9 @@ namespace ReverseAnalytics.Repositories
 
         public async Task<List<ProductCategory>> FindAllProductCategoriesAsync(string? searchString)
         {
-            var productCategories = _context.ProductCategories.AsQueryable();
+            var productCategories = _context.ProductCategories
+                .Include(x => x.Products)
+                .AsQueryable();
 
             if (!string.IsNullOrEmpty(searchString))
             {

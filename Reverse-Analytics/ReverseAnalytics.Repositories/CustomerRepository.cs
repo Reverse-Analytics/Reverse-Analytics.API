@@ -25,9 +25,6 @@ namespace ReverseAnalytics.Repositories
             customers = customers.OrderBy(c => c.FullName)
                 .ThenBy(c => c.IsActive);
 
-            customers = customers.Skip(pageSize * (pageNumber - 1))
-                .Take(pageSize);
-
             return await customers.ToListAsync();
         }
     }

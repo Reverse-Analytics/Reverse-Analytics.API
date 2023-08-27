@@ -16,6 +16,16 @@ namespace ReverseAnalytics.Repositories
         {
             return await _context.SaleDebts
                 .Where(x => x.SaleId == saleId)
+                .Include(x => x.Sale)
+                .ThenInclude(x => x.Customer)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<SaleDebt>> FindAllAsync()
+        {
+            return await _context.SaleDebts
+                .Include(x => x.Sale)
+                .ThenInclude(x => x.Customer)
                 .ToListAsync();
         }
     }

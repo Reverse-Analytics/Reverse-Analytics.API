@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ReverseAnalytics.Domain.DTOs.SaleDebt;
 using ReverseAnalytics.Domain.Entities;
+using ReverseAnalytics.Domain.Exceptions;
 using ReverseAnalytics.Domain.Interfaces.Repositories;
 using ReverseAnalytics.Domain.Interfaces.Services;
 
@@ -44,6 +45,47 @@ namespace ReverseAnalytics.Services
                 _mapper.Map<IEnumerable<SaleDebtDto>>(saleDebts);
         }
 
+        public async Task<SaleDebtDto> SettleDebtAsync(int id)
+        {
+            var debt = await _repository.SaleDebt.FindByIdAsync(id);
+
+            if (debt is null)
+            {
+                throw new NotFoundException();
+            }
+
+            debt.Sale = await _repository.Sale.FindByIdAsync(debt.SaleId);
+            debt.Sale.Customer = await _repository.Customer.FindByIdAsync(debt.Sale.CustomerId);
+            debt.TotalPaid = debt.TotalDue;
+            debt.Status = Domain.Enums.DebtStatus.Closed;
+            debt.ClosedDate = DateTime.Now;
+            await _repository.SaveChangesAsync();
+
+            return _mapper.Map<SaleDebtDto>(debt);
+        }
+
+        public async Task<SaleDebtDto> MakePaymentAsync(int id, decimal amount)
+        {
+            var debt = await _repository.SaleDebt.FindByIdAsync(id);
+
+            if (debt is null)
+            {
+                throw new NotFoundException();
+            }
+
+            if (debt.TotalDue - (debt.TotalPaid + amount) <= 0)
+            {
+                return await SettleDebtAsync(id);
+            }
+
+            debt.Sale = await _repository.Sale.FindByIdAsync(debt.SaleId);
+            debt.Sale.Customer = await _repository.Customer.FindByIdAsync(debt.Sale.CustomerId);
+            debt.TotalPaid += amount;
+            await _repository.SaveChangesAsync();
+
+            return _mapper.Map<SaleDebtDto>(debt);
+        }
+
         public async Task<SaleDebtDto> GetSaleDebtByIdAsync(int id)
         {
             var saleDebt = await _repository.SaleDebt.FindByIdAsync(id);
@@ -68,7 +110,6 @@ namespace ReverseAnalytics.Services
 
             _repository.SaleDebt.Update(saleDebtEntity);
             await _repository.SaveChangesAsync();
-
         }
     }
 }

@@ -22,7 +22,7 @@ namespace ReverseAnalytics.Services
         {
             try
             {
-                var sales = await _repository.Sale.FindAllAsync(pageSize, pageNumber);
+                var sales = await _repository.Sale.FindAllAsync();
 
                 var saleDtos = _mapper.Map<IEnumerable<SaleDto>>(sales);
 
@@ -60,6 +60,15 @@ namespace ReverseAnalytics.Services
             {
                 throw new Exception($"Error retrieving Sale with id: {id}", ex);
             }
+        }
+
+        public async Task<IEnumerable<SaleDto>> GetSalesByCustomerIdAsync(int customerId)
+        {
+            var saleEntities = await _repository.Sale.FindAllByCustomerIdAsync(customerId);
+
+            var saleDtos = _mapper.Map<IEnumerable<SaleDto>>(saleEntities);
+
+            return saleDtos ?? Enumerable.Empty<SaleDto>();
         }
 
         public async Task<SaleDto> CreateSaleAsync(SaleForCreateDto saleToCreate)

@@ -99,17 +99,9 @@ namespace ReverseAnalytics.Services
                 }
 
                 var createdEntity = _repository.Customer.Create(customerEntity);
-
-                var customerDto = _mapper.Map<CustomerDto>(createdEntity);
-
-                if (customerDto is null)
-                {
-                    throw new AutoMapperMappingException($"Could not map {typeof(Customer)} to {typeof(CustomerDto)}.");
-                }
-
                 await _repository.Customer.SaveChangesAsync();
 
-                return customerDto;
+                return _mapper.Map<CustomerDto>(createdEntity);
             }
             catch (ArgumentNullException ex)
             {

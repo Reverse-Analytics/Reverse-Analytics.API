@@ -92,7 +92,7 @@ namespace ReverseAnalytics.Services
             {
                 var product = await _repository.Product.FindByIdAsync(id);
 
-                if(product is null)
+                if (product is null)
                 {
                     return null;
                 }
@@ -124,29 +124,27 @@ namespace ReverseAnalytics.Services
         {
             try
             {
-                if(productToCreate is null)
+                if (productToCreate is null)
                 {
                     throw new ArgumentNullException(nameof(productToCreate));
                 }
 
                 var productEntity = _mapper.Map<Product>(productToCreate);
 
-                if(productEntity is null)
+                if (productEntity is null)
                 {
                     throw new AutoMapperMappingException($"Could not map {typeof(ProductForCreateDto)} to {typeof(Product)} Entity.");
                 }
 
                 productEntity = _repository.Product.Create(productEntity);
                 await _repository.Product.SaveChangesAsync();
+                productEntity.Category = await _repository.ProductCategory.FindByIdAsync(productEntity.CategoryId);
 
                 var productDto = _mapper.Map<ProductDto>(productEntity);
 
-                if(productDto is null)
-                {
-                    throw new AutoMapperMappingException($"Could not map {typeof(Product)} Entity to {typeof(ProductDto)}.");
-                }
-
-                return productDto;
+                return productDto is null
+                    ? throw new AutoMapperMappingException($"Could not map {typeof(Product)} Entity to {typeof(ProductDto)}.")
+                    : productDto;
             }
             catch (ArgumentNullException ex)
             {
@@ -166,14 +164,14 @@ namespace ReverseAnalytics.Services
         {
             try
             {
-                if(productToUpdate is null)
+                if (productToUpdate is null)
                 {
                     throw new ArgumentNullException(nameof(productToUpdate));
                 }
 
                 var productEntity = _mapper.Map<Product>(productToUpdate);
 
-                if(productEntity is null)
+                if (productEntity is null)
                 {
                     throw new AutoMapperMappingException($"Could not map {typeof(ProductForUpdateDto)} to {typeof(Product)} Entity.");
                 }
@@ -206,7 +204,7 @@ namespace ReverseAnalytics.Services
                 _repository.Product.Delete(id);
                 await _repository.Product.SaveChangesAsync();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception($"There was an error deleting Product with id: {id}.", ex);
             }

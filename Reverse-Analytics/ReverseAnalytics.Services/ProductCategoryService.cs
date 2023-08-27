@@ -20,22 +20,54 @@ namespace ReverseAnalytics.Services
                 ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<IEnumerable<ProductCategoryDto>?> GetProductCategoriesAsync()
+        public async Task<IEnumerable<ProductCategoryDto>> GetProductCategoriesAsync()
         {
             try
             {
                 var productCategories = await _repository.ProductCategory.FindAllAsync();
 
-                if(productCategories is null)
+                if (productCategories is null)
                 {
                     return null;
                 }
 
-                var productCategoriesDto = _mapper.Map<IEnumerable<ProductCategoryDto>?>(productCategories);
+                var productCategoriesDto = _mapper.Map<IEnumerable<ProductCategoryDto>>(productCategories);
 
-                if (productCategoriesDto is null)
+                foreach (var category in productCategoriesDto)
                 {
-                    throw new AutoMapperMappingException($"Could not map {typeof(ProductCategory)} Entities to {typeof(ProductCategoryDto)}.");
+                    category.NumberOfProducts = category.Products.Count;
+                }
+
+                return productCategoriesDto;
+            }
+            catch (NotFoundException ex)
+            {
+                throw;
+            }
+            catch (AutoMapperMappingException ex)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("There was an error retrieving product categories.", ex);
+            }
+        }
+
+        public async Task<IEnumerable<ProductCategoryDto>> GetProductCategoriesAsync(string? searchString)
+        {
+            try
+            {
+                var productCategories = await _repository.ProductCategory.FindAllProductCategoriesAsync(searchString);
+
+                if (productCategories is null)
+                    return Enumerable.Empty<ProductCategoryDto>();
+
+                var productCategoriesDto = _mapper.Map<IEnumerable<ProductCategoryDto>>(productCategories);
+
+                foreach (var category in productCategoriesDto)
+                {
+                    category.NumberOfProducts = category.Products.Count;
                 }
 
                 return productCategoriesDto;
@@ -49,38 +81,6 @@ namespace ReverseAnalytics.Services
                 throw ex;
             }
             catch (Exception ex)
-            {
-                throw new Exception("There was an error retrieving product categories.", ex);
-            }
-        }
-
-        public async Task<IEnumerable<ProductCategoryDto>?> GetProductCategoriesAsync(string? searchString)
-        {
-            try
-            {
-                var productCategories = await _repository.ProductCategory.FindAllProductCategoriesAsync(searchString);
-
-                if (productCategories is null)
-                    return null;
-
-                var productCategoriesDto = _mapper.Map<IEnumerable<ProductCategoryDto>?>(productCategories);
-
-                if (productCategoriesDto is null)
-                {
-                    throw new AutoMapperMappingException($"Could not map {typeof(Product)} Entities to {typeof(ProductCategoryDto)}.");
-                }
-
-                return productCategoriesDto;
-            }
-            catch(NotFoundException ex)
-            {
-                throw ex;
-            }
-            catch (AutoMapperMappingException ex)
-            {
-                throw ex;
-            }
-            catch(Exception ex)
             {
                 throw new Exception("There was an error retrieving product categories.", ex);
             }
@@ -106,15 +106,15 @@ namespace ReverseAnalytics.Services
 
                 return productCategoryDto;
             }
-            catch(NotFoundException ex)
+            catch (NotFoundException ex)
             {
                 throw ex;
             }
-            catch(AutoMapperMappingException ex)
+            catch (AutoMapperMappingException ex)
             {
                 throw ex;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception($"There was an error retrieving Product Category with id: {id}", ex);
             }
@@ -141,22 +141,22 @@ namespace ReverseAnalytics.Services
 
                 var productCategoryDto = _mapper.Map<ProductCategoryDto>(productCategoryEntity);
 
-                if(productCategoryDto is null)
+                if (productCategoryDto is null)
                 {
                     throw new AutoMapperMappingException($"Could not map {typeof(ProductCategory)} Entity to {typeof(ProductCategoryDto)}.");
                 }
 
                 return productCategoryDto;
             }
-            catch(ArgumentNullException ex)
+            catch (ArgumentNullException ex)
             {
                 throw ex;
             }
-            catch(AutoMapperMappingException ex)
+            catch (AutoMapperMappingException ex)
             {
                 throw ex;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception("There was an error while adding new Product Category.", ex);
             }
@@ -206,11 +206,11 @@ namespace ReverseAnalytics.Services
                 _repository.ProductCategory.Delete(productCategoryId);
                 await _repository.ProductCategory.SaveChangesAsync();
             }
-            catch(NotFoundException ex)
+            catch (NotFoundException ex)
             {
                 throw ex;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception($"There was an error deleting Product Category with id: {productCategoryId}", ex);
             }

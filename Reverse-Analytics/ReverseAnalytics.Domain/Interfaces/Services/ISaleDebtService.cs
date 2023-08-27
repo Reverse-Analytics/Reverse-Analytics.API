@@ -10,5 +10,7 @@ namespace ReverseAnalytics.Domain.Interfaces.Services
         public Task<SaleDebtDto> CreateSaleDebtAsync(SaleDebtForCreateDto saleDebtToCreate);
         public Task UpdateSaleDebtAsync(SaleDebtForUpdateDto saleDebtToUpdate);
         public Task DeleteSaleDebtAsync(int id);
+        public Task<SaleDebtDto> SettleDebtAsync(int id);
+        public Task<SaleDebtDto> MakePaymentAsync(int id, decimal amount);
     }
 }

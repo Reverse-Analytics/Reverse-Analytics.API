@@ -73,33 +73,17 @@ namespace ReverseAnalytics.Services
 
         public async Task<SaleDto> CreateSaleAsync(SaleForCreateDto saleToCreate)
         {
-            try
-            {
-                var saleEntity = _mapper.Map<Sale>(saleToCreate);
-                var saleDetails = _mapper.Map<ICollection<SaleDetail>>(saleToCreate?.SaleDetails);
+            var saleEntity = _mapper.Map<Sale>(saleToCreate);
 
-                saleEntity = _repository.Sale.Create(saleEntity);
-                saleEntity.Receipt = Guid.NewGuid().ToString()[..8];
+            saleEntity.Receipt = Guid.NewGuid().ToString()[..8];
+            saleEntity = _repository.Sale.Create(saleEntity);
+            saleEntity.SaleDebt = CreateDebt(saleEntity);
+            await _repository.SaveChangesAsync();
+            saleEntity.Customer = await _repository.Customer.FindByIdAsync(saleEntity.CustomerId);
 
-                if (saleDetails != null && saleDetails.Any())
-                {
-                    _repository.SaleDetail.CreateRange(saleDetails);
-                }
+            var saleDto = _mapper.Map<SaleDto>(saleEntity);
 
-                await _repository.SaveChangesAsync();
-
-                var saleDto = _mapper.Map<SaleDto>(saleEntity);
-
-                return saleDto;
-            }
-            catch (AutoMapperMappingException ex)
-            {
-                throw ex;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("There was an error creating new Sale.", ex);
-            }
+            return saleDto;
         }
 
         public async Task UpdateSaleAsync(SaleForUpdateDto saleToUpdate)
@@ -107,9 +91,15 @@ namespace ReverseAnalytics.Services
             try
             {
                 var saleEntity = _mapper.Map<Sale>(saleToUpdate);
+                saleEntity.Receipt = Guid.NewGuid().ToString()[..8];
+
+                await _repository.SaleDetail.DeleteRangeBySaleIdAsync(saleToUpdate.Id);
+                _repository.SaleDetail.CreateRange(saleEntity.SaleDetails);
+
+                await TryUpdateSaleDebt(saleEntity);
 
                 _repository.Sale.Update(saleEntity);
-                await _repository.Sale.SaveChangesAsync();
+                await _repository.SaveChangesAsync();
             }
             catch (NotFoundException ex)
             {
@@ -127,19 +117,52 @@ namespace ReverseAnalytics.Services
 
         public async Task DeleteSaleAsync(int id)
         {
-            try
-            {
-                _repository.Sale.Delete(id);
-                await _repository.Sale.SaveChangesAsync();
-            }
-            catch (NotFoundException ex)
-            {
-                throw ex;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"There was an error deleting Sale with id: {id}.", ex);
-            }
+            _repository.Sale.Delete(id);
+            await _repository.SaveChangesAsync();
         }
+
+        private async Task TryUpdateSaleDebt(Sale sale)
+        {
+            var debt = await _repository.SaleDebt.FindBySaleIdAsync(sale.Id);
+
+            // 500 - 500 = 0
+            if (sale.TotalDue - sale.TotalPaid <= 0 && debt != null)
+            {
+                _repository.SaleDebt.Delete(debt);
+            }
+
+            //500 - 400 = 100
+            if (sale.TotalDue - sale.TotalPaid > 0)
+            {
+                if (debt is null)
+                {
+                    var newDebt = new SaleDebt
+                    {
+                        SaleId = sale.Id,
+                        TotalDue = sale.TotalDue - sale.TotalPaid,
+                        DebtDate = sale.SaleDate,
+                        Status = Domain.Enums.DebtStatus.PaymentRequired,
+                    };
+
+                    _repository.SaleDebt.Create(newDebt);
+                }
+                else
+                {
+                    debt.TotalDue = sale.TotalDue - sale.TotalPaid;
+
+                    _repository.SaleDebt.Update(debt);
+                }
+            }
+
+            await _repository.SaveChangesAsync();
+        }
+
+        private SaleDebt CreateDebt(Sale sale) => new()
+        {
+            SaleId = sale.Id,
+            TotalDue = sale.TotalDue - sale.TotalPaid,
+            Status = Domain.Enums.DebtStatus.PaymentRequired,
+            DebtDate = sale.SaleDate,
+        };
     }
 }

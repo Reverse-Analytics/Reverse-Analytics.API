@@ -177,11 +177,12 @@ namespace Reverse_Analytics.Api.Extensions
             var debtsFaker = new Faker<SaleDebt>("ru")
                 .RuleFor(x => x.TotalDue, f => f.Random.Decimal(10000, 500000))
                 .RuleFor(x => x.TotalPaid, f => f.Random.Decimal(0, 10000))
-                .RuleFor(x => x.DueDate, f => f.Date.Between(minDate, maxDate))
                 .RuleFor(x => x.ClosedDate, f => f.Date.Between(minDate, maxDate))
                 .RuleFor(x => x.Status, f => f.Random.Enum<DebtStatus>())
                 .RuleFor(x => x.SaleId, f => f.Random.ListItem(sales))
-                .Generate(25);
+                .Generate(500);
+
+            debtsFaker = debtsFaker.DistinctBy(x => x.SaleId).ToList();
 
             context.SaleDebts.AddRange(debtsFaker);
             context.SaveChanges();

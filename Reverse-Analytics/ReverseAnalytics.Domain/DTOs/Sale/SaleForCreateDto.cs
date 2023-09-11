@@ -6,21 +6,21 @@ namespace ReverseAnalytics.Domain.DTOs.Sale
     public class SaleForCreateDto
     {
         public string Receipt { get; set; }
-        public string? Comment { get; set; }
+        public string? Comments { get; set; }
+        public string? SoldBy { get; set; }
         public decimal TotalDue { get; set; }
         public decimal TotalPaid { get; set; }
-        public double? DiscountPercentage { get; set; }
-        public decimal? DiscountTotal { get; set; }
-        public DateTime SaleDate { get; set; }
+        public double? TotalDiscount { get; set; }
         public SaleType SaleType { get; set; }
+        public DateTime SaleDate { get; set; }
 
         public int CustomerId { get; set; }
 
-        public ICollection<SaleDetailDto> SaleDetails { get; set; }
+        public ICollection<SaleDetailForCreateDto> SaleDetails { get; set; }
 
         public SaleForCreateDto()
         {
-            SaleDetails = new List<SaleDetailDto>();
+            SaleDetails = new List<SaleDetailForCreateDto>();
         }
     }
 }

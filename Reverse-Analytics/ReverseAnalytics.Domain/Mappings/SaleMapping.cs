@@ -8,7 +8,8 @@ namespace ReverseAnalytics.Domain.Mappings
     {
         public SaleMapping()
         {
-            CreateMap<Sale, SaleDto>();
+            CreateMap<Sale, SaleDto>()
+                .ForMember(x => x.SaleDetails, r => r.MapFrom(e => e.SaleDetails));
             CreateMap<SaleDto, Sale>();
             CreateMap<SaleForCreateDto, Sale>();
             CreateMap<SaleForUpdateDto, Sale>();

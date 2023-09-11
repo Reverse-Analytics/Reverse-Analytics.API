@@ -11,14 +11,16 @@ namespace ReverseAnalytics.Domain.Entities
         public decimal TotalDue { get; set; }
         public decimal TotalPaid { get; set; }
         public decimal TotalDiscount { get; set; }
-        public SaleType SaleType { get; set; }
         public DateTime SaleDate { get; set; }
+        public SaleType SaleType { get; set; }
+        public PaymentType PaymentType { get; set; }
+        public CurrencyType Currency { get; set; }
 
         public int CustomerId { get; set; }
         public virtual Customer Customer { get; set; }
+        public virtual SaleDebt SaleDebt { get; set; }
 
-        public virtual ICollection<SaleDetail> OrderDetails { get; set; }
-        public virtual ICollection<SaleDebt> SaleDebts { get; set; }
+        public virtual ICollection<SaleDetail> SaleDetails { get; set; }
         public virtual ICollection<Refund> Refunds { get; set; }
     }
 }

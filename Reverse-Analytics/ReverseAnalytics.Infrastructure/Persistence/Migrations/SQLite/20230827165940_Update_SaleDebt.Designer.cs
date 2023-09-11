@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReverseAnalytics.Infrastructure.Persistence;
 
@@ -10,9 +11,10 @@ using ReverseAnalytics.Infrastructure.Persistence;
 namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230827165940_Update_SaleDebt")]
+    partial class Update_SaleDebt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.5");
@@ -254,9 +256,6 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
                     b.Property<string>("CreatedBy")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Currency")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("CustomerId")
                         .HasColumnType("INTEGER");
 
@@ -265,9 +264,6 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
 
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("PaymentType")
-                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Receipt")
                         .IsRequired()
@@ -345,8 +341,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SaleId")
-                        .IsUnique();
+                    b.HasIndex("SaleId");
 
                     b.ToTable("Sale_Debt", (string)null);
                 });
@@ -625,9 +620,9 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.SaleDebt", b =>
                 {
                     b.HasOne("ReverseAnalytics.Domain.Entities.Sale", "Sale")
-                        .WithOne("SaleDebt")
-                        .HasForeignKey("ReverseAnalytics.Domain.Entities.SaleDebt", "SaleId")
-                        .OnDelete(DeleteBehavior.SetNull)
+                        .WithMany("SaleDebts")
+                        .HasForeignKey("SaleId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Sale");
@@ -642,7 +637,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
                         .IsRequired();
 
                     b.HasOne("ReverseAnalytics.Domain.Entities.Sale", "Sale")
-                        .WithMany("SaleDetails")
+                        .WithMany("OrderDetails")
                         .HasForeignKey("SaleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -719,12 +714,11 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
 
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Sale", b =>
                 {
+                    b.Navigation("OrderDetails");
+
                     b.Navigation("Refunds");
 
-                    b.Navigation("SaleDebt")
-                        .IsRequired();
-
-                    b.Navigation("SaleDetails");
+                    b.Navigation("SaleDebts");
                 });
 
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Supplier", b =>

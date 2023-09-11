@@ -28,5 +28,19 @@ namespace ReverseAnalytics.Repositories
 
             return saleDetail;
         }
+
+        public async Task DeleteRangeBySaleIdAsync(int saleId)
+        {
+            var saleDetails = await _context.SaleDetails
+                .Where(x => x.SaleId == saleId)
+                .ToListAsync();
+
+            if (!saleDetails.Any())
+            {
+                return;
+            }
+
+            _context.RemoveRange(saleDetails);
+        }
     }
 }

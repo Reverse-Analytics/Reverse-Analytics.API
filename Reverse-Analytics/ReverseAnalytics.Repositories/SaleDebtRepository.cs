@@ -28,5 +28,11 @@ namespace ReverseAnalytics.Repositories
                 .ThenInclude(x => x.Customer)
                 .ToListAsync();
         }
+
+        public async Task<SaleDebt> FindBySaleIdAsync(int saleId)
+        {
+            return await _context.SaleDebts
+                .FirstOrDefaultAsync(x => x.SaleId == saleId);
+        }
     }
 }

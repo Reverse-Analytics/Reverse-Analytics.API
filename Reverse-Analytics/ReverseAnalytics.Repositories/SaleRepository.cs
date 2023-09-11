@@ -16,8 +16,10 @@ namespace ReverseAnalytics.Repositories
         {
             return await _context.Sales
                 .Include(x => x.Customer)
-                .Include(x => x.OrderDetails)
+                .Include(x => x.SaleDetails)
+                .ThenInclude(x => x.Product)
                 .Include(x => x.Refunds)
+                .Include(x => x.SaleDebt)
                 .AsNoTracking()
                 .ToListAsync();
         }

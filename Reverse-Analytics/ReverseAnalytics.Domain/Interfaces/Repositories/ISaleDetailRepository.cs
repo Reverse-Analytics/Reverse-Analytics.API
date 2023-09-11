@@ -6,5 +6,6 @@ namespace ReverseAnalytics.Domain.Interfaces.Repositories
     {
         public Task<IEnumerable<SaleDetail>> FindAllBySaleIdAsync(int saleId);
         public Task<SaleDetail> FindBySaleAndDetailIdAsync(int saleId, int detailId);
+        public Task DeleteRangeBySaleIdAsync(int saleId);
     }
 }

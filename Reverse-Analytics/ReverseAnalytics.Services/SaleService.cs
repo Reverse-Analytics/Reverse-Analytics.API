@@ -117,6 +117,13 @@ namespace ReverseAnalytics.Services
 
         public async Task DeleteSaleAsync(int id)
         {
+            var saleDebt = await _repository.SaleDebt.FindBySaleIdAsync(id);
+
+            if (saleDebt is not null)
+            {
+                _repository.SaleDebt.Delete(saleDebt);
+            }
+
             _repository.Sale.Delete(id);
             await _repository.SaveChangesAsync();
         }

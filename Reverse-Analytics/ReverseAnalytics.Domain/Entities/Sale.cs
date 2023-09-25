@@ -11,6 +11,7 @@ namespace ReverseAnalytics.Domain.Entities
         public decimal TotalDue { get; set; }
         public decimal TotalPaid { get; set; }
         public decimal TotalDiscount { get; set; }
+        public double TotalDiscountPercentage { get; set; }
         public DateTime SaleDate { get; set; }
         public SaleType SaleType { get; set; }
         public PaymentType PaymentType { get; set; }

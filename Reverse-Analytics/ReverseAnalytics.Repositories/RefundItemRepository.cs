@@ -5,16 +5,16 @@ using ReverseAnalytics.Infrastructure.Persistence;
 
 namespace ReverseAnalytics.Repositories
 {
-    public class RefundDetailRepository : RepositoryBase<RefundDetail>, IRefundDetailRepository
+    public class RefundItemRepository : RepositoryBase<RefundItem>, IRefundItemRepository
     {
-        public RefundDetailRepository(ApplicationDbContext context)
+        public RefundItemRepository(ApplicationDbContext context)
             : base(context)
         {
         }
 
-        public async Task<IEnumerable<RefundDetail>> FindAllByRefundIdAsync(int refundId)
+        public async Task<IEnumerable<RefundItem>> FindAllByRefundIdAsync(int refundId)
         {
-            return await _context.RefundDetails
+            return await _context.RefundItems
                 .Where(x => x.RefundId == refundId)
                 .ToListAsync();
         }

@@ -19,9 +19,9 @@ namespace ReverseAnalytics.Repositories
         public IProductRepository Product => _product ??
             new ProductRepository(_context);
 
-        private readonly IRefundDetailRepository _refundDetail;
-        public IRefundDetailRepository RefundDetail => _refundDetail ??
-            new RefundDetailRepository(_context);
+        private readonly IRefundItemRepository _refundDetail;
+        public IRefundItemRepository RefundDetail => _refundDetail ??
+            new RefundItemRepository(_context);
 
         private readonly IRefundRepository _refund;
         public IRefundRepository Refund => _refund ??
@@ -31,9 +31,9 @@ namespace ReverseAnalytics.Repositories
         public ISaleDebtRepository SaleDebt => _saleDebt ??
             new SaleDebtRepository(_context);
 
-        private readonly ISaleDetailRepository _saleDetail;
-        public ISaleDetailRepository SaleDetail => _saleDetail ??
-            new SaleDetailRepository(_context);
+        private readonly ISaleItemRepository _saleDetail;
+        public ISaleItemRepository SaleDetail => _saleDetail ??
+            new SaleItemRepository(_context);
 
         private readonly ISaleRepository _sale;
         public ISaleRepository Sale => _sale ??
@@ -47,9 +47,9 @@ namespace ReverseAnalytics.Repositories
         public ISupplyDebtRepository SupplyDebt => _supplyDebt ??
             new SupplyDebtRepository(_context);
 
-        private readonly ISupplyDetailRepository _supplyDetail;
-        public ISupplyDetailRepository SupplyDetail => _supplyDetail ??
-            new SupplyDetailRepository(_context);
+        private readonly ISupplyItemRepository _supplyDetail;
+        public ISupplyItemRepository SupplyDetail => _supplyDetail ??
+            new SupplyItemRepository(_context);
 
         private readonly ISupplyRepository _supply;
         public ISupplyRepository Supply => _supply ??
@@ -63,14 +63,14 @@ namespace ReverseAnalytics.Repositories
             _productCategory = new ProductCategoryRepository(context);
             _product = new ProductRepository(context);
             _customer = new CustomerRepository(context);
-            _refundDetail = new RefundDetailRepository(context);
+            _refundDetail = new RefundItemRepository(context);
             _refund = new RefundRepository(context);
             _supplyDebt = new SupplyDebtRepository(context);
-            _saleDetail = new SaleDetailRepository(context);
+            _saleDetail = new SaleItemRepository(context);
             _sale = new SaleRepository(context);
             _supplier = new SupplierRepository(context);
             _supplyDebt = new SupplyDebtRepository(context);
-            _supplyDetail = new SupplyDetailRepository(context);
+            _supplyDetail = new SupplyItemRepository(context);
             _supply = new SupplyRepository(context);
         }
 

@@ -4,11 +4,11 @@ using ReverseAnalytics.Domain.Entities;
 
 namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
 {
-    internal class RefundDetailsConfiguration : IEntityTypeConfiguration<RefundDetail>
+    internal class RefundItemsConfiguration : IEntityTypeConfiguration<RefundItem>
     {
-        public void Configure(EntityTypeBuilder<RefundDetail> builder)
+        public void Configure(EntityTypeBuilder<RefundItem> builder)
         {
-            builder.ToTable("Refund_Detail");
+            builder.ToTable("Refund_Item");
 
             builder.HasKey(rd => rd.Id);
 

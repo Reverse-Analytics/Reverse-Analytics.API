@@ -4,26 +4,25 @@ using ReverseAnalytics.Domain.Entities;
 
 namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
 {
-    internal class SaleDetailsConfiguration : IEntityTypeConfiguration<SaleDetail>
+    internal class SupplyItemsConfiguration : IEntityTypeConfiguration<SupplyItem>
     {
-        public void Configure(EntityTypeBuilder<SaleDetail> builder)
+        public void Configure(EntityTypeBuilder<SupplyItem> builder)
         {
-            builder.ToTable("Sale_Detail");
+            builder.ToTable("Supply_Item");
 
             builder.HasKey(sd => sd.Id);
 
-            builder.HasOne(sd => sd.Sale)
-                .WithMany(o => o.SaleDetails)
-                .HasForeignKey(sd => sd.SaleId);
+            builder.HasOne(sd => sd.Supply)
+                .WithMany(s => s.SupplyDetails)
+                .HasForeignKey(sd => sd.SupplyId);
             builder.HasOne(sd => sd.Product)
-                .WithMany(p => p.SaleDetails)
+                .WithMany(p => p.PurchaseDetails)
                 .HasForeignKey(sd => sd.ProductId);
 
             builder.Property(sd => sd.Quantity)
                 .IsRequired();
             builder.Property(sd => sd.UnitPrice)
                 .HasColumnType("money")
-                .HasPrecision(18, 2)
                 .IsRequired();
         }
     }

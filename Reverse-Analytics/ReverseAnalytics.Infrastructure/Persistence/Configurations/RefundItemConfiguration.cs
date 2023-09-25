@@ -4,7 +4,7 @@ using ReverseAnalytics.Domain.Entities;
 
 namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
 {
-    internal class RefundItemsConfiguration : IEntityTypeConfiguration<RefundItem>
+    internal class RefundItemConfiguration : IEntityTypeConfiguration<RefundItem>
     {
         public void Configure(EntityTypeBuilder<RefundItem> builder)
         {

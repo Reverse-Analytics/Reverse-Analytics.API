@@ -1,14 +1,14 @@
-﻿using ReverseAnalytics.Domain.DTOs.RefundDetail;
+﻿using ReverseAnalytics.Doman.DTOs.RefundItem;
 
 namespace ReverseAnalytics.Domain.Interfaces.Services
 {
     public interface IRefundDetailService
     {
-        public Task<IEnumerable<RefundDetailDto>> GetAllRefundDetailsAsync();
-        public Task<IEnumerable<RefundDetailDto>> GetRefundDetailsByRefundIdAsync(int refundId);
-        public Task<RefundDetailDto> GetRefundDetailByIdAsync(int id);
-        public Task<RefundDetailDto> CreateRefundDetailAsync(RefundDetailForCreateDto refundDetailToCreate);
-        public Task UpdateRefundDetailAsync(RefundDetailForUpdateDto refundDetailToUpdate);
+        public Task<IEnumerable<RefundItemDto>> GetAllRefundDetailsAsync();
+        public Task<IEnumerable<RefundItemDto>> GetRefundDetailsByRefundIdAsync(int refundId);
+        public Task<RefundItemDto> GetRefundDetailByIdAsync(int id);
+        public Task<RefundItemDto> CreateRefundDetailAsync(RefundItemForCreateDto refundDetailToCreate);
+        public Task UpdateRefundDetailAsync(RefundItemForUpdateDto refundDetailToUpdate);
         public Task DeleteRefundDetailAsync(int id);
     }
 }

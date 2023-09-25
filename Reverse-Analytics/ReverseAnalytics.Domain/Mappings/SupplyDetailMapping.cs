@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ReverseAnalytics.Domain.DTOs.SupplyDetail;
+using ReverseAnalytics.Domain.DTOs.SupplyItem;
 using ReverseAnalytics.Domain.Entities;
 
 namespace ReverseAnalytics.Domain.Mappings
@@ -8,10 +8,10 @@ namespace ReverseAnalytics.Domain.Mappings
     {
         public SupplyDetailMapping()
         {
-            CreateMap<SupplyDetail, SupplyDetailDto>();
-            CreateMap<SupplyDetailDto, SupplyDetail>();
-            CreateMap<SupplyDetailForCreateDto, SupplyDetail>();
-            CreateMap<SupplyDetailForUpdateDto, SupplyDetail>();
+            CreateMap<SupplyItem, SupplyItemDto>();
+            CreateMap<SupplyItemDto, SupplyItem>();
+            CreateMap<SupplyItemForCreateDto, SupplyItem>();
+            CreateMap<SupplyItemForUpdateDto, SupplyItem>();
         }
     }
 }

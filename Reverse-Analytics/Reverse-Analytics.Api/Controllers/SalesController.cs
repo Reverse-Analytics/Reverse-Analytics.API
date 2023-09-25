@@ -2,7 +2,7 @@
 using Reverse_Analytics.Api.Filters;
 using ReverseAnalytics.Domain.DTOs.Sale;
 using ReverseAnalytics.Domain.DTOs.SaleDebt;
-using ReverseAnalytics.Domain.DTOs.SaleDetail;
+using ReverseAnalytics.Domain.DTOs.SaleItem;
 using ReverseAnalytics.Domain.Interfaces.Services;
 
 namespace Reverse_Analytics.Api.Controllers
@@ -92,7 +92,7 @@ namespace Reverse_Analytics.Api.Controllers
         #region Details
 
         [HttpGet("{id}/details")]
-        public async Task<ActionResult<IEnumerable<SaleDetailDto>>> GetSaleDetailsAsync(int id)
+        public async Task<ActionResult<IEnumerable<SaleItemDto>>> GetSaleDetailsAsync(int id)
         {
             var saleDetails = await _saleDetailService.GetAllSaleDetailsBySaleIdAsync(id);
 
@@ -100,7 +100,7 @@ namespace Reverse_Analytics.Api.Controllers
         }
 
         [HttpGet("{saleId}/details/{saleDetailId}")]
-        public async Task<ActionResult<SaleDetailDto>> GetSaleDetailByIdAsync(int saleId, int saleDetailId)
+        public async Task<ActionResult<SaleItemDto>> GetSaleDetailByIdAsync(int saleId, int saleDetailId)
         {
             var saleDetail = await _saleDetailService.GetSaleDetailBySaleAndDetailIdAsync(saleId, saleDetailId);
 
@@ -112,7 +112,7 @@ namespace Reverse_Analytics.Api.Controllers
 
         [HttpPost("{saleId}/details")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<ActionResult<SaleDetailDto>> CreateSaleDetail([FromBody] SaleDetailForCreateDto saleDetailToCreate, int saleId)
+        public async Task<ActionResult<SaleItemDto>> CreateSaleDetail([FromBody] SaleItemForCreateDto saleDetailToCreate, int saleId)
         {
             if (saleDetailToCreate.SaleId != saleId)
                 return BadRequest($"Sale id: {saleDetailToCreate.SaleId} does not match with route id: {saleId}.");
@@ -128,7 +128,7 @@ namespace Reverse_Analytics.Api.Controllers
 
         [HttpPut("{saleId}/details/{saleDetailId}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<ActionResult> UpdateSaleDetailAsync([FromBody] SaleDetailForUpdateDto saleDetailToUpdate, int saleId, int saleDetailId)
+        public async Task<ActionResult> UpdateSaleDetailAsync([FromBody] SaleItemForUpdateDto saleDetailToUpdate, int saleId, int saleDetailId)
         {
             if (saleDetailToUpdate.Id != saleId)
                 return BadRequest($"Sale Detail id: {saleDetailToUpdate.Id} does not match with route id: {saleDetailId}.");

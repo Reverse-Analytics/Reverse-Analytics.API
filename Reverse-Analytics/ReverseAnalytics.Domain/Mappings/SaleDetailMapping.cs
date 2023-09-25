@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ReverseAnalytics.Domain.DTOs.SaleDetail;
+using ReverseAnalytics.Domain.DTOs.SaleItem;
 using ReverseAnalytics.Domain.Entities;
 
 namespace ReverseAnalytics.Domain.Mappings
@@ -8,10 +8,10 @@ namespace ReverseAnalytics.Domain.Mappings
     {
         public SaleDetailMapping()
         {
-            CreateMap<SaleDetail, SaleDetailDto>();
-            CreateMap<SaleDetailDto, SaleDetail>();
-            CreateMap<SaleDetailForCreateDto, SaleDetail>();
-            CreateMap<SaleDetailForUpdateDto, SaleDetail>();
+            CreateMap<SaleItem, SaleItemDto>();
+            CreateMap<SaleItemDto, SaleItem>();
+            CreateMap<SaleItemForCreateDto, SaleItem>();
+            CreateMap<SaleItemForUpdateDto, SaleItem>();
         }
     }
 }

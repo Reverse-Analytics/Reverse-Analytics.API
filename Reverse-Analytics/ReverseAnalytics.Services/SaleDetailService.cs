@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ReverseAnalytics.Domain.DTOs.SaleDetail;
+using ReverseAnalytics.Domain.DTOs.SaleItem;
 using ReverseAnalytics.Domain.Entities;
 using ReverseAnalytics.Domain.Exceptions;
 using ReverseAnalytics.Domain.Interfaces.Repositories;
@@ -18,7 +18,7 @@ namespace ReverseAnalytics.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<SaleDetailDto>?> GetAllSaleDetailsBySaleIdAsync(int saleId)
+        public async Task<IEnumerable<SaleItemDto>?> GetAllSaleDetailsBySaleIdAsync(int saleId)
         {
             try
             {
@@ -29,7 +29,7 @@ namespace ReverseAnalytics.Services
                     return null;
                 }
 
-                var saleDetailDtos = _mapper.Map<IEnumerable<SaleDetailDto>>(saleDetails);
+                var saleDetailDtos = _mapper.Map<IEnumerable<SaleItemDto>>(saleDetails);
 
                 return saleDetailDtos;
             }
@@ -43,13 +43,13 @@ namespace ReverseAnalytics.Services
             }
         }
 
-        public async Task<SaleDetailDto> GetSaleDetailBySaleAndDetailIdAsync(int saleId, int detailId)
+        public async Task<SaleItemDto> GetSaleDetailBySaleAndDetailIdAsync(int saleId, int detailId)
         {
             try
             {
                 var saleDetail = await _repository.SaleDetail.FindBySaleAndDetailIdAsync(saleId, detailId);
 
-                var saleDetailDto = _mapper.Map<SaleDetailDto>(saleDetail);
+                var saleDetailDto = _mapper.Map<SaleItemDto>(saleDetail);
 
                 return saleDetailDto;
             }
@@ -59,13 +59,13 @@ namespace ReverseAnalytics.Services
             }
         }
 
-        public async Task<SaleDetailDto> GetSaleDetailByIdAsync(int saleDetailId)
+        public async Task<SaleItemDto> GetSaleDetailByIdAsync(int saleDetailId)
         {
             try
             {
                 var saleDetailEntity = await _repository.SaleDetail.FindByIdAsync(saleDetailId);
 
-                var saleDetailDto = _mapper.Map<SaleDetailDto>(saleDetailEntity);
+                var saleDetailDto = _mapper.Map<SaleItemDto>(saleDetailEntity);
 
                 return saleDetailDto;
             }
@@ -79,16 +79,16 @@ namespace ReverseAnalytics.Services
             }
         }
 
-        public async Task<SaleDetailDto> CreateSaleDetailAsync(SaleDetailForCreateDto saleDetailToCreate)
+        public async Task<SaleItemDto> CreateSaleDetailAsync(SaleItemForCreateDto saleDetailToCreate)
         {
             try
             {
-                var saleDetailEntity = _mapper.Map<SaleDetail>(saleDetailToCreate);
+                var saleDetailEntity = _mapper.Map<SaleItem>(saleDetailToCreate);
 
                 var createdEntity = _repository.SaleDetail.Create(saleDetailEntity);
                 await _repository.SaveChangesAsync();
 
-                var saleDetailDto = _mapper.Map<SaleDetailDto>(createdEntity);
+                var saleDetailDto = _mapper.Map<SaleItemDto>(createdEntity);
 
                 return saleDetailDto;
             }
@@ -98,7 +98,7 @@ namespace ReverseAnalytics.Services
             }
         }
 
-        public async Task UpdateSaleDetailAsync(SaleDetailForUpdateDto saleDetailToUpdate)
+        public async Task UpdateSaleDetailAsync(SaleItemForUpdateDto saleDetailToUpdate)
         {
             try
             {
@@ -107,7 +107,7 @@ namespace ReverseAnalytics.Services
                     throw new ArgumentNullException(nameof(saleDetailToUpdate));
                 }
 
-                var saleDetailEntity = _mapper.Map<SaleDetail>(saleDetailToUpdate);
+                var saleDetailEntity = _mapper.Map<SaleItem>(saleDetailToUpdate);
 
                 _repository.SaleDetail.Update(saleDetailEntity);
                 await _repository.SaveChangesAsync();

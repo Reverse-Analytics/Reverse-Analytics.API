@@ -1,9 +1,9 @@
 ﻿using ReverseAnalytics.Domain.DTOs.Product;
 using ReverseAnalytics.Domain.DTOs.Supply;
 
-namespace ReverseAnalytics.Domain.DTOs.SupplyDetail
+namespace ReverseAnalytics.Domain.DTOs.SupplyItem
 {
-    public class SupplyDetailDto
+    public class SupplyItemDto
     {
         public int Id { get; set; }
         public int Quantity { get; set; }

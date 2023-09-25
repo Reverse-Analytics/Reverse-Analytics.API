@@ -1,4 +1,4 @@
-﻿using ReverseAnalytics.Domain.DTOs.RefundDetail;
+﻿using ReverseAnalytics.Doman.DTOs.RefundItem;
 using ReverseAnalytics.Domain.DTOs.Sale;
 
 namespace ReverseAnalytics.Domain.DTOs.Refund
@@ -13,6 +13,6 @@ namespace ReverseAnalytics.Domain.DTOs.Refund
         public int SaleId { get; set; }
         public virtual SaleDto Sale { get; set; }
 
-        public ICollection<RefundDetailDto> RefundDetails { get; set; }
+        public ICollection<RefundItemDto> RefundDetails { get; set; }
     }
 }

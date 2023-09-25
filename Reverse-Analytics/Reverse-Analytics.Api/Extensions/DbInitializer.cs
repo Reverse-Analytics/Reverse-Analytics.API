@@ -153,11 +153,11 @@ namespace Reverse_Analytics.Api.Extensions
 
         private static void CreateSaleDetails(ApplicationDbContext context)
         {
-            if (context.SaleDetails.Any()) return;
+            if (context.SaleItems.Any()) return;
 
             var sales = context.Sales.Select(x => x.Id).ToList();
             var products = context.Products.Select(x => x.Id).ToList();
-            var saleDetailsFaker = new Faker<SaleDetail>("ru")
+            var saleDetailsFaker = new Faker<SaleItem>("ru")
                 .RuleFor(x => x.Quantity, f => f.Random.Int(1, 50))
                 .RuleFor(x => x.UnitPrice, f => f.Random.Decimal(5000, 50000))
                 .RuleFor(x => x.Discount, f => f.Random.Decimal(500, 20000))
@@ -165,7 +165,7 @@ namespace Reverse_Analytics.Api.Extensions
                 .RuleFor(x => x.ProductId, f => f.Random.ListItem(products))
                 .Generate(500);
 
-            context.SaleDetails.AddRange(saleDetailsFaker);
+            context.SaleItems.AddRange(saleDetailsFaker);
             context.SaveChanges();
         }
 
@@ -206,17 +206,17 @@ namespace Reverse_Analytics.Api.Extensions
 
         private static void CreateRefundDetails(ApplicationDbContext context)
         {
-            if (context.RefundDetails.Any()) return;
+            if (context.RefundItems.Any()) return;
 
             var refunds = context.Refunds.Select(x => x.Id).ToList();
             var products = context.Products.Select(x => x.Id).ToList();
-            var detailsFaker = new Faker<RefundDetail>("ru")
+            var detailsFaker = new Faker<RefundItem>("ru")
                 .RuleFor(x => x.Quantity, f => f.Random.Int(1, 10))
                 .RuleFor(x => x.RefundId, f => f.Random.ListItem(refunds))
                 .RuleFor(x => x.ProductId, f => f.Random.ListItem(products))
                 .Generate(150);
 
-            context.RefundDetails.AddRange(detailsFaker);
+            context.RefundItems.AddRange(detailsFaker);
             context.SaveChanges();
         }
 
@@ -255,18 +255,18 @@ namespace Reverse_Analytics.Api.Extensions
 
         private static void CreateSupplyDetails(ApplicationDbContext context)
         {
-            if (context.SupplyDetails.Any()) return;
+            if (context.SupplyItems.Any()) return;
 
             var supplies = context.Supplies.Select(x => x.Id).ToList();
             var products = context.Products.Select(x => x.Id).ToList();
-            var detailsFaker = new Faker<SupplyDetail>("ru")
+            var detailsFaker = new Faker<SupplyItem>("ru")
                 .RuleFor(x => x.Quantity, f => f.Random.Int(1, 50))
                 .RuleFor(x => x.UnitPrice, f => f.Random.Decimal(5000, 50000))
                 .RuleFor(x => x.SupplyId, f => f.Random.ListItem(supplies))
                 .RuleFor(x => x.ProductId, f => f.Random.ListItem(products))
                 .Generate(350);
 
-            context.SupplyDetails.AddRange(detailsFaker);
+            context.SupplyItems.AddRange(detailsFaker);
             context.SaveChanges();
         }
 

@@ -2,7 +2,7 @@
 using Reverse_Analytics.Api.Filters;
 using ReverseAnalytics.Domain.DTOs.SupplyDebt;
 using ReverseAnalytics.Domain.DTOs.Supply;
-using ReverseAnalytics.Domain.DTOs.SupplyDetail;
+using ReverseAnalytics.Domain.DTOs.SupplyItem;
 using ReverseAnalytics.Domain.Interfaces.Services;
 
 namespace Reverse_Analytics.Api.Controllers
@@ -83,7 +83,7 @@ namespace Reverse_Analytics.Api.Controllers
         #region Details
 
         [HttpGet("{supplyId}/details")]
-        public async Task<ActionResult<IEnumerable<SupplyDetailDto>>> GetSupplyDetailsAsync(int supplyId)
+        public async Task<ActionResult<IEnumerable<SupplyItemDto>>> GetSupplyDetailsAsync(int supplyId)
         {
             var supplyDetails = await _detailService.GetAllSupplyDetailsBySupplyIdAsync(supplyId);
 
@@ -91,7 +91,7 @@ namespace Reverse_Analytics.Api.Controllers
         }
 
         [HttpGet("{supplyId}/details/{detailId}")]
-        public async Task<ActionResult<SupplyDetailDto>> GetBySupplyAndDetailIdAsync(int supplyId, int detailId)
+        public async Task<ActionResult<SupplyItemDto>> GetBySupplyAndDetailIdAsync(int supplyId, int detailId)
         {
             var supplyDetail = await _detailService.GetBySupplyAndDetailIdAsync(supplyId, detailId);
 
@@ -103,7 +103,7 @@ namespace Reverse_Analytics.Api.Controllers
 
         [HttpPost("{supplyId}/details")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<ActionResult<SupplyDetailDto>> CreateSupplyDetailAsync([FromBody] SupplyDetailForCreateDto supplyDetailToCreate, int supplyId)
+        public async Task<ActionResult<SupplyItemDto>> CreateSupplyDetailAsync([FromBody] SupplyItemForCreateDto supplyDetailToCreate, int supplyId)
         {
             if (supplyDetailToCreate.SupplyId != supplyId)
                 return BadRequest($"Supply id: {supplyDetailToCreate.SupplyId} does not match with route id: {supplyId}.");
@@ -119,7 +119,7 @@ namespace Reverse_Analytics.Api.Controllers
 
         [HttpPut("{supplyId}/details/{supplyDetailId}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<ActionResult> UpdateSupplyDetailAsyc([FromBody] SupplyDetailForUpdateDto supplyDetailToUpdate, int supplyId, int supplyDetailId)
+        public async Task<ActionResult> UpdateSupplyDetailAsyc([FromBody] SupplyItemForUpdateDto supplyDetailToUpdate, int supplyId, int supplyDetailId)
         {
             if (supplyDetailToUpdate.Id != supplyDetailId)
                 return BadRequest($"Detail id: {supplyDetailToUpdate.Id} does not match with route {supplyDetailId}.");

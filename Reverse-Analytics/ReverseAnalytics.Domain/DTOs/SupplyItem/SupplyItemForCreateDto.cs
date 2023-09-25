@@ -1,6 +1,6 @@
-﻿namespace ReverseAnalytics.Domain.DTOs.SupplyDetail
+﻿namespace ReverseAnalytics.Domain.DTOs.SupplyItem
 {
-    public class SupplyDetailForCreateDto
+    public class SupplyItemForCreateDto
     {
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }

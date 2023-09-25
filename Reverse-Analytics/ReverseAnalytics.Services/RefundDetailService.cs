@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ReverseAnalytics.Domain.DTOs.RefundDetail;
+using ReverseAnalytics.Doman.DTOs.RefundItem;
 using ReverseAnalytics.Domain.Entities;
 using ReverseAnalytics.Domain.Interfaces.Repositories;
 using ReverseAnalytics.Domain.Interfaces.Services;
@@ -17,23 +17,23 @@ namespace ReverseAnalytics.Services
             _mapper = mapper;
         }
 
-        public async Task<RefundDetailDto> CreateRefundDetailAsync(RefundDetailForCreateDto refundDetailToCreate)
+        public async Task<RefundItemDto> CreateRefundDetailAsync(RefundItemForCreateDto refundDetailToCreate)
         {
             ArgumentNullException.ThrowIfNull(refundDetailToCreate);
 
-            var refundDetailEntity = _mapper.Map<RefundDetail>(refundDetailToCreate);
+            var refundDetailEntity = _mapper.Map<RefundItem>(refundDetailToCreate);
 
             _repository.RefundDetail.Create(refundDetailEntity);
             await _repository.SaveChangesAsync();
 
-            return _mapper.Map<RefundDetailDto>(refundDetailEntity);
+            return _mapper.Map<RefundItemDto>(refundDetailEntity);
         }
 
-        public async Task<IEnumerable<RefundDetailDto>> GetRefundDetailsByRefundIdAsync(int refundId)
+        public async Task<IEnumerable<RefundItemDto>> GetRefundDetailsByRefundIdAsync(int refundId)
         {
             var refundDetails = await _repository.RefundDetail.FindAllByRefundIdAsync(refundId);
 
-            return _mapper.Map<IEnumerable<RefundDetailDto>>(refundDetails);
+            return _mapper.Map<IEnumerable<RefundItemDto>>(refundDetails);
         }
 
         public async Task DeleteRefundDetailAsync(int id)
@@ -42,27 +42,27 @@ namespace ReverseAnalytics.Services
             await _repository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<RefundDetailDto>> GetAllRefundDetailsAsync()
+        public async Task<IEnumerable<RefundItemDto>> GetAllRefundDetailsAsync()
         {
             var refundDetails = await _repository.RefundDetail.FindAllAsync();
 
             return refundDetails is null ?
-                Enumerable.Empty<RefundDetailDto>() :
-                _mapper.Map<IEnumerable<RefundDetailDto>>(refundDetails);
+                Enumerable.Empty<RefundItemDto>() :
+                _mapper.Map<IEnumerable<RefundItemDto>>(refundDetails);
         }
 
-        public async Task<RefundDetailDto> GetRefundDetailByIdAsync(int id)
+        public async Task<RefundItemDto> GetRefundDetailByIdAsync(int id)
         {
             var refundDetail = await _repository.RefundDetail.FindByIdAsync(id);
 
-            return _mapper.Map<RefundDetailDto>(refundDetail);
+            return _mapper.Map<RefundItemDto>(refundDetail);
         }
 
-        public async Task UpdateRefundDetailAsync(RefundDetailForUpdateDto refundDetailToUpdate)
+        public async Task UpdateRefundDetailAsync(RefundItemForUpdateDto refundDetailToUpdate)
         {
             ArgumentNullException.ThrowIfNull(refundDetailToUpdate);
 
-            var refundDetailEntity = _mapper.Map<RefundDetail>(refundDetailToUpdate);
+            var refundDetailEntity = _mapper.Map<RefundItem>(refundDetailToUpdate);
 
             _repository.RefundDetail.Update(refundDetailEntity);
             await _repository.SaveChangesAsync();

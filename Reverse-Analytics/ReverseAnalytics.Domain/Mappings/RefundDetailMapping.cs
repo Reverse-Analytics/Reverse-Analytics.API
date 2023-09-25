@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ReverseAnalytics.Domain.DTOs.RefundDetail;
+using ReverseAnalytics.Doman.DTOs.RefundItem;
 using ReverseAnalytics.Domain.Entities;
 
 namespace ReverseAnalytics.Domain.Mappings
@@ -8,10 +8,10 @@ namespace ReverseAnalytics.Domain.Mappings
     {
         public RefundDetailMapping()
         {
-            CreateMap<RefundDetail, RefundDetailDto>();
-            CreateMap<RefundDetailDto, RefundDetail>();
-            CreateMap<RefundDetailForCreateDto, RefundDetail>();
-            CreateMap<RefundDetailForUpdateDto, RefundDetail>();
+            CreateMap<RefundItem, RefundItemDto>();
+            CreateMap<RefundItemDto, RefundItem>();
+            CreateMap<RefundItemForCreateDto, RefundItem>();
+            CreateMap<RefundItemForUpdateDto, RefundItem>();
         }
     }
 }

@@ -1,10 +1,8 @@
-﻿namespace ReverseAnalytics.Domain.DTOs.RefundDetail
+﻿namespace ReverseAnalytics.Doman.DTOs.RefundItem
 {
-    public class RefundDetailForUpdateDto
+    public class RefundItemForCreateDto
     {
-        public int Id { get; set; }
         public int Quantity { get; set; }
-
         public int RefundId { get; set; }
         public int ProductId { get; set; }
     }

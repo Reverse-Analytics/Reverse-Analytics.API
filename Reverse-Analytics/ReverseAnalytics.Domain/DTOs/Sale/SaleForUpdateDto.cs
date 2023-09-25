@@ -1,4 +1,4 @@
-﻿using ReverseAnalytics.Domain.DTOs.SaleDetail;
+﻿using ReverseAnalytics.Domain.DTOs.SaleItem;
 using ReverseAnalytics.Domain.Enums;
 
 namespace ReverseAnalytics.Domain.DTOs.Sale
@@ -18,6 +18,6 @@ namespace ReverseAnalytics.Domain.DTOs.Sale
 
         public int CustomerId { get; set; }
 
-        public ICollection<SaleDetailForUpdateDto> SaleDetails { get; set; }
+        public ICollection<SaleItemForUpdateDto> SaleDetails { get; set; }
     }
 }

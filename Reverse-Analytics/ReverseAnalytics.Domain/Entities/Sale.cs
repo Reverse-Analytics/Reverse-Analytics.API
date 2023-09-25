@@ -20,7 +20,7 @@ namespace ReverseAnalytics.Domain.Entities
         public virtual Customer Customer { get; set; }
         public virtual SaleDebt SaleDebt { get; set; }
 
-        public virtual ICollection<SaleDetail> SaleDetails { get; set; }
+        public virtual ICollection<SaleItem> SaleDetails { get; set; }
         public virtual ICollection<Refund> Refunds { get; set; }
     }
 }

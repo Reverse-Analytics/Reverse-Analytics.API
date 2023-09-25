@@ -2,7 +2,7 @@
 
 namespace ReverseAnalytics.Domain.Entities
 {
-    public class RefundDetail : BaseAuditableEntity
+    public class RefundItem : BaseAuditableEntity
     {
         public int Quantity { get; set; }
 

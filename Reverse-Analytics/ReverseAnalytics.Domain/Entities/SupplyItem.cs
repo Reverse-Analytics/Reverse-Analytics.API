@@ -2,7 +2,7 @@
 
 namespace ReverseAnalytics.Domain.Entities
 {
-    public class SupplyDetail : BaseAuditableEntity
+    public class SupplyItem : BaseAuditableEntity
     {
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }

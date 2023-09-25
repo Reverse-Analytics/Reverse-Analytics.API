@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReverseAnalytics.Infrastructure.Persistence;
 
@@ -10,9 +11,10 @@ using ReverseAnalytics.Infrastructure.Persistence;
 namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230925063301_Update_Sale_Supply_Refund_Items")]
+    partial class Update_Sale_Supply_Refund_Items
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.5");

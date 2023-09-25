@@ -12,14 +12,14 @@ namespace ReverseAnalytics.Infrastructure.Persistence
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductCategory> ProductCategories { get; set; }
-        public virtual DbSet<RefundDetail> RefundDetails { get; set; }
+        public virtual DbSet<RefundItem> RefundItems { get; set; }
         public virtual DbSet<Refund> Refunds { get; set; }
         public virtual DbSet<SaleDebt> SaleDebts { get; set; }
-        public virtual DbSet<SaleDetail> SaleDetails { get; set; }
+        public virtual DbSet<SaleItem> SaleItems { get; set; }
         public virtual DbSet<Sale> Sales { get; set; }
         public virtual DbSet<Supplier> Suppliers { get; set; }
         public virtual DbSet<SupplyDebt> SupplyDebts { get; set; }
-        public virtual DbSet<SupplyDetail> SupplyDetails { get; set; }
+        public virtual DbSet<SupplyItem> SupplyItems { get; set; }
         public virtual DbSet<Supply> Supplies { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,

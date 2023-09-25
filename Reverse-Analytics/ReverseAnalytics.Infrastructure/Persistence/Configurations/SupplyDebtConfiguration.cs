@@ -13,10 +13,6 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
 
             builder.HasKey(sd => sd.Id);
 
-            builder.Property(sd => sd.TotalDue)
-                .HasColumnType("money")
-                .HasPrecision(18, 2)
-                .IsRequired();
             builder.Property(sd => sd.Status)
                 .HasDefaultValue(DebtStatus.PaymentRequired);
         }

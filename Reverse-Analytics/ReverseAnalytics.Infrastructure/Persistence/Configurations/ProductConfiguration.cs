@@ -29,12 +29,6 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
                 .HasPrecision(18, 2);
             builder.Property(p => p.Weight)
                 .HasPrecision(18, 2);
-            builder.Property(p => p.SupplyPrice)
-                .HasColumnType("money")
-                .HasPrecision(18, 2);
-            builder.Property(p => p.SalePrice)
-                .HasColumnType("money")
-                .HasPrecision(18, 2);
         }
     }
 }

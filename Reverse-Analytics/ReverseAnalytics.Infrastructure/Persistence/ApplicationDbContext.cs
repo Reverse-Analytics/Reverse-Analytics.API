@@ -39,7 +39,27 @@ namespace ReverseAnalytics.Infrastructure.Persistence
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
+            ConfigureDecimalAndDouble(modelBuilder);
+
             base.OnModelCreating(modelBuilder);
+        }
+
+        private void ConfigureDecimalAndDouble(ModelBuilder modelBuilder)
+        {
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                var properties = entityType
+                    .ClrType
+                    .GetProperties()
+                    .Where(p => p.PropertyType == typeof(decimal) || p.PropertyType == typeof(double));
+
+                foreach (var property in properties)
+                {
+                    modelBuilder.Entity(entityType.Name)
+                        .Property(property.Name)
+                        .HasColumnType("decimal(18, 2)");
+                }
+            }
         }
     }
 }

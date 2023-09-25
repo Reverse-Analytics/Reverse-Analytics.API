@@ -18,13 +18,6 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
             builder.HasOne(sd => sd.Product)
                 .WithMany(p => p.SaleDetails)
                 .HasForeignKey(sd => sd.ProductId);
-
-            builder.Property(sd => sd.Quantity)
-                .IsRequired();
-            builder.Property(sd => sd.UnitPrice)
-                .HasColumnType("money")
-                .HasPrecision(18, 2)
-                .IsRequired();
         }
     }
 }

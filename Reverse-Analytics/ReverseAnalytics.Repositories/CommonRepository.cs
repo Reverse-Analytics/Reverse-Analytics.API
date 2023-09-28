@@ -20,7 +20,7 @@ namespace ReverseAnalytics.Repositories
             new ProductRepository(_context);
 
         private readonly IRefundItemRepository _refundDetail;
-        public IRefundItemRepository RefundDetail => _refundDetail ??
+        public IRefundItemRepository RefundItem => _refundDetail ??
             new RefundItemRepository(_context);
 
         private readonly IRefundRepository _refund;

@@ -5,7 +5,7 @@
         public ICustomerRepository Customer { get; }
         public IProductCategoryRepository ProductCategory { get; }
         public IProductRepository Product { get; }
-        public IRefundItemRepository RefundDetail { get; }
+        public IRefundItemRepository RefundItem { get; }
         public IRefundRepository Refund { get; }
         public ISaleDebtRepository SaleDebt { get; }
         public ISaleItemRepository SaleDetail { get; }

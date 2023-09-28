@@ -23,7 +23,7 @@ namespace ReverseAnalytics.Services
 
             var refundDetailEntity = _mapper.Map<RefundItem>(refundDetailToCreate);
 
-            _repository.RefundDetail.Create(refundDetailEntity);
+            _repository.RefundItem.Create(refundDetailEntity);
             await _repository.SaveChangesAsync();
 
             return _mapper.Map<RefundItemDto>(refundDetailEntity);
@@ -31,20 +31,20 @@ namespace ReverseAnalytics.Services
 
         public async Task<IEnumerable<RefundItemDto>> GetRefundDetailsByRefundIdAsync(int refundId)
         {
-            var refundDetails = await _repository.RefundDetail.FindAllByRefundIdAsync(refundId);
+            var refundDetails = await _repository.RefundItem.FindAllByRefundIdAsync(refundId);
 
             return _mapper.Map<IEnumerable<RefundItemDto>>(refundDetails);
         }
 
         public async Task DeleteRefundDetailAsync(int id)
         {
-            _repository.RefundDetail.Delete(id);
+            _repository.RefundItem.Delete(id);
             await _repository.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<RefundItemDto>> GetAllRefundDetailsAsync()
         {
-            var refundDetails = await _repository.RefundDetail.FindAllAsync();
+            var refundDetails = await _repository.RefundItem.FindAllAsync();
 
             return refundDetails is null ?
                 Enumerable.Empty<RefundItemDto>() :
@@ -53,7 +53,7 @@ namespace ReverseAnalytics.Services
 
         public async Task<RefundItemDto> GetRefundDetailByIdAsync(int id)
         {
-            var refundDetail = await _repository.RefundDetail.FindByIdAsync(id);
+            var refundDetail = await _repository.RefundItem.FindByIdAsync(id);
 
             return _mapper.Map<RefundItemDto>(refundDetail);
         }
@@ -64,7 +64,7 @@ namespace ReverseAnalytics.Services
 
             var refundDetailEntity = _mapper.Map<RefundItem>(refundDetailToUpdate);
 
-            _repository.RefundDetail.Update(refundDetailEntity);
+            _repository.RefundItem.Update(refundDetailEntity);
             await _repository.SaveChangesAsync();
         }
     }

@@ -6,17 +6,16 @@ namespace Reverse_Analytics.Api.Controllers
 {
     [Route("api/refunds")]
     [ApiController]
-    public class RefundController : ControllerBase
+    public class RefundsController : ControllerBase
     {
         private readonly IRefundService _refundService;
         private readonly IRefundDetailService _refundDetailService;
 
-        public RefundController(IRefundService refundService, IRefundDetailService refundDetailService)
+        public RefundsController(IRefundService refundService, IRefundDetailService refundDetailService)
         {
             _refundService = refundService;
             _refundDetailService = refundDetailService;
         }
-
 
         // GET: api/<RefundController>
         [HttpGet]

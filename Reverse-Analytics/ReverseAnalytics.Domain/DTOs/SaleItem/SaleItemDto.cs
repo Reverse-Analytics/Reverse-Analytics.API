@@ -10,9 +10,11 @@ namespace ReverseAnalytics.Domain.DTOs.SaleItem
         public decimal UnitPrice { get; set; }
         public decimal Discount { get; set; }
         public double DiscountPercentage { get; set; }
-        public decimal TotalDue => (UnitPrice * Quantity) - Discount;
+        public decimal TotalDue => (UnitPrice * Quantity);
 
+        public int SaleId { get; set; }
         public virtual SaleDto Sale { get; set; }
+        public int ProductId { get; set; }
         public virtual ProductDto Product { get; set; }
     }
 }

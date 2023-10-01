@@ -8,7 +8,10 @@ namespace ReverseAnalytics.Doman.DTOs.RefundItem
         public int Id { get; set; }
         public int Quantity { get; set; }
 
+        public int RefundId { get; set; }
         public virtual RefundDto Refund { get; set; }
+
+        public int ProductId { get; set; }
         public virtual ProductDto Product { get; set; }
     }
 }

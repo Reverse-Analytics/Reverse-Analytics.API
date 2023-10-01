@@ -7,6 +7,8 @@ namespace ReverseAnalytics.Domain.DTOs.Refund
     {
         public int Id { get; set; }
         public decimal TotalAmount { get; set; }
+        public decimal DebtPaymentAmount { get; set; }
+        public decimal RefundAmount { get; set; }
         public DateTime RefundDate { get; set; }
         public string? Reason { get; set; }
         public string? ReceivedBy { get; set; }

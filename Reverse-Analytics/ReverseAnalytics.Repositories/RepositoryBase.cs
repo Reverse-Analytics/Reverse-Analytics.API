@@ -34,7 +34,9 @@ namespace ReverseAnalytics.Repositories
 
         public async Task<T?> FindByIdAsync(int id)
         {
-            return await _context.Set<T>().FindAsync(id);
+            return await _context.Set<T>()
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public T Create(T entity)

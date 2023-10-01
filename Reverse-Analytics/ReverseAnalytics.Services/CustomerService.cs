@@ -18,157 +18,62 @@ namespace ReverseAnalytics.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<CustomerDto>?> GetAllCustomerAsync(string? searchString, int pageNumber, int pageSize)
+        /// <inheritdoc />
+        public async Task<IEnumerable<CustomerDto>> GetAllCustomerAsync(string? searchString, int pageNumber, int pageSize)
         {
-            try
-            {
-                var customers = await _repository.Customer.FindAllCustomers(searchString, pageNumber, pageSize);
+            var customers = await _repository.Customer.FindAllCustomers(searchString, pageNumber, pageSize);
 
-                if (customers is null)
-                {
-                    return null;
-                }
-
-                var customerDtos = _mapper.Map<IEnumerable<CustomerDto>>(customers);
-
-                if (customerDtos is null)
-                {
-                    throw new AutoMapperMappingException($"Could not map {typeof(Customer)} entities to type {typeof(CustomerDto)}.");
-                }
-
-                return customerDtos;
-            }
-            catch (AutoMapperMappingException ex)
-            {
-                throw ex;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("There was an error retrieving Customers.", ex);
-            }
+            return customers.Any() ? _mapper.Map<IEnumerable<CustomerDto>>(customers) : Enumerable.Empty<CustomerDto>();
         }
 
-        public async Task<CustomerDto?> GetCustomerByIdAsync(int id)
+        /// <inheritdoc />
+        public async Task<CustomerDto> GetCustomerByIdAsync(int id)
         {
-            try
-            {
-                var customer = await _repository.Customer.FindByIdAsync(id);
+            var customer = await _repository.Customer.FindByIdAsync(id) ?? throw new NotFoundException($"Customer with id {id} was not found.");
+            var customerDto = _mapper.Map<CustomerDto>(customer);
 
-                if (customer is null)
-                {
-                    throw new NotFoundException($"Customer with id: {id} was not found.");
-                }
-
-                var customerDto = _mapper.Map<CustomerDto>(customer);
-
-                if (customerDto is null)
-                {
-                    throw new AutoMapperMappingException($"Could not map {typeof(Customer)} to type {typeof(CustomerDto)}");
-                }
-
-                return customerDto;
-            }
-            catch (NotFoundException ex)
-            {
-                throw ex;
-            }
-            catch (AutoMapperMappingException ex)
-            {
-                throw ex;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"There was an error retrieving customer with id: {id}.", ex);
-            }
+            return customerDto is null
+                ? throw new AutoMapperMappingException($"Could not map {typeof(Customer)} to type {typeof(CustomerDto)}")
+                : customerDto;
         }
 
-        public async Task<CustomerDto?> CreateCustomerAsync(CustomerForCreateDto customerToCreate)
+        /// <inheritdoc />
+        public async Task<CustomerDto> CreateCustomerAsync(CustomerForCreateDto customerToCreate)
         {
-            try
-            {
-                if (customerToCreate is null)
-                {
-                    throw new ArgumentNullException(nameof(customerToCreate));
-                }
+            ValidateNotNull(customerToCreate);
 
-                var customerEntity = _mapper.Map<Customer>(customerToCreate);
+            var customerEntity = _mapper.Map<Customer>(customerToCreate) ??
+                throw new AutoMapperMappingException($"Could not map {typeof(CustomerForCreateDto)} to {typeof(Customer)}.");
 
-                if (customerEntity is null)
-                {
-                    throw new AutoMapperMappingException($"Could not map {typeof(CustomerForCreateDto)} to {typeof(Customer)}.");
-                }
+            var createdEntity = _repository.Customer.Create(customerEntity);
+            await _repository.Customer.SaveChangesAsync();
 
-                var createdEntity = _repository.Customer.Create(customerEntity);
-                await _repository.Customer.SaveChangesAsync();
+            var customerDto = _mapper.Map<CustomerDto>(createdEntity);
 
-                return _mapper.Map<CustomerDto>(createdEntity);
-            }
-            catch (ArgumentNullException ex)
-            {
-                throw ex;
-            }
-            catch (AutoMapperMappingException ex)
-            {
-                throw ex;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("There was an error adding new Customer.", ex);
-            }
+            return customerDto is null
+                ? throw new AutoMapperMappingException($"Could not map {typeof(Customer)} to type {typeof(CustomerDto)}")
+                : customerDto;
         }
 
+        /// <inheritdoc />
         public async Task UpdateCustomerAsync(CustomerForUpdateDto customerToUpdate)
         {
-            try
-            {
-                if (customerToUpdate is null)
-                {
-                    throw new ArgumentNullException(nameof(customerToUpdate));
-                }
+            ValidateNotNull(customerToUpdate);
 
-                var customerEntity = _mapper.Map<Customer>(customerToUpdate);
+            var customerEntity = _mapper.Map<Customer>(customerToUpdate) ??
+                throw new AutoMapperMappingException($"Could not map {typeof(CustomerForUpdateDto)} to type {typeof(Customer)}.");
 
-                if (customerEntity is null)
-                {
-                    throw new AutoMapperMappingException($"Could not map {typeof(CustomerForUpdateDto)} to type {typeof(Customer)}.");
-                }
-
-                _repository.Customer.Update(customerEntity);
-                await _repository.Customer.SaveChangesAsync();
-            }
-            catch (ArgumentNullException ex)
-            {
-                throw ex;
-            }
-            catch (AutoMapperMappingException ex)
-            {
-                throw ex;
-            }
-            catch (NotFoundException ex)
-            {
-                throw ex;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("There was an error updating Customer.", ex);
-            }
+            _repository.Customer.Update(customerEntity);
+            await _repository.Customer.SaveChangesAsync();
         }
 
+        /// <inheritdoc />
         public async Task DeleteCustomerAsync(int id)
         {
-            try
-            {
-                _repository.Customer.Delete(id);
-                await _repository.Customer.SaveChangesAsync();
-            }
-            catch (NotFoundException ex)
-            {
-                throw ex;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"There was an error deleting Customer with id: {id}", ex);
-            }
+            _repository.Customer.Delete(id);
+            await _repository.Customer.SaveChangesAsync();
         }
+
+        private static void ValidateNotNull<T>(T entity) => ArgumentNullException.ThrowIfNull(entity);
     }
 }

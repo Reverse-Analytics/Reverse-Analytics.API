@@ -34,6 +34,11 @@ namespace ReverseAnalytics.Services
 
             var saleDebt = await _repository.SaleDebt.FindBySaleIdAsync(sale.Id);
 
+            if (refundEntity.DebtPaymentAmount > 0)
+            {
+                saleDebt.TotalPaid += refundEntity.DebtPaymentAmount;
+            }
+
             _repository.Refund.Create(refundEntity);
             await _repository.SaveChangesAsync();
 
@@ -55,7 +60,16 @@ namespace ReverseAnalytics.Services
             var refundEntity = _mapper.Map<Refund>(refundToUpdate);
 
             var saleDebt = await _repository.SaleDebt.FindBySaleIdAsync(sale.Id);
-            UpdateDebt(sale, saleDebt, refundEntity);
+            var currentRefund = await _repository.Refund.FindByIdAsync(refundToUpdate.Id);
+
+            if (currentRefund == null)
+            {
+                throw new NotFoundException($"Refund with id: {refundToUpdate.Id} does not exist.");
+            }
+
+            UpdateDebt(saleDebt, refundEntity, currentRefund);
+            UpdateRefundItems(refundEntity, currentRefund);
+
 
             _repository.Refund.Update(refundEntity);
             await _repository.SaveChangesAsync();
@@ -63,6 +77,19 @@ namespace ReverseAnalytics.Services
 
         public async Task DeleteRefundAsync(int id)
         {
+            var refund = await _repository.Refund.FindByIdAsync(id);
+
+            if (refund == null)
+            {
+                throw new NotFoundException($"Refund with id: {id} does not exist.");
+            }
+
+            if (refund.DebtPaymentAmount > 0)
+            {
+                var debt = await _repository.SaleDebt.FindBySaleIdAsync(refund.SaleId);
+                debt.TotalPaid -= refund.DebtPaymentAmount;
+            }
+
             _repository.Refund.Delete(id);
             await _repository.SaveChangesAsync();
         }
@@ -83,20 +110,44 @@ namespace ReverseAnalytics.Services
             return _mapper.Map<RefundDto>(refund);
         }
 
-        private static void UpdateDebt(Sale sale, SaleDebt debt, Refund refund)
+        private static void UpdateDebt(SaleDebt debt, Refund refund, Refund currentRefund)
         {
             ValidateNotNull(refund);
             ValidateNotNull(debt);
+            ValidateNotNull(currentRefund);
 
-            var actualDebtAmount = sale.TotalDue - sale.TotalPaid;
-            var leftOver = debt.TotalDue - debt.TotalPaid;
+            if (refund.DebtPaymentAmount > currentRefund.DebtPaymentAmount)
+            {
+                debt.TotalPaid += refund.DebtPaymentAmount - currentRefund.DebtPaymentAmount;
+            }
+            else if (refund.DebtPaymentAmount < currentRefund.DebtPaymentAmount)
+            {
+                debt.TotalPaid -= currentRefund.DebtPaymentAmount - refund.DebtPaymentAmount;
+            }
+        }
 
-            if (actualDebtAmount <= 0)
+        private void UpdateRefundItems(Refund refundToUpdate, Refund refundEntity)
+        {
+            if (refundToUpdate.RefundDetails is null || refundEntity.RefundDetails is null)
             {
                 return;
             }
 
+            var newItems = refundToUpdate.RefundDetails.ToList() ?? new List<RefundItem>();
+            var currentItems = refundEntity.RefundDetails.ToList() ?? new List<RefundItem>();
 
+            var itemsToAdd = newItems.Where(newItem => !currentItems.Any(currentItem => currentItem.Id == newItem.Id));
+            var itemsToDelete = currentItems.Where(currentItem => !newItems.Any(newItem => newItem.Id == currentItem.Id));
+
+            if (itemsToAdd.Any())
+            {
+                _repository.RefundItem.CreateRange(itemsToAdd);
+            }
+
+            if (itemsToDelete.Any())
+            {
+                _repository.RefundItem.DeleteRange(itemsToDelete);
+            }
         }
 
         private static void ValidateNotNull<T>(T value)

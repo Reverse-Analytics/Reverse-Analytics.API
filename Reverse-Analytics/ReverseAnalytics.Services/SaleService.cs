@@ -77,7 +77,12 @@ namespace ReverseAnalytics.Services
 
             saleEntity.Receipt = Guid.NewGuid().ToString()[..8];
             saleEntity = _repository.Sale.Create(saleEntity);
-            saleEntity.SaleDebt = CreateDebt(saleEntity);
+
+            if (saleEntity.TotalDue - saleEntity.TotalPaid > 0)
+            {
+                saleEntity.SaleDebt = CreateDebt(saleEntity);
+            }
+
             await _repository.SaveChangesAsync();
             saleEntity.Customer = await _repository.Customer.FindByIdAsync(saleEntity.CustomerId);
 

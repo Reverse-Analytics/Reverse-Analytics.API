@@ -17,11 +17,11 @@ namespace ReverseAnalytics.Domain.DTOs.Sale
 
         public int CustomerId { get; set; }
 
-        public ICollection<SaleItemForCreateDto> SaleDetails { get; set; }
+        public ICollection<SaleItemForCreateDto> SaleItems { get; set; }
 
         public SaleForCreateDto()
         {
-            SaleDetails = new List<SaleItemForCreateDto>();
+            SaleItems = new List<SaleItemForCreateDto>();
         }
     }
 }

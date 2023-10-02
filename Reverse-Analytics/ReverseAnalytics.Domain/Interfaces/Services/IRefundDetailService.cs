@@ -2,10 +2,10 @@
 
 namespace ReverseAnalytics.Domain.Interfaces.Services
 {
-    public interface IRefundDetailService
+    public interface IRefundItemservice
     {
-        public Task<IEnumerable<RefundItemDto>> GetAllRefundDetailsAsync();
-        public Task<IEnumerable<RefundItemDto>> GetRefundDetailsByRefundIdAsync(int refundId);
+        public Task<IEnumerable<RefundItemDto>> GetAllRefundItemsAsync();
+        public Task<IEnumerable<RefundItemDto>> GetRefundItemsByRefundIdAsync(int refundId);
         public Task<RefundItemDto> GetRefundDetailByIdAsync(int id);
         public Task<RefundItemDto> CreateRefundDetailAsync(RefundItemForCreateDto refundDetailToCreate);
         public Task UpdateRefundDetailAsync(RefundItemForUpdateDto refundDetailToUpdate);

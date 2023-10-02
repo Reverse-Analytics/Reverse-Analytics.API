@@ -54,12 +54,25 @@ namespace ReverseAnalytics.Services
                 throw new NotFoundException();
             }
 
-            debt.Sale = await _repository.Sale.FindByIdAsync(debt.SaleId);
-            debt.Sale.Customer = await _repository.Customer.FindByIdAsync(debt.Sale.CustomerId);
+            var sale = await _repository.Sale.FindByIdAsync(debt.SaleId);
+
+            if (sale is null)
+            {
+                throw new NotFoundException();
+            }
+
             debt.TotalPaid = debt.TotalDue;
             debt.Status = Domain.Enums.DebtStatus.Closed;
             debt.ClosedDate = DateTime.Now;
+
+            sale.TotalPaid = sale.TotalDue;
+
+            _repository.Sale.Update(sale);
+            _repository.SaleDebt.Update(debt);
             await _repository.SaveChangesAsync();
+
+            debt.Sale = await _repository.Sale.FindByIdAsync(debt.SaleId);
+            debt.Sale.Customer = await _repository.Customer.FindByIdAsync(debt.Sale.CustomerId);
 
             return _mapper.Map<SaleDebtDto>(debt);
         }
@@ -78,10 +91,12 @@ namespace ReverseAnalytics.Services
                 return await SettleDebtAsync(id);
             }
 
+            debt.TotalPaid += amount;
+            _repository.SaleDebt.Update(debt);
+            await _repository.SaveChangesAsync();
+
             debt.Sale = await _repository.Sale.FindByIdAsync(debt.SaleId);
             debt.Sale.Customer = await _repository.Customer.FindByIdAsync(debt.Sale.CustomerId);
-            debt.TotalPaid += amount;
-            await _repository.SaveChangesAsync();
 
             return _mapper.Map<SaleDebtDto>(debt);
         }

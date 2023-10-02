@@ -7,24 +7,24 @@ using ReverseAnalytics.Domain.Interfaces.Services;
 
 namespace ReverseAnalytics.Services
 {
-    public class SupplyDetailService : ISupplyDetailService
+    public class SupplyItemservice : ISupplyItemservice
     {
         private readonly ICommonRepository _repository;
         private readonly IMapper _mapper;
 
-        public SupplyDetailService(ICommonRepository repository, IMapper mapper)
+        public SupplyItemservice(ICommonRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<SupplyItemDto>> GetAllSupplyDetailsAsync()
+        public async Task<IEnumerable<SupplyItemDto>> GetAllSupplyItemsAsync()
         {
             try
             {
-                var supplyDetails = await _repository.SupplyDetail.FindAllAsync();
+                var supplyItems = await _repository.SupplyDetail.FindAllAsync();
 
-                var supplyDetailDtos = _mapper.Map<IEnumerable<SupplyItemDto>>(supplyDetails);
+                var supplyDetailDtos = _mapper.Map<IEnumerable<SupplyItemDto>>(supplyItems);
 
                 return supplyDetailDtos;
             }
@@ -38,13 +38,13 @@ namespace ReverseAnalytics.Services
             }
         }
 
-        public async Task<IEnumerable<SupplyItemDto>> GetAllSupplyDetailsByProductIdAsync(int productId)
+        public async Task<IEnumerable<SupplyItemDto>> GetAllSupplyItemsByProductIdAsync(int productId)
         {
             try
             {
-                var supplyDetails = await _repository.SupplyDetail.FindAllByProductIdAsync(productId);
+                var supplyItems = await _repository.SupplyDetail.FindAllByProductIdAsync(productId);
 
-                var supplyDetailDtos = _mapper.Map<IEnumerable<SupplyItemDto>>(supplyDetails);
+                var supplyDetailDtos = _mapper.Map<IEnumerable<SupplyItemDto>>(supplyItems);
 
                 return supplyDetailDtos;
             }
@@ -74,13 +74,13 @@ namespace ReverseAnalytics.Services
             }
         }
 
-        public async Task<IEnumerable<SupplyItemDto>> GetAllSupplyDetailsBySupplyIdAsync(int supplyId)
+        public async Task<IEnumerable<SupplyItemDto>> GetAllSupplyItemsBySupplyIdAsync(int supplyId)
         {
             try
             {
-                var supplyDetails = await _repository.SupplyDetail.FindAllBySupplyIdAsync(supplyId);
+                var supplyItems = await _repository.SupplyDetail.FindAllBySupplyIdAsync(supplyId);
 
-                var supplyDetailDtos = _mapper.Map<IEnumerable<SupplyItemDto>>(supplyDetails);
+                var supplyDetailDtos = _mapper.Map<IEnumerable<SupplyItemDto>>(supplyItems);
 
                 return supplyDetailDtos;
             }

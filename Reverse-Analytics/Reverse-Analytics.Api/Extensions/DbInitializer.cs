@@ -50,16 +50,16 @@ namespace Reverse_Analytics.Api.Extensions
                 CreateProducts(context);
                 CreateCustomers(context);
                 CreateSales(context);
-                CreateSaleDetails(context);
+                CreateSaleItems(context);
                 CreateSaleDebts(context);
                 CreateRefunds(context);
-                CreateRefundDetails(context);
+                CreateRefundItems(context);
                 CreateSuppliers(context);
                 CreateSupplies(context);
-                CreateSupplyDetails(context);
+                CreateSupplyItems(context);
                 CreateSupplyDebts(context);
                 //CreateInventories(context);
-                //CreateInventoryDetails(context);
+                //CreateInventoryItems(context);
                 CreateRoles(identityContext);
                 CreateUsers(identityContext, userManager);
             }
@@ -151,13 +151,13 @@ namespace Reverse_Analytics.Api.Extensions
             context.SaveChanges();
         }
 
-        private static void CreateSaleDetails(ApplicationDbContext context)
+        private static void CreateSaleItems(ApplicationDbContext context)
         {
             if (context.SaleItems.Any()) return;
 
             var sales = context.Sales.Select(x => x.Id).ToList();
             var products = context.Products.Select(x => x.Id).ToList();
-            var saleDetailsFaker = new Faker<SaleItem>("ru")
+            var saleItemsFaker = new Faker<SaleItem>("ru")
                 .RuleFor(x => x.Quantity, f => f.Random.Int(1, 50))
                 .RuleFor(x => x.UnitPrice, f => f.Random.Decimal(5000, 50000))
                 .RuleFor(x => x.Discount, f => f.Random.Decimal(500, 20000))
@@ -165,7 +165,7 @@ namespace Reverse_Analytics.Api.Extensions
                 .RuleFor(x => x.ProductId, f => f.Random.ListItem(products))
                 .Generate(500);
 
-            context.SaleItems.AddRange(saleDetailsFaker);
+            context.SaleItems.AddRange(saleItemsFaker);
             context.SaveChanges();
         }
 
@@ -204,19 +204,19 @@ namespace Reverse_Analytics.Api.Extensions
             context.SaveChanges();
         }
 
-        private static void CreateRefundDetails(ApplicationDbContext context)
+        private static void CreateRefundItems(ApplicationDbContext context)
         {
             if (context.RefundItems.Any()) return;
 
             var refunds = context.Refunds.Select(x => x.Id).ToList();
             var products = context.Products.Select(x => x.Id).ToList();
-            var detailsFaker = new Faker<RefundItem>("ru")
+            var ItemsFaker = new Faker<RefundItem>("ru")
                 .RuleFor(x => x.Quantity, f => f.Random.Int(1, 10))
                 .RuleFor(x => x.RefundId, f => f.Random.ListItem(refunds))
                 .RuleFor(x => x.ProductId, f => f.Random.ListItem(products))
                 .Generate(150);
 
-            context.RefundItems.AddRange(detailsFaker);
+            context.RefundItems.AddRange(ItemsFaker);
             context.SaveChanges();
         }
 
@@ -253,20 +253,20 @@ namespace Reverse_Analytics.Api.Extensions
             context.SaveChanges();
         }
 
-        private static void CreateSupplyDetails(ApplicationDbContext context)
+        private static void CreateSupplyItems(ApplicationDbContext context)
         {
             if (context.SupplyItems.Any()) return;
 
             var supplies = context.Supplies.Select(x => x.Id).ToList();
             var products = context.Products.Select(x => x.Id).ToList();
-            var detailsFaker = new Faker<SupplyItem>("ru")
+            var ItemsFaker = new Faker<SupplyItem>("ru")
                 .RuleFor(x => x.Quantity, f => f.Random.Int(1, 50))
                 .RuleFor(x => x.UnitPrice, f => f.Random.Decimal(5000, 50000))
                 .RuleFor(x => x.SupplyId, f => f.Random.ListItem(supplies))
                 .RuleFor(x => x.ProductId, f => f.Random.ListItem(products))
                 .Generate(350);
 
-            context.SupplyItems.AddRange(detailsFaker);
+            context.SupplyItems.AddRange(ItemsFaker);
             context.SaveChanges();
         }
 

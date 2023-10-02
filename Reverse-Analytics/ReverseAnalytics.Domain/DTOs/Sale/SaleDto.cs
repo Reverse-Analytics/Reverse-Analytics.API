@@ -22,6 +22,6 @@ namespace ReverseAnalytics.Domain.DTOs.Sale
         public virtual CustomerDto Customer { get; set; }
         public virtual SaleDebtDto SaleDebt { get; set; }
 
-        public virtual ICollection<SaleItemDto> SaleDetails { get; set; }
+        public virtual ICollection<SaleItemDto> SaleItems { get; set; }
     }
 }

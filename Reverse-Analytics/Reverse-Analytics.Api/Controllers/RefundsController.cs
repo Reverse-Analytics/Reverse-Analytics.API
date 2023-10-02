@@ -9,12 +9,12 @@ namespace Reverse_Analytics.Api.Controllers
     public class RefundsController : ControllerBase
     {
         private readonly IRefundService _refundService;
-        private readonly IRefundDetailService _refundDetailService;
+        private readonly IRefundItemservice _refundItemservice;
 
-        public RefundsController(IRefundService refundService, IRefundDetailService refundDetailService)
+        public RefundsController(IRefundService refundService, IRefundItemservice refundItemservice)
         {
             _refundService = refundService;
-            _refundDetailService = refundDetailService;
+            _refundItemservice = refundItemservice;
         }
 
         // GET: api/<RefundController>

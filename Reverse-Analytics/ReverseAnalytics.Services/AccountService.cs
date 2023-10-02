@@ -131,7 +131,7 @@ namespace ReverseAnalytics.Services
                 return new PasswordResetResponse
                 {
                     IsSuccess = false,
-                    Message = "Password reset failed, see erros for more details.",
+                    Message = "Password reset failed, see erros for more Items.",
                     Errors = result.Errors.Select(e => new ResponseError
                     {
                         Description = e.Description,

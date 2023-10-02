@@ -594,13 +594,13 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.RefundItem", b =>
                 {
                     b.HasOne("ReverseAnalytics.Domain.Entities.Product", "Product")
-                        .WithMany("RefundDetails")
+                        .WithMany("RefundItems")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ReverseAnalytics.Domain.Entities.Refund", "Refund")
-                        .WithMany("RefundDetails")
+                        .WithMany("RefundItems")
                         .HasForeignKey("RefundId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -635,13 +635,13 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.SaleItem", b =>
                 {
                     b.HasOne("ReverseAnalytics.Domain.Entities.Product", "Product")
-                        .WithMany("SaleDetails")
+                        .WithMany("SaleItems")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ReverseAnalytics.Domain.Entities.Sale", "Sale")
-                        .WithMany("SaleDetails")
+                        .WithMany("SaleItems")
                         .HasForeignKey("SaleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -676,13 +676,13 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.SupplyItem", b =>
                 {
                     b.HasOne("ReverseAnalytics.Domain.Entities.Product", "Product")
-                        .WithMany("PurchaseDetails")
+                        .WithMany("PurchaseItems")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ReverseAnalytics.Domain.Entities.Supply", "Supply")
-                        .WithMany("SupplyDetails")
+                        .WithMany("SupplyItems")
                         .HasForeignKey("SupplyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -699,11 +699,11 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
 
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Product", b =>
                 {
-                    b.Navigation("PurchaseDetails");
+                    b.Navigation("PurchaseItems");
 
-                    b.Navigation("RefundDetails");
+                    b.Navigation("RefundItems");
 
-                    b.Navigation("SaleDetails");
+                    b.Navigation("SaleItems");
                 });
 
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.ProductCategory", b =>
@@ -713,7 +713,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
 
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Refund", b =>
                 {
-                    b.Navigation("RefundDetails");
+                    b.Navigation("RefundItems");
                 });
 
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Sale", b =>
@@ -723,7 +723,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
                     b.Navigation("SaleDebt")
                         .IsRequired();
 
-                    b.Navigation("SaleDetails");
+                    b.Navigation("SaleItems");
                 });
 
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Supplier", b =>
@@ -735,7 +735,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
                 {
                     b.Navigation("SupplyDebts");
 
-                    b.Navigation("SupplyDetails");
+                    b.Navigation("SupplyItems");
                 });
 #pragma warning restore 612, 618
         }

@@ -13,7 +13,7 @@ namespace ReverseAnalytics.Domain.Entities
         public int SupplierId { get; set; }
         public virtual Supplier Supplier { get; set; }
 
-        public virtual ICollection<SupplyItem> SupplyDetails { get; set; }
+        public virtual ICollection<SupplyItem> SupplyItems { get; set; }
         public virtual ICollection<SupplyDebt> SupplyDebts { get; set; }
     }
 }

@@ -7,29 +7,29 @@ using ReverseAnalytics.Domain.Interfaces.Services;
 
 namespace ReverseAnalytics.Services
 {
-    public class SaleDetailService : ISaleDetailService
+    public class SaleItemservice : ISaleItemservice
     {
         private readonly ICommonRepository _repository;
         private readonly IMapper _mapper;
 
-        public SaleDetailService(ICommonRepository repository, IMapper mapper)
+        public SaleItemservice(ICommonRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<SaleItemDto>?> GetAllSaleDetailsBySaleIdAsync(int saleId)
+        public async Task<IEnumerable<SaleItemDto>?> GetAllSaleItemsBySaleIdAsync(int saleId)
         {
             try
             {
-                var saleDetails = await _repository.SaleDetail.FindAllBySaleIdAsync(saleId);
+                var saleItems = await _repository.SaleDetail.FindAllBySaleIdAsync(saleId);
 
-                if (saleDetails is null)
+                if (saleItems is null)
                 {
                     return null;
                 }
 
-                var saleDetailDtos = _mapper.Map<IEnumerable<SaleItemDto>>(saleDetails);
+                var saleDetailDtos = _mapper.Map<IEnumerable<SaleItemDto>>(saleItems);
 
                 return saleDetailDtos;
             }
@@ -39,7 +39,7 @@ namespace ReverseAnalytics.Services
             }
             catch (Exception ex)
             {
-                throw new Exception($"There was an error retrieving Sale Details for Sale with id: {saleId}", ex);
+                throw new Exception($"There was an error retrieving Sale Items for Sale with id: {saleId}", ex);
             }
         }
 

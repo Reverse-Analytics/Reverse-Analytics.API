@@ -18,6 +18,6 @@ namespace ReverseAnalytics.Domain.DTOs.Sale
 
         public int CustomerId { get; set; }
 
-        public ICollection<SaleItemForUpdateDto> SaleDetails { get; set; }
+        public ICollection<SaleItemForUpdateDto> SaleItems { get; set; }
     }
 }

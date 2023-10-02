@@ -14,6 +14,6 @@ namespace ReverseAnalytics.Domain.DTOs.Refund
 
         public int SaleId { get; set; }
 
-        public ICollection<RefundItemForUpdateDto> RefundDetails { get; set; }
+        public ICollection<RefundItemForUpdateDto> RefundItems { get; set; }
     }
 }

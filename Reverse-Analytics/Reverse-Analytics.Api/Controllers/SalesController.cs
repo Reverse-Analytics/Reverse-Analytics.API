@@ -13,15 +13,15 @@ namespace Reverse_Analytics.Api.Controllers
     public class SalesController : ControllerBase
     {
         private readonly ISaleService _saleService;
-        private readonly ISaleDetailService _saleDetailService;
+        private readonly ISaleItemservice _saleItemservice;
         private readonly ISaleDebtService _saleDebtService;
 
         private const int PageSize = 15;
 
-        public SalesController(ISaleService service, ISaleDetailService saleDetailService, ISaleDebtService saleDebtService)
+        public SalesController(ISaleService service, ISaleItemservice saleItemservice, ISaleDebtService saleDebtService)
         {
             _saleService = service;
-            _saleDetailService = saleDetailService;
+            _saleItemservice = saleItemservice;
             _saleDebtService = saleDebtService;
         }
 
@@ -89,20 +89,20 @@ namespace Reverse_Analytics.Api.Controllers
 
         #endregion
 
-        #region Details
+        #region Items
 
-        [HttpGet("{id}/details")]
-        public async Task<ActionResult<IEnumerable<SaleItemDto>>> GetSaleDetailsAsync(int id)
+        [HttpGet("{id}/Items")]
+        public async Task<ActionResult<IEnumerable<SaleItemDto>>> GetSaleItemsAsync(int id)
         {
-            var saleDetails = await _saleDetailService.GetAllSaleDetailsBySaleIdAsync(id);
+            var saleItems = await _saleItemservice.GetAllSaleItemsBySaleIdAsync(id);
 
-            return Ok(saleDetails);
+            return Ok(saleItems);
         }
 
-        [HttpGet("{saleId}/details/{saleDetailId}")]
+        [HttpGet("{saleId}/Items/{saleDetailId}")]
         public async Task<ActionResult<SaleItemDto>> GetSaleDetailByIdAsync(int saleId, int saleDetailId)
         {
-            var saleDetail = await _saleDetailService.GetSaleDetailBySaleAndDetailIdAsync(saleId, saleDetailId);
+            var saleDetail = await _saleItemservice.GetSaleDetailBySaleAndDetailIdAsync(saleId, saleDetailId);
 
             if (saleDetail is null)
                 return NotFound($"Sale with id: {saleId} does not have Detail with id: {saleDetailId}.");
@@ -110,14 +110,14 @@ namespace Reverse_Analytics.Api.Controllers
             return Ok(saleDetail);
         }
 
-        [HttpPost("{saleId}/details")]
+        [HttpPost("{saleId}/Items")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<ActionResult<SaleItemDto>> CreateSaleDetail([FromBody] SaleItemForCreateDto saleDetailToCreate, int saleId)
         {
             if (saleDetailToCreate.SaleId != saleId)
                 return BadRequest($"Sale id: {saleDetailToCreate.SaleId} does not match with route id: {saleId}.");
 
-            var createdSaleDetail = await _saleDetailService.CreateSaleDetailAsync(saleDetailToCreate);
+            var createdSaleDetail = await _saleItemservice.CreateSaleDetailAsync(saleDetailToCreate);
 
             if (createdSaleDetail is null)
                 return StatusCode(500,
@@ -126,7 +126,7 @@ namespace Reverse_Analytics.Api.Controllers
             return Created("Sale detail was successfully created.", createdSaleDetail);
         }
 
-        [HttpPut("{saleId}/details/{saleDetailId}")]
+        [HttpPut("{saleId}/Items/{saleDetailId}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<ActionResult> UpdateSaleDetailAsync([FromBody] SaleItemForUpdateDto saleDetailToUpdate, int saleId, int saleDetailId)
         {
@@ -136,15 +136,15 @@ namespace Reverse_Analytics.Api.Controllers
             if (saleDetailToUpdate.SaleId != saleId)
                 return BadRequest($"Sale id: {saleDetailToUpdate.SaleId} does not match with route id: {saleId}.");
 
-            await _saleDetailService.UpdateSaleDetailAsync(saleDetailToUpdate);
+            await _saleItemservice.UpdateSaleDetailAsync(saleDetailToUpdate);
 
             return NoContent();
         }
 
-        [HttpDelete("{id}/details/{saleDetailId}")]
+        [HttpDelete("{id}/Items/{saleDetailId}")]
         public async Task<ActionResult> DeleteSaleDetailAsync(int saleDetailId)
         {
-            await _saleDetailService.DeleteSaleDetailAsync(saleDetailId);
+            await _saleItemservice.DeleteSaleDetailAsync(saleDetailId);
 
             return NoContent();
         }

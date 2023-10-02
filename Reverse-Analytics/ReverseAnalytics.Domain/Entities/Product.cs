@@ -18,8 +18,8 @@ namespace ReverseAnalytics.Domain.Entities
         public int CategoryId { get; set; }
         public virtual ProductCategory Category { get; set; }
 
-        public virtual ICollection<SaleItem> SaleDetails { get; set; }
-        public virtual ICollection<SupplyItem> PurchaseDetails { get; set; }
-        public virtual ICollection<RefundItem> RefundDetails { get; set; }
+        public virtual ICollection<SaleItem> SaleItems { get; set; }
+        public virtual ICollection<SupplyItem> PurchaseItems { get; set; }
+        public virtual ICollection<RefundItem> RefundItems { get; set; }
     }
 }

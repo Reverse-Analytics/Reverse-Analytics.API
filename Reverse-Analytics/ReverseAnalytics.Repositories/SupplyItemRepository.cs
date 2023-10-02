@@ -14,20 +14,20 @@ namespace ReverseAnalytics.Repositories
 
         public async Task<IEnumerable<SupplyItem>> FindAllBySupplyIdAsync(int supplyId)
         {
-            var supplyDetails = await _context.SupplyItems
+            var supplyItems = await _context.SupplyItems
                                               .Where(sd => sd.SupplyId == supplyId)
                                               .ToListAsync();
 
-            return supplyDetails;
+            return supplyItems;
         }
 
         public async Task<IEnumerable<SupplyItem>> FindAllByProductIdAsync(int productId)
         {
-            var supplyDetails = await _context.SupplyItems
+            var supplyItems = await _context.SupplyItems
                                               .Where(sd => sd.ProductId == productId)
                                               .ToListAsync();
 
-            return supplyDetails;
+            return supplyItems;
         }
 
         public async Task<SupplyItem> FindBySupplyAndDetailIdAsync(int supplyId, int detailId)

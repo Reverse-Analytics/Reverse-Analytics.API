@@ -13,10 +13,10 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
             builder.HasKey(sd => sd.Id);
 
             builder.HasOne(sd => sd.Sale)
-                .WithMany(o => o.SaleDetails)
+                .WithMany(o => o.SaleItems)
                 .HasForeignKey(sd => sd.SaleId);
             builder.HasOne(sd => sd.Product)
-                .WithMany(p => p.SaleDetails)
+                .WithMany(p => p.SaleItems)
                 .HasForeignKey(sd => sd.ProductId);
         }
     }

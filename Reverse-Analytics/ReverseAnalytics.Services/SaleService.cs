@@ -99,7 +99,7 @@ namespace ReverseAnalytics.Services
                 saleEntity.Receipt = Guid.NewGuid().ToString()[..8];
 
                 await _repository.SaleDetail.DeleteRangeBySaleIdAsync(saleToUpdate.Id);
-                _repository.SaleDetail.CreateRange(saleEntity.SaleDetails);
+                _repository.SaleDetail.CreateRange(saleEntity.SaleItems);
 
                 await TryUpdateSaleDebt(saleEntity);
 

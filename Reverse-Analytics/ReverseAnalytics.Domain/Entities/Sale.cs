@@ -19,9 +19,8 @@ namespace ReverseAnalytics.Domain.Entities
 
         public int CustomerId { get; set; }
         public virtual Customer Customer { get; set; }
-        public virtual SaleDebt SaleDebt { get; set; }
 
-        public virtual ICollection<SaleItem> SaleDetails { get; set; }
+        public virtual ICollection<SaleItem> SaleItems { get; set; }
         public virtual ICollection<Refund> Refunds { get; set; }
     }
 }

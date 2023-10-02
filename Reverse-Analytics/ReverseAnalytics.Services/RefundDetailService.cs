@@ -6,12 +6,12 @@ using ReverseAnalytics.Domain.Interfaces.Services;
 
 namespace ReverseAnalytics.Services
 {
-    public class RefundDetailService : IRefundDetailService
+    public class RefundItemservice : IRefundItemservice
     {
         private readonly ICommonRepository _repository;
         private readonly IMapper _mapper;
 
-        public RefundDetailService(ICommonRepository repository, IMapper mapper)
+        public RefundItemservice(ICommonRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
@@ -29,11 +29,11 @@ namespace ReverseAnalytics.Services
             return _mapper.Map<RefundItemDto>(refundDetailEntity);
         }
 
-        public async Task<IEnumerable<RefundItemDto>> GetRefundDetailsByRefundIdAsync(int refundId)
+        public async Task<IEnumerable<RefundItemDto>> GetRefundItemsByRefundIdAsync(int refundId)
         {
-            var refundDetails = await _repository.RefundItem.FindAllByRefundIdAsync(refundId);
+            var refundItems = await _repository.RefundItem.FindAllByRefundIdAsync(refundId);
 
-            return _mapper.Map<IEnumerable<RefundItemDto>>(refundDetails);
+            return _mapper.Map<IEnumerable<RefundItemDto>>(refundItems);
         }
 
         public async Task DeleteRefundDetailAsync(int id)
@@ -42,13 +42,13 @@ namespace ReverseAnalytics.Services
             await _repository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<RefundItemDto>> GetAllRefundDetailsAsync()
+        public async Task<IEnumerable<RefundItemDto>> GetAllRefundItemsAsync()
         {
-            var refundDetails = await _repository.RefundItem.FindAllAsync();
+            var refundItems = await _repository.RefundItem.FindAllAsync();
 
-            return refundDetails is null ?
+            return refundItems is null ?
                 Enumerable.Empty<RefundItemDto>() :
-                _mapper.Map<IEnumerable<RefundItemDto>>(refundDetails);
+                _mapper.Map<IEnumerable<RefundItemDto>>(refundItems);
         }
 
         public async Task<RefundItemDto> GetRefundDetailByIdAsync(int id)

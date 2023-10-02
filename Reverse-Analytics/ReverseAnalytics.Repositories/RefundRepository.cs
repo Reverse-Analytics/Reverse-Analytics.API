@@ -15,12 +15,12 @@ namespace ReverseAnalytics.Repositories
         public async Task<IEnumerable<Refund>> FindRefundsAsync()
         {
             return await _context.Set<Refund>()
-                                 .Include(x => x.RefundDetails)
+                                 .Include(x => x.RefundItems)
                                  .ThenInclude(x => x.Product)
                                  .Include(x => x.Sale)
                                  .ThenInclude(s => s.Customer)
                                  .Include(x => x.Sale)
-                                 .ThenInclude(s => s.SaleDetails)
+                                 .ThenInclude(s => s.SaleItems)
                                  .ToListAsync();
         }
     }

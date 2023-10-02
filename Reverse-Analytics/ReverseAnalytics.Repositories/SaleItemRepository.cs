@@ -14,11 +14,11 @@ namespace ReverseAnalytics.Repositories
 
         public async Task<IEnumerable<SaleItem>> FindAllBySaleIdAsync(int saleId)
         {
-            var saleDetails = await _context.SaleItems
+            var saleItems = await _context.SaleItems
                 .Where(s => s.SaleId == saleId)
                 .ToListAsync();
 
-            return saleDetails;
+            return saleItems;
         }
 
         public async Task<SaleItem> FindBySaleAndDetailIdAsync(int saleId, int detailId)
@@ -31,16 +31,16 @@ namespace ReverseAnalytics.Repositories
 
         public async Task DeleteRangeBySaleIdAsync(int saleId)
         {
-            var saleDetails = await _context.SaleItems
+            var saleItems = await _context.SaleItems
                 .Where(x => x.SaleId == saleId)
                 .ToListAsync();
 
-            if (!saleDetails.Any())
+            if (!saleItems.Any())
             {
                 return;
             }
 
-            _context.RemoveRange(saleDetails);
+            _context.RemoveRange(saleItems);
         }
     }
 }

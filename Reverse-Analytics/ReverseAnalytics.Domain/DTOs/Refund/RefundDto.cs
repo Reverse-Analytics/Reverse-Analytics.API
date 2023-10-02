@@ -13,8 +13,9 @@ namespace ReverseAnalytics.Domain.DTOs.Refund
         public string? Reason { get; set; }
         public string? ReceivedBy { get; set; }
 
+        public int SaleId { get; set; }
         public virtual SaleDto Sale { get; set; }
 
-        public ICollection<RefundItemDto> RefundDetails { get; set; }
+        public ICollection<RefundItemDto> RefundItems { get; set; }
     }
 }

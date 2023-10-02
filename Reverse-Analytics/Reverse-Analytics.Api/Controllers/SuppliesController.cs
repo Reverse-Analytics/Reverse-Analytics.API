@@ -13,14 +13,14 @@ namespace Reverse_Analytics.Api.Controllers
     public class SuppliesController : ControllerBase
     {
         private readonly ISupplyService _service;
-        private readonly ISupplyDetailService _detailService;
+        private readonly ISupplyItemservice _Itemservice;
         private readonly ISupplyDebtService _debtService;
 
-        public SuppliesController(ISupplyService supplyService, ISupplyDetailService supplyDetailService,
+        public SuppliesController(ISupplyService supplyService, ISupplyItemservice supplyItemservice,
             ISupplyDebtService debtService)
         {
             _service = supplyService;
-            _detailService = supplyDetailService;
+            _Itemservice = supplyItemservice;
             _debtService = debtService;
         }
 
@@ -80,20 +80,20 @@ namespace Reverse_Analytics.Api.Controllers
 
         #endregion
 
-        #region Details
+        #region Items
 
-        [HttpGet("{supplyId}/details")]
-        public async Task<ActionResult<IEnumerable<SupplyItemDto>>> GetSupplyDetailsAsync(int supplyId)
+        [HttpGet("{supplyId}/Items")]
+        public async Task<ActionResult<IEnumerable<SupplyItemDto>>> GetSupplyItemsAsync(int supplyId)
         {
-            var supplyDetails = await _detailService.GetAllSupplyDetailsBySupplyIdAsync(supplyId);
+            var supplyItems = await _Itemservice.GetAllSupplyItemsBySupplyIdAsync(supplyId);
 
-            return Ok(supplyDetails);
+            return Ok(supplyItems);
         }
 
-        [HttpGet("{supplyId}/details/{detailId}")]
+        [HttpGet("{supplyId}/Items/{detailId}")]
         public async Task<ActionResult<SupplyItemDto>> GetBySupplyAndDetailIdAsync(int supplyId, int detailId)
         {
-            var supplyDetail = await _detailService.GetBySupplyAndDetailIdAsync(supplyId, detailId);
+            var supplyDetail = await _Itemservice.GetBySupplyAndDetailIdAsync(supplyId, detailId);
 
             if (supplyDetail is null)
                 return NotFound($"Supply with id: {supplyId} does not have Detail with id: {detailId}.");
@@ -101,14 +101,14 @@ namespace Reverse_Analytics.Api.Controllers
             return Ok(supplyDetail);
         }
 
-        [HttpPost("{supplyId}/details")]
+        [HttpPost("{supplyId}/Items")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<ActionResult<SupplyItemDto>> CreateSupplyDetailAsync([FromBody] SupplyItemForCreateDto supplyDetailToCreate, int supplyId)
         {
             if (supplyDetailToCreate.SupplyId != supplyId)
                 return BadRequest($"Supply id: {supplyDetailToCreate.SupplyId} does not match with route id: {supplyId}.");
 
-            var createdSupplyDetail = await _detailService.CreateSupplyDetailAsync(supplyDetailToCreate);
+            var createdSupplyDetail = await _Itemservice.CreateSupplyDetailAsync(supplyDetailToCreate);
 
             if (createdSupplyDetail is null)
                 return StatusCode(500,
@@ -117,7 +117,7 @@ namespace Reverse_Analytics.Api.Controllers
             return Created("Supply detail was successfully created.", createdSupplyDetail);
         }
 
-        [HttpPut("{supplyId}/details/{supplyDetailId}")]
+        [HttpPut("{supplyId}/Items/{supplyDetailId}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<ActionResult> UpdateSupplyDetailAsyc([FromBody] SupplyItemForUpdateDto supplyDetailToUpdate, int supplyId, int supplyDetailId)
         {
@@ -127,15 +127,15 @@ namespace Reverse_Analytics.Api.Controllers
             if (supplyDetailToUpdate.SupplyId != supplyId)
                 return BadRequest($"Supply id: {supplyDetailToUpdate.SupplyId} does not match with route id: {supplyId}.");
 
-            await _detailService.UpdateSupplyDetailAsync(supplyDetailToUpdate);
+            await _Itemservice.UpdateSupplyDetailAsync(supplyDetailToUpdate);
 
             return NoContent();
         }
 
-        [HttpDelete("{supplyId}/details/{supplyDetailId}")]
+        [HttpDelete("{supplyId}/Items/{supplyDetailId}")]
         public async Task<ActionResult> DeleteSupplyDetailAsync(int supplyId, int supplyDetailId)
         {
-            await _detailService.DeleteSupplyDetailAsync(supplyDetailId);
+            await _Itemservice.DeleteSupplyDetailAsync(supplyDetailId);
 
             return NoContent();
         }

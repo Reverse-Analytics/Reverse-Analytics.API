@@ -34,9 +34,9 @@ namespace ReverseAnalytics.Services
 
             var saleDebt = await _repository.SaleDebt.FindBySaleIdAsync(sale.Id);
 
-            if (refundEntity.DebtPaymentAmount > 0)
+            if (saleDebt != null)
             {
-                saleDebt.TotalPaid += refundEntity.DebtPaymentAmount;
+                UpdateDebt(saleDebt, refundEntity);
             }
 
             _repository.Refund.Create(refundEntity);
@@ -67,7 +67,11 @@ namespace ReverseAnalytics.Services
                 throw new NotFoundException($"Refund with id: {refundToUpdate.Id} does not exist.");
             }
 
-            UpdateDebt(saleDebt, refundEntity, currentRefund);
+            if (saleDebt != null)
+            {
+                UpdateDebt(saleDebt, refundEntity, currentRefund);
+            }
+
             UpdateRefundItems(refundEntity, currentRefund);
 
 
@@ -112,8 +116,8 @@ namespace ReverseAnalytics.Services
 
         private static void UpdateDebt(SaleDebt debt, Refund refund, Refund currentRefund)
         {
-            ValidateNotNull(refund);
             ValidateNotNull(debt);
+            ValidateNotNull(refund);
             ValidateNotNull(currentRefund);
 
             if (refund.DebtPaymentAmount > currentRefund.DebtPaymentAmount)
@@ -126,15 +130,39 @@ namespace ReverseAnalytics.Services
             }
         }
 
-        private void UpdateRefundItems(Refund refundToUpdate, Refund refundEntity)
+        private static void UpdateDebt(SaleDebt debt, Refund refund)
         {
-            if (refundToUpdate.RefundDetails is null || refundEntity.RefundDetails is null)
+            ValidateNotNull(debt);
+            ValidateNotNull(refund);
+
+            if (debt.TotalDue <= debt.TotalPaid)
             {
                 return;
             }
 
-            var newItems = refundToUpdate.RefundDetails.ToList() ?? new List<RefundItem>();
-            var currentItems = refundEntity.RefundDetails.ToList() ?? new List<RefundItem>();
+            if (refund.DebtPaymentAmount <= 0)
+            {
+                return;
+            }
+
+            debt.TotalPaid += refund.DebtPaymentAmount;
+
+            if (debt.TotalPaid >= debt.TotalDue)
+            {
+                debt.Status = Domain.Enums.DebtStatus.Closed;
+                debt.ClosedDate = DateTime.Now;
+            }
+        }
+
+        private void UpdateRefundItems(Refund refundToUpdate, Refund refundEntity)
+        {
+            if (refundToUpdate.RefundItems is null || refundEntity.RefundItems is null)
+            {
+                return;
+            }
+
+            var newItems = refundToUpdate.RefundItems.ToList() ?? new List<RefundItem>();
+            var currentItems = refundEntity.RefundItems.ToList() ?? new List<RefundItem>();
 
             var itemsToAdd = newItems.Where(newItem => !currentItems.Any(currentItem => currentItem.Id == newItem.Id));
             var itemsToDelete = currentItems.Where(currentItem => !newItems.Any(newItem => newItem.Id == currentItem.Id));

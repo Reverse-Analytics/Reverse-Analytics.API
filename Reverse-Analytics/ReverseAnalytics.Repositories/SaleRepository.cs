@@ -16,7 +16,7 @@ namespace ReverseAnalytics.Repositories
         {
             return await _context.Sales
                 .Include(x => x.Customer)
-                .Include(x => x.SaleDetails)
+                .Include(x => x.SaleItems)
                 .ThenInclude(x => x.Product)
                 .Include(x => x.Refunds)
                 .Include(x => x.SaleDebt)

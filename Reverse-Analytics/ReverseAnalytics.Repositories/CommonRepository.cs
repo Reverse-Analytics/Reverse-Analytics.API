@@ -27,12 +27,8 @@ namespace ReverseAnalytics.Repositories
         public IRefundRepository Refund => _refund ??
             new RefundRepository(_context);
 
-        private readonly ISaleDebtRepository _saleDebt;
-        public ISaleDebtRepository SaleDebt => _saleDebt ??
-            new SaleDebtRepository(_context);
-
         private readonly ISaleItemRepository _saleDetail;
-        public ISaleItemRepository SaleDetail => _saleDetail ??
+        public ISaleItemRepository SaleItem => _saleDetail ??
             new SaleItemRepository(_context);
 
         private readonly ISaleRepository _sale;
@@ -48,7 +44,7 @@ namespace ReverseAnalytics.Repositories
             new SupplyDebtRepository(_context);
 
         private readonly ISupplyItemRepository _supplyDetail;
-        public ISupplyItemRepository SupplyDetail => _supplyDetail ??
+        public ISupplyItemRepository SupplyItem => _supplyDetail ??
             new SupplyItemRepository(_context);
 
         private readonly ISupplyRepository _supply;

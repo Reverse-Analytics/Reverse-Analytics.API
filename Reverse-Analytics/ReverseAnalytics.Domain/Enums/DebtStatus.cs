@@ -5,6 +5,7 @@
         PaymentRequired = 0,
         Closed = 1,
         Overdue = 2,
-        Unknown = 3,
+        Deactivated = 3,
+        Unknown = 4,
     }
 }

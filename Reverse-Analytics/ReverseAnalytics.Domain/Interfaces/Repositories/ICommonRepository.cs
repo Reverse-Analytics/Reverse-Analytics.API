@@ -7,12 +7,11 @@
         public IProductRepository Product { get; }
         public IRefundItemRepository RefundItem { get; }
         public IRefundRepository Refund { get; }
-        public ISaleDebtRepository SaleDebt { get; }
-        public ISaleItemRepository SaleDetail { get; }
+        public ISaleItemRepository SaleItem { get; }
         public ISaleRepository Sale { get; }
         public ISupplierRepository Supplier { get; }
         public ISupplyDebtRepository SupplyDebt { get; }
-        public ISupplyItemRepository SupplyDetail { get; }
+        public ISupplyItemRepository SupplyItem { get; }
         public ISupplyRepository Supply { get; }
 
         public Task<int> SaveChangesAsync();

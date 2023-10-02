@@ -22,7 +22,6 @@ namespace Reverse_Analytics.Api.Extensions
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IRefundRepository, RefundRepository>();
             services.AddScoped<IRefundItemRepository, RefundItemRepository>();
-            services.AddScoped<ISaleDebtRepository, SaleDebtRepository>();
             services.AddScoped<ISaleItemRepository, SaleItemRepository>();
             services.AddScoped<ISaleRepository, SaleRepository>();
             services.AddScoped<ISupplyDebtRepository, SupplyDebtRepository>();

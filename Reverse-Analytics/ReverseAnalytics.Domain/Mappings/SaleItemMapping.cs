@@ -4,9 +4,9 @@ using ReverseAnalytics.Domain.Entities;
 
 namespace ReverseAnalytics.Domain.Mappings
 {
-    public class SaleDetailMapping : Profile
+    public class SaleItemMapping : Profile
     {
-        public SaleDetailMapping()
+        public SaleItemMapping()
         {
             CreateMap<SaleItem, SaleItemDto>();
             CreateMap<SaleItemDto, SaleItem>();

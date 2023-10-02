@@ -22,7 +22,7 @@ namespace ReverseAnalytics.Services
         {
             try
             {
-                var saleItems = await _repository.SaleDetail.FindAllBySaleIdAsync(saleId);
+                var saleItems = await _repository.SaleItem.FindAllBySaleIdAsync(saleId);
 
                 if (saleItems is null)
                 {
@@ -47,7 +47,7 @@ namespace ReverseAnalytics.Services
         {
             try
             {
-                var saleDetail = await _repository.SaleDetail.FindBySaleAndDetailIdAsync(saleId, detailId);
+                var saleDetail = await _repository.SaleItem.FindBySaleAndDetailIdAsync(saleId, detailId);
 
                 var saleDetailDto = _mapper.Map<SaleItemDto>(saleDetail);
 
@@ -63,7 +63,7 @@ namespace ReverseAnalytics.Services
         {
             try
             {
-                var saleDetailEntity = await _repository.SaleDetail.FindByIdAsync(saleDetailId);
+                var saleDetailEntity = await _repository.SaleItem.FindByIdAsync(saleDetailId);
 
                 var saleDetailDto = _mapper.Map<SaleItemDto>(saleDetailEntity);
 
@@ -85,7 +85,7 @@ namespace ReverseAnalytics.Services
             {
                 var saleDetailEntity = _mapper.Map<SaleItem>(saleDetailToCreate);
 
-                var createdEntity = _repository.SaleDetail.Create(saleDetailEntity);
+                var createdEntity = _repository.SaleItem.Create(saleDetailEntity);
                 await _repository.SaveChangesAsync();
 
                 var saleDetailDto = _mapper.Map<SaleItemDto>(createdEntity);
@@ -109,7 +109,7 @@ namespace ReverseAnalytics.Services
 
                 var saleDetailEntity = _mapper.Map<SaleItem>(saleDetailToUpdate);
 
-                _repository.SaleDetail.Update(saleDetailEntity);
+                _repository.SaleItem.Update(saleDetailEntity);
                 await _repository.SaveChangesAsync();
             }
             catch (Exception ex)
@@ -122,7 +122,7 @@ namespace ReverseAnalytics.Services
         {
             try
             {
-                _repository.SaleDetail.Delete(id);
+                _repository.SaleItem.Delete(id);
                 await _repository.SaveChangesAsync();
             }
             catch (NotFoundException ex)

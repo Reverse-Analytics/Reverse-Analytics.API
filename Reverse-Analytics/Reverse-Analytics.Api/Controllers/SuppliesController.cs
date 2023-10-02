@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Reverse_Analytics.Api.Filters;
-using ReverseAnalytics.Domain.DTOs.SupplyDebt;
 using ReverseAnalytics.Domain.DTOs.Supply;
 using ReverseAnalytics.Domain.DTOs.SupplyItem;
 using ReverseAnalytics.Domain.Interfaces.Services;
@@ -136,67 +135,6 @@ namespace Reverse_Analytics.Api.Controllers
         public async Task<ActionResult> DeleteSupplyDetailAsync(int supplyId, int supplyDetailId)
         {
             await _Itemservice.DeleteSupplyDetailAsync(supplyDetailId);
-
-            return NoContent();
-        }
-
-        #endregion
-
-        #region Debts
-
-        [HttpGet("{supplyId}/debts")]
-        public async Task<ActionResult<IEnumerable<SupplyDebtDto>>> GetSupplyDebtsAsync(int supplyId)
-        {
-            return Ok(await _debtService.GetSupplyDebtsBySupplyIdAsync(supplyId));
-        }
-
-        [HttpGet("{supplyId}/debts/{debtId}")]
-        public async Task<ActionResult<SupplyDebtDto>> GetSupplyDebtByIdAsync(int debtId)
-        {
-            var debt = await _debtService.GetSupplyDebtByIdAsync(debtId);
-
-            return debt is null ?
-                NotFound($"Debt with id: {debtId} does not exist") :
-                Ok(debt);
-        }
-
-        [HttpPost("{supplyId}/debts")]
-        public async Task<ActionResult<SupplyDebtDto>> CreateSupplyDebtAsync(int supplyId,
-            [FromBody] SupplyDebtForCreateDto SupplyDebtToCreate)
-        {
-            if (supplyId != SupplyDebtToCreate.SupplyId)
-            {
-                return BadRequest($"Route id: {supplyId} does not match with Supply id: {SupplyDebtToCreate.SupplyId}");
-            }
-
-            var createdDebt = await _debtService.CreateSupplyDebtAsync(SupplyDebtToCreate);
-
-            return Ok(createdDebt);
-        }
-
-        [HttpPut("{supplyId}/debts/{debtId}")]
-        public async Task<ActionResult> UpdateSupplyDebtAsync(int supplyId, int debtId,
-            [FromBody] SupplyDebtForUpdateDto SupplyDebtToUpdate)
-        {
-            if (supplyId != SupplyDebtToUpdate.SupplyId)
-            {
-                return BadRequest($"Route id: {supplyId} does not match with Supply id: {SupplyDebtToUpdate.SupplyId}");
-            }
-
-            if (debtId != SupplyDebtToUpdate.Id)
-            {
-                return BadRequest($"Route id: {debtId} does not match with Debt id: {SupplyDebtToUpdate.Id}");
-            }
-
-            await _debtService.UpdateSupplyDebtAsync(SupplyDebtToUpdate);
-
-            return NoContent();
-        }
-
-        [HttpDelete("{supplyId}/debts/{debtId}")]
-        public async Task<ActionResult> DeleteSupplyDebtAsync(int debtId)
-        {
-            await _debtService.DeleteSupplyDebtAsync(debtId);
 
             return NoContent();
         }

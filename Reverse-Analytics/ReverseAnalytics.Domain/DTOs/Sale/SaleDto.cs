@@ -1,6 +1,4 @@
-﻿using ReverseAnalytics.Domain.DTOs.Customer;
-using ReverseAnalytics.Domain.DTOs.SaleDebt;
-using ReverseAnalytics.Domain.DTOs.SaleItem;
+﻿using ReverseAnalytics.Domain.DTOs.SaleItem;
 using ReverseAnalytics.Domain.Enums;
 
 namespace ReverseAnalytics.Domain.DTOs.Sale
@@ -18,9 +16,6 @@ namespace ReverseAnalytics.Domain.DTOs.Sale
         public SaleType SaleType { get; set; }
         public PaymentType PaymentType { get; set; }
         public CurrencyType CurrencyType { get; set; }
-
-        public virtual CustomerDto Customer { get; set; }
-        public virtual SaleDebtDto SaleDebt { get; set; }
 
         public virtual ICollection<SaleItemDto> SaleItems { get; set; }
     }

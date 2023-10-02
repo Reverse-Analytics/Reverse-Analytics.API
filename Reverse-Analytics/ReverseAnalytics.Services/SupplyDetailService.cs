@@ -22,7 +22,7 @@ namespace ReverseAnalytics.Services
         {
             try
             {
-                var supplyItems = await _repository.SupplyDetail.FindAllAsync();
+                var supplyItems = await _repository.SupplyItem.FindAllAsync();
 
                 var supplyDetailDtos = _mapper.Map<IEnumerable<SupplyItemDto>>(supplyItems);
 
@@ -42,7 +42,7 @@ namespace ReverseAnalytics.Services
         {
             try
             {
-                var supplyItems = await _repository.SupplyDetail.FindAllByProductIdAsync(productId);
+                var supplyItems = await _repository.SupplyItem.FindAllByProductIdAsync(productId);
 
                 var supplyDetailDtos = _mapper.Map<IEnumerable<SupplyItemDto>>(supplyItems);
 
@@ -62,7 +62,7 @@ namespace ReverseAnalytics.Services
         {
             try
             {
-                var supplyDetail = await _repository.SupplyDetail.FindBySupplyAndDetailIdAsync(supplyId, detailId);
+                var supplyDetail = await _repository.SupplyItem.FindBySupplyAndDetailIdAsync(supplyId, detailId);
 
                 var supplyDetailDto = _mapper.Map<SupplyItemDto>(supplyDetail);
 
@@ -78,7 +78,7 @@ namespace ReverseAnalytics.Services
         {
             try
             {
-                var supplyItems = await _repository.SupplyDetail.FindAllBySupplyIdAsync(supplyId);
+                var supplyItems = await _repository.SupplyItem.FindAllBySupplyIdAsync(supplyId);
 
                 var supplyDetailDtos = _mapper.Map<IEnumerable<SupplyItemDto>>(supplyItems);
 
@@ -98,7 +98,7 @@ namespace ReverseAnalytics.Services
         {
             try
             {
-                var supplyDetail = await _repository.SupplyDetail.FindByIdAsync(supplyDetailid);
+                var supplyDetail = await _repository.SupplyItem.FindByIdAsync(supplyDetailid);
 
                 var supplyDetailDto = _mapper.Map<SupplyItemDto>(supplyDetail);
 
@@ -120,7 +120,7 @@ namespace ReverseAnalytics.Services
             {
                 var supplyDetailEntity = _mapper.Map<SupplyItem>(supplyDetailToCreate);
 
-                var createdEntity = _repository.SupplyDetail.Create(supplyDetailEntity);
+                var createdEntity = _repository.SupplyItem.Create(supplyDetailEntity);
                 await _repository.SaveChangesAsync();
 
                 var supplyDetailDto = _mapper.Map<SupplyItemDto>(createdEntity);
@@ -143,7 +143,7 @@ namespace ReverseAnalytics.Services
             {
                 var supplyDetailEntity = _mapper.Map<SupplyItem>(supplyDetailToUpdate);
 
-                _repository.SupplyDetail.Update(supplyDetailEntity);
+                _repository.SupplyItem.Update(supplyDetailEntity);
                 await _repository.SaveChangesAsync();
             }
             catch (NotFoundException)
@@ -164,7 +164,7 @@ namespace ReverseAnalytics.Services
         {
             try
             {
-                _repository.SupplyDetail.Delete(supplyDetailid);
+                _repository.SupplyItem.Delete(supplyDetailid);
                 await _repository.SaveChangesAsync();
             }
             catch (NotFoundException)

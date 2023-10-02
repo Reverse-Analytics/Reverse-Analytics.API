@@ -14,7 +14,6 @@ namespace ReverseAnalytics.Infrastructure.Persistence
         public virtual DbSet<ProductCategory> ProductCategories { get; set; }
         public virtual DbSet<RefundItem> RefundItems { get; set; }
         public virtual DbSet<Refund> Refunds { get; set; }
-        public virtual DbSet<SaleDebt> SaleDebts { get; set; }
         public virtual DbSet<SaleItem> SaleItems { get; set; }
         public virtual DbSet<Sale> Sales { get; set; }
         public virtual DbSet<Supplier> Suppliers { get; set; }

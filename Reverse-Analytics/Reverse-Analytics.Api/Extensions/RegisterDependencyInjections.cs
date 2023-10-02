@@ -12,7 +12,6 @@ namespace Reverse_Analytics.Api.Extensions
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IRefundItemservice, RefundItemservice>();
             services.AddScoped<IRefundService, RefundService>();
-            services.AddScoped<ISaleDebtService, SaleDebtService>();
             services.AddScoped<ISaleItemservice, SaleItemservice>();
             services.AddScoped<ISaleService, SaleService>();
             services.AddScoped<ISupplyDebtService, SupplyDebtService>();

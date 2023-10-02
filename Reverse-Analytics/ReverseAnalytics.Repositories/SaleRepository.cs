@@ -19,7 +19,6 @@ namespace ReverseAnalytics.Repositories
                 .Include(x => x.SaleItems)
                 .ThenInclude(x => x.Product)
                 .Include(x => x.Refunds)
-                .Include(x => x.SaleDebt)
                 .AsNoTracking()
                 .ToListAsync();
         }

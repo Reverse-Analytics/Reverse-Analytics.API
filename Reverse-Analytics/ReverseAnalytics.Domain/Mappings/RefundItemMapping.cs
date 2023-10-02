@@ -4,9 +4,9 @@ using ReverseAnalytics.Domain.Entities;
 
 namespace ReverseAnalytics.Domain.Mappings
 {
-    public class RefundDetailMapping : Profile
+    public class RefundItemMapping : Profile
     {
-        public RefundDetailMapping()
+        public RefundItemMapping()
         {
             CreateMap<RefundItem, RefundItemDto>();
             CreateMap<RefundItemDto, RefundItem>();

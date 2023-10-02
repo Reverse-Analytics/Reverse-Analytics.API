@@ -51,13 +51,11 @@ namespace Reverse_Analytics.Api.Extensions
                 CreateCustomers(context);
                 CreateSales(context);
                 CreateSaleItems(context);
-                CreateSaleDebts(context);
                 CreateRefunds(context);
                 CreateRefundItems(context);
                 CreateSuppliers(context);
                 CreateSupplies(context);
                 CreateSupplyItems(context);
-                CreateSupplyDebts(context);
                 //CreateInventories(context);
                 //CreateInventoryItems(context);
                 CreateRoles(identityContext);
@@ -136,7 +134,6 @@ namespace Reverse_Analytics.Api.Extensions
 
             var customers = context.Customers.Select(x => x.Id).ToList();
             var fakeSales = new Faker<Sale>("ru")
-                .RuleFor(x => x.Receipt, f => f.Random.Guid().ToString()[..8])
                 .RuleFor(x => x.Comments, f => f.Commerce.ProductAdjective())
                 .RuleFor(x => x.SoldBy, f => f.Person.FirstName)
                 .RuleFor(x => x.TotalDue, f => f.Random.Decimal(10000, 5000000))
@@ -166,25 +163,6 @@ namespace Reverse_Analytics.Api.Extensions
                 .Generate(500);
 
             context.SaleItems.AddRange(saleItemsFaker);
-            context.SaveChanges();
-        }
-
-        private static void CreateSaleDebts(ApplicationDbContext context)
-        {
-            if (context.SaleDebts.Any()) return;
-
-            var sales = context.Sales.Select(x => x.Id).ToList();
-            var debtsFaker = new Faker<SaleDebt>("ru")
-                .RuleFor(x => x.TotalDue, f => f.Random.Decimal(10000, 500000))
-                .RuleFor(x => x.TotalPaid, f => f.Random.Decimal(0, 10000))
-                .RuleFor(x => x.ClosedDate, f => f.Date.Between(minDate, maxDate))
-                .RuleFor(x => x.Status, f => f.Random.Enum<DebtStatus>())
-                .RuleFor(x => x.SaleId, f => f.Random.ListItem(sales))
-                .Generate(500);
-
-            debtsFaker = debtsFaker.DistinctBy(x => x.SaleId).ToList();
-
-            context.SaleDebts.AddRange(debtsFaker);
             context.SaveChanges();
         }
 
@@ -267,23 +245,6 @@ namespace Reverse_Analytics.Api.Extensions
                 .Generate(350);
 
             context.SupplyItems.AddRange(ItemsFaker);
-            context.SaveChanges();
-        }
-
-        private static void CreateSupplyDebts(ApplicationDbContext context)
-        {
-            if (context.SupplyDebts.Any()) return;
-
-            var supplies = context.Supplies.Select(x => x.Id).ToList();
-            var debtsFaker = new Faker<SupplyDebt>("ru")
-                .RuleFor(x => x.TotalDue, f => f.Random.Decimal(10000, 500000))
-                .RuleFor(x => x.DueDate, f => f.Date.Between(minDate, maxDate))
-                .RuleFor(x => x.ClosedDate, f => f.Date.Between(minDate, maxDate))
-                .RuleFor(x => x.Status, f => f.Random.Enum<DebtStatus>())
-                .RuleFor(x => x.SupplyId, f => f.Random.ListItem(supplies))
-                .Generate(25);
-
-            context.SupplyDebts.AddRange(debtsFaker);
             context.SaveChanges();
         }
 

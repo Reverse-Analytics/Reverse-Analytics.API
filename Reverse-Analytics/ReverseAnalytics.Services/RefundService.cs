@@ -32,13 +32,6 @@ namespace ReverseAnalytics.Services
 
             var refundEntity = _mapper.Map<Refund>(refundToCreate);
 
-            var saleDebt = await _repository.SaleDebt.FindBySaleIdAsync(sale.Id);
-
-            if (saleDebt != null)
-            {
-                UpdateDebt(saleDebt, refundEntity);
-            }
-
             _repository.Refund.Create(refundEntity);
             await _repository.SaveChangesAsync();
 
@@ -59,17 +52,11 @@ namespace ReverseAnalytics.Services
 
             var refundEntity = _mapper.Map<Refund>(refundToUpdate);
 
-            var saleDebt = await _repository.SaleDebt.FindBySaleIdAsync(sale.Id);
             var currentRefund = await _repository.Refund.FindByIdAsync(refundToUpdate.Id);
 
             if (currentRefund == null)
             {
                 throw new NotFoundException($"Refund with id: {refundToUpdate.Id} does not exist.");
-            }
-
-            if (saleDebt != null)
-            {
-                UpdateDebt(saleDebt, refundEntity, currentRefund);
             }
 
             UpdateRefundItems(refundEntity, currentRefund);
@@ -86,12 +73,6 @@ namespace ReverseAnalytics.Services
             if (refund == null)
             {
                 throw new NotFoundException($"Refund with id: {id} does not exist.");
-            }
-
-            if (refund.DebtPaymentAmount > 0)
-            {
-                var debt = await _repository.SaleDebt.FindBySaleIdAsync(refund.SaleId);
-                debt.TotalPaid -= refund.DebtPaymentAmount;
             }
 
             _repository.Refund.Delete(id);
@@ -112,46 +93,6 @@ namespace ReverseAnalytics.Services
             var refund = await _repository.Refund.FindByIdAsync(id);
 
             return _mapper.Map<RefundDto>(refund);
-        }
-
-        private static void UpdateDebt(SaleDebt debt, Refund refund, Refund currentRefund)
-        {
-            ValidateNotNull(debt);
-            ValidateNotNull(refund);
-            ValidateNotNull(currentRefund);
-
-            if (refund.DebtPaymentAmount > currentRefund.DebtPaymentAmount)
-            {
-                debt.TotalPaid += refund.DebtPaymentAmount - currentRefund.DebtPaymentAmount;
-            }
-            else if (refund.DebtPaymentAmount < currentRefund.DebtPaymentAmount)
-            {
-                debt.TotalPaid -= currentRefund.DebtPaymentAmount - refund.DebtPaymentAmount;
-            }
-        }
-
-        private static void UpdateDebt(SaleDebt debt, Refund refund)
-        {
-            ValidateNotNull(debt);
-            ValidateNotNull(refund);
-
-            if (debt.TotalDue <= debt.TotalPaid)
-            {
-                return;
-            }
-
-            if (refund.DebtPaymentAmount <= 0)
-            {
-                return;
-            }
-
-            debt.TotalPaid += refund.DebtPaymentAmount;
-
-            if (debt.TotalPaid >= debt.TotalDue)
-            {
-                debt.Status = Domain.Enums.DebtStatus.Closed;
-                debt.ClosedDate = DateTime.Now;
-            }
         }
 
         private void UpdateRefundItems(Refund refundToUpdate, Refund refundEntity)

@@ -7,7 +7,9 @@ namespace ReverseAnalytics.Domain.Entities
     {
         public DateTime Date { get; set; }
         public decimal Amount { get; set; }
-        public string? Comments { get; set; }
         public TransactionType Type { get; set; }
+        public TransactionSource Source { get; set; }
+
+        public int? SourceId { get; set; }
     }
 }

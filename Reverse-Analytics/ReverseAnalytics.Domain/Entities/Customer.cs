@@ -13,10 +13,12 @@ namespace ReverseAnalytics.Domain.Entities
         public bool IsActive { get; set; }
 
         public virtual ICollection<Sale> Sales { get; set; }
+        public virtual ICollection<CustomerDebt> Debts { get; set; }
 
         public Customer()
         {
             Sales = new List<Sale>();
+            Debts = new List<CustomerDebt>();
         }
     }
 }

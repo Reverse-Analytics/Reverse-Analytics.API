@@ -23,6 +23,9 @@ namespace ReverseAnalytics.Domain.Entities
         public int TransactionId { get; set; }
         public virtual Transaction Transaction { get; set; }
 
+        public int? DebtId { get; set; }
+        public virtual Debt? Debt { get; set; }
+
         public virtual ICollection<SaleItem> SaleItems { get; set; }
         public virtual ICollection<Refund> Refunds { get; set; }
     }

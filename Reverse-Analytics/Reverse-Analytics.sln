@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReverseAnalytics.Repositori
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReverseAnalytics.Services", "ReverseAnalytics.Services\ReverseAnalytics.Services.csproj", "{C90C86A0-123C-4F88-B9B0-813D518A5E38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReverseAnalytics.Tests.Unit", "Tests\ReverseAnalytics.Tests.Unit\ReverseAnalytics.Tests.Unit.csproj", "{7803B4FC-D79D-484B-B72B-CCDED305F9F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReverseAnalytics.Tests.Unit", "Tests\ReverseAnalytics.Tests.Unit\ReverseAnalytics.Tests.Unit.csproj", "{7803B4FC-D79D-484B-B72B-CCDED305F9F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReverseAnalytics.TestDataCreator", "ReverseAnalytics.TestDataCreator\ReverseAnalytics.TestDataCreator.csproj", "{BC2C2A53-2414-4CC4-B89A-1A0889516F10}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{7803B4FC-D79D-484B-B72B-CCDED305F9F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7803B4FC-D79D-484B-B72B-CCDED305F9F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7803B4FC-D79D-484B-B72B-CCDED305F9F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC2C2A53-2414-4CC4-B89A-1A0889516F10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC2C2A53-2414-4CC4-B89A-1A0889516F10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC2C2A53-2414-4CC4-B89A-1A0889516F10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC2C2A53-2414-4CC4-B89A-1A0889516F10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

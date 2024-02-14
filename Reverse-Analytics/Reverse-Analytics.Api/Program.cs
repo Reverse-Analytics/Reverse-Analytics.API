@@ -33,8 +33,6 @@ builder.Services.AddControllers(options =>
     })
     .AddXmlDataContractSerializerFormatters();
 
-builder.Services.ConfigureAuthentication(builder.Configuration);
-
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();

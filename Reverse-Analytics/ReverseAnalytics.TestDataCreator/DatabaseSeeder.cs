@@ -10,10 +10,5 @@ namespace ReverseAnalytics.TestDataCreator
         {
             _context = context;
         }
-
-        public void SeedDatabase()
-        {
-            var faker = new Faker
-        }
     }
 }

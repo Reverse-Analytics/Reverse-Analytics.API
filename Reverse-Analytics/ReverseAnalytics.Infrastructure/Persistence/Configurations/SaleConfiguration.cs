@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ReverseAnalytics.Domain.Entities;
-using ReverseAnalytics.Domain.Enums;
 
 namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
 {
@@ -9,17 +8,33 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Sale> builder)
         {
-            builder.ToTable("Sale");
+            builder.ToTable(nameof(Sale));
 
             builder.HasOne(s => s.Customer)
                 .WithMany(c => c.Sales)
                 .HasForeignKey(s => s.CustomerId);
 
-            builder.Property(s => s.Comments)
-                .HasMaxLength(500)
+            builder.HasMany(s => s.SaleItems)
+                .WithOne(si => si.Sale)
+                .HasForeignKey(si => si.SaleId);
+
+            builder.Property(s => s.SaleDate)
+                .IsRequired();
+            builder.Property(s => s.SoldBy)
+                .HasMaxLength(ConfigurationConstants.DefaultStringMaxLength)
                 .IsRequired(false);
-            builder.Property(s => s.SaleType)
-                .HasDefaultValue(SaleType.Other);
+            builder.Property(s => s.Comments)
+                .HasMaxLength(ConfigurationConstants.LargeStringMaxLength)
+                .IsRequired(false);
+            builder.Property(s => s.TotalDue)
+                .HasPrecision(18, 2)
+                .IsRequired();
+            builder.Property(s => s.TotalPaid)
+                .HasPrecision(18, 2)
+                .IsRequired();
+            builder.Property(s => s.DebtAmount)
+                .HasPrecision(18, 2)
+                .IsRequired();
 
         }
     }

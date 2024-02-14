@@ -8,21 +8,32 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Customer> builder)
         {
-            builder.ToTable("Customer");
+            builder.ToTable(nameof(Customer));
 
             builder.HasKey(c => c.Id);
 
-            builder.Property(c => c.FullName)
-                .HasMaxLength(150)
+            builder.HasMany(c => c.Sales)
+                .WithOne(s => s.Customer)
+                .HasForeignKey(s => s.CustomerId);
+
+            builder.Property(c => c.FirstName)
+                .HasMaxLength(ConfigurationConstants.DefaultStringMaxLength)
                 .IsRequired();
-            builder.Property(c => c.Address)
-                .HasMaxLength(500)
+            builder.Property(c => c.LastName)
+                .HasMaxLength(ConfigurationConstants.DefaultStringMaxLength)
                 .IsRequired(false);
             builder.Property(c => c.PhoneNumber)
-                .HasMaxLength(17)
+                .HasMaxLength(50)
+                .IsRequired();
+            builder.Property(c => c.Address)
+                .HasMaxLength(ConfigurationConstants.LargeStringMaxLength)
                 .IsRequired(false);
-            builder.Property(c => c.IsActive)
-                .HasDefaultValue(true)
+            builder.Property(c => c.Balance)
+                .HasPrecision(18, 2)
+                .IsRequired();
+            builder.Property(c => c.Discount)
+                .HasPrecision(18)
+                .HasDefaultValue(0)
                 .IsRequired();
         }
     }

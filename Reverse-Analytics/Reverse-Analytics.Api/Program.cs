@@ -1,10 +1,7 @@
-using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Reverse_Analytics.Api.Extensions;
 using Reverse_Analytics.Api.Middlewares;
-using ReverseAnalytics.Infrastructure.Configurations;
-using ReverseAnalytics.Infrastructure.Persistence;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
@@ -23,19 +20,6 @@ builder.Host.UseSerilog();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.RegisterDependencyInjection();
 builder.Services.ConfigureValidationFilter();
-
-// Identity
-builder.Services.Configure<CustomTokenOptions>(builder.Configuration.GetSection("TokenOptions"));
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
-{
-    options.Password.RequireDigit = false;
-    options.Password.RequiredLength = 4;
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireUppercase = false;
-    options.Password.RequireLowercase = false;
-})
-    .AddEntityFrameworkStores<ApplicationIdentityDbContext>()
-    .AddDefaultTokenProviders();
 
 builder.Services.AddControllers(options =>
 {

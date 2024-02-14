@@ -4,19 +4,19 @@ namespace ReverseAnalytics.Domain.Entities
 {
     public class ProductCategory : BaseAuditableEntity
     {
-        public string CategoryName { get; set; }
+        public string Name { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }
 
         public ProductCategory()
         {
-            CategoryName = String.Empty;
+            Name = String.Empty;
             Products = new List<Product>();
         }
 
-        public ProductCategory(string categoryName)
+        public ProductCategory(string name)
         {
-            CategoryName = categoryName;
+            Name = name;
             Products = new List<Product>();
         }
     }

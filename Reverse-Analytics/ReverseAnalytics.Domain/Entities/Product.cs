@@ -5,12 +5,11 @@ namespace ReverseAnalytics.Domain.Entities
 {
     public class Product : BaseAuditableEntity
     {
-        public string ProductName { get; set; }
-        public string ProductCode { get; set; }
+        public string Name { get; set; }
+        public string Code { get; set; }
         public string? Description { get; set; }
         public decimal SalePrice { get; set; }
-        public decimal? SupplyPrice { get; set; }
-        public double QuantityInStock { get; set; }
+        public decimal SupplyPrice { get; set; }
         public double? Volume { get; set; }
         public double? Weight { get; set; }
         public UnitOfMeasurement UnitOfMeasurement { get; set; }
@@ -19,7 +18,14 @@ namespace ReverseAnalytics.Domain.Entities
         public virtual ProductCategory Category { get; set; }
 
         public virtual ICollection<SaleItem> SaleItems { get; set; }
-        public virtual ICollection<SupplyItem> PurchaseItems { get; set; }
-        public virtual ICollection<RefundItem> RefundItems { get; set; }
+
+        public Product()
+        {
+            Name = string.Empty;
+            Code = string.Empty;
+            Category = new ProductCategory();
+
+            SaleItems = new List<SaleItem>();
+        }
     }
 }

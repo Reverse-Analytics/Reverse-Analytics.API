@@ -12,8 +12,12 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
 
             builder.HasKey(pc => pc.Id);
 
-            builder.Property(pc => pc.CategoryName)
-                .HasMaxLength(150)
+            builder.HasMany(c => c.Products)
+                .WithOne(p => p.Category)
+                .HasForeignKey(p => p.CategoryId);
+
+            builder.Property(pc => pc.Name)
+                .HasMaxLength(ConfigurationConstants.DefaultStringMaxLength)
                 .IsRequired();
         }
     }

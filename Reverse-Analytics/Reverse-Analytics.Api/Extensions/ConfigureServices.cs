@@ -34,9 +34,6 @@ namespace Reverse_Analytics.Api.Extensions
 #if DEBUG
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(configuration.GetConnectionString("DefaultConnection")));
-
-            services.AddDbContext<ApplicationIdentityDbContext>(options =>
-                options.UseSqlite(configuration.GetConnectionString("DefaultIdentityConnection")));
 #else
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), builder =>

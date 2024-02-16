@@ -10,13 +10,13 @@ namespace ReverseAnalytics.Infrastructure.Repositories
 {
     public class RepositoryBase<T>(ApplicationDbContext context) : IRepositoryBase<T> where T : BaseAuditableEntity
     {
-        private readonly ApplicationDbContext _context = context ?? throw new ArgumentNullException(nameof(context));
+        protected readonly ApplicationDbContext _context = context ?? throw new ArgumentNullException(nameof(context));
 
-        public async Task<IEnumerable<T>> FindAllAsync(ResourceParametersBase resourceParameters)
+        public virtual async Task<IEnumerable<T>> FindAllAsync(ResourceParametersBase resourceParameters)
         {
             var entities = _context.Set<T>().AsQueryable();
 
-            return await PagedList<T>.ToPagedListAsync(
+            return await PagedList<T>.CreateAsync(
                 entities,
                 resourceParameters.PageNumber,
                 resourceParameters.PageSize);

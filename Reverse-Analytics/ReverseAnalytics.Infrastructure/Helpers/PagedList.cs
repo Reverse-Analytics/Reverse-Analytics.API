@@ -20,7 +20,7 @@ namespace ReverseAnalytics.Infrastructure.Helpers
             AddRange(items);
         }
 
-        public static async Task<PagedList<T>> ToPagedListAsync(
+        public static async Task<PagedList<T>> CreateAsync(
             IQueryable<T> source, int pageNumber, int pageSize)
         {
             ArgumentNullException.ThrowIfNull(source);

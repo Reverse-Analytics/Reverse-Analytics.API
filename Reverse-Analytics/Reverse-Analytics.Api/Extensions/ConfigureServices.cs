@@ -5,7 +5,6 @@ using ReverseAnalytics.Domain.Interfaces.Repositories;
 using ReverseAnalytics.Domain.Interfaces.Services;
 using ReverseAnalytics.Infrastructure.Persistence;
 using ReverseAnalytics.Infrastructure.Persistence.Interceptors;
-using ReverseAnalytics.Repositories;
 using ReverseAnalytics.Services;
 
 namespace Reverse_Analytics.Api.Extensions

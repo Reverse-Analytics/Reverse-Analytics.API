@@ -3,16 +3,15 @@
     public interface IRepositoryBase<T> where T : class
     {
         Task<IEnumerable<T>> FindAllAsync(int pageSize = 0, int pageNumber = 0);
-        Task<T?> FindByIdAsync(int id);
-        T Create(T entity);
-        void CreateRange(IEnumerable<T> entities);
-        void Update(T entity);
-        void UpdateRange(IEnumerable<T> entities);
-        void Delete(T entity);
-        void DeleteRange(IEnumerable<T> entities);
-        void Delete(int id);
-        void DeleteRange(IEnumerable<int> ids);
-        Task<bool> SaveChangesAsync();
-        Task<bool> EntityExistsAsync(int id);
+        Task<IEnumerable<T>> FindAllAsync(Func<T, bool> predicate);
+        Task<T> FindByIdAsync(int id);
+        Task<T> Create(T entity);
+        Task<IEnumerable<T>> CreateRange(IEnumerable<T> entities);
+        Task Update(T entity);
+        Task UpdateRange(IEnumerable<T> entities);
+        Task Delete(int id);
+        Task DeleteRange(IEnumerable<int> ids);
+        Task<int> SaveChangesAsync();
+        Task<bool> EntityExistsAsync(T entity);
     }
 }

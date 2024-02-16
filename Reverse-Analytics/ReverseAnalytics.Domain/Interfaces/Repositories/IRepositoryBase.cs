@@ -1,8 +1,10 @@
-﻿namespace ReverseAnalytics.Domain.Interfaces.Repositories
+﻿using ReverseAnalytics.Domain.ResourceParameters;
+
+namespace ReverseAnalytics.Domain.Interfaces.Repositories
 {
     public interface IRepositoryBase<T> where T : class
     {
-        Task<IEnumerable<T>> FindAllAsync(int pageSize = 0, int pageNumber = 0);
+        Task<IEnumerable<T>> FindAllAsync(ResourceParametersBase resourceParameters);
         Task<IEnumerable<T>> FindAllAsync(Func<T, bool> predicate);
         Task<T> FindByIdAsync(int id);
         Task<T> Create(T entity);

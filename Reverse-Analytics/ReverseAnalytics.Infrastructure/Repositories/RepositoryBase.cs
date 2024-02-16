@@ -2,6 +2,8 @@
 using ReverseAnalytics.Domain.Common;
 using ReverseAnalytics.Domain.Exceptions;
 using ReverseAnalytics.Domain.Interfaces.Repositories;
+using ReverseAnalytics.Domain.ResourceParameters;
+using ReverseAnalytics.Infrastructure.Helpers;
 using ReverseAnalytics.Infrastructure.Persistence;
 
 namespace ReverseAnalytics.Infrastructure.Repositories
@@ -10,9 +12,14 @@ namespace ReverseAnalytics.Infrastructure.Repositories
     {
         private readonly ApplicationDbContext _context = context ?? throw new ArgumentNullException(nameof(context));
 
-        public Task<IEnumerable<T>> FindAllAsync(int pageSize = 0, int pageNumber = 0)
+        public async Task<IEnumerable<T>> FindAllAsync(ResourceParametersBase resourceParameters)
         {
-            throw new NotImplementedException();
+            var entities = _context.Set<T>().AsQueryable();
+
+            return await PagedList<T>.ToPagedListAsync(
+                entities,
+                resourceParameters.PageNumber,
+                resourceParameters.PageSize);
         }
 
         public async Task<IEnumerable<T>> FindAllAsync(Func<T, bool> predicate)

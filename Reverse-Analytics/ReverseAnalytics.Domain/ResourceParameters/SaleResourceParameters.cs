@@ -1,6 +1,6 @@
 ﻿namespace ReverseAnalytics.Domain.ResourceParameters
 {
-    public class CategoryResourceParameters : ResourceParametersBase
+    public class SaleResourceParameters : ResourceParametersBase
     {
     }
 }

@@ -42,10 +42,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ReverseAnalytics.Infrastructure\ReverseAnalytics.Infrastructure.csproj" />
-    <ProjectReference Include="..\ReverseAnalytics.Services\ReverseAnalytics.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Controllers\" />
     <Folder Include="logs\" />
     <Folder Include="Storage\" />
   </ItemGroup>

@@ -17,9 +17,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog();
 
 // Add services to the container.
-builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.RegisterDependencyInjection();
-builder.Services.ConfigureValidationFilter();
 
 builder.Services.AddControllers(options =>
 {

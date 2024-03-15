@@ -32,8 +32,4 @@
     <ProjectReference Include="..\ReverseAnalytics.Domain\ReverseAnalytics.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Persistence\Migrations\" />
-  </ItemGroup>
-
 </Project>

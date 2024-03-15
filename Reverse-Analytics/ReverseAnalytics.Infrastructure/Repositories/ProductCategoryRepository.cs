@@ -17,8 +17,15 @@ namespace ReverseAnalytics.Infrastructure.Repositories
             }
 
             var query = _context.ProductCategories
-                .Where(x => x.Name.Contains(resourceParameters.CategoryName))
-                .OrderBy(x => x.Name);
+                .AsQueryable()
+                .AsNoTracking();
+
+            if (!string.IsNullOrEmpty(resourceParameters.SearchQuery))
+            {
+                query = query.Where(x => x.Name.Contains(resourceParameters.SearchQuery));
+            }
+
+            query = query.OrderBy(x => x.Name);
 
             var pagedList = await PagedList<ProductCategory>.CreateAsync(
                 query,
@@ -26,7 +33,6 @@ namespace ReverseAnalytics.Infrastructure.Repositories
                 resourceParameters.PageSize);
 
             return pagedList;
-
         }
     }
 }

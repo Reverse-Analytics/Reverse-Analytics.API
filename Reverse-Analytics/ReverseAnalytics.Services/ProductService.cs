@@ -38,7 +38,7 @@ namespace ReverseAnalytics.Services
 
                 return productDtos;
             }
-            catch (NotFoundException ex)
+            catch (EntityNotFoundException ex)
             {
                 throw ex;
             }
@@ -72,7 +72,7 @@ namespace ReverseAnalytics.Services
 
                 return productDtos;
             }
-            catch (NotFoundException ex)
+            catch (EntityNotFoundException ex)
             {
                 throw ex;
             }
@@ -106,7 +106,7 @@ namespace ReverseAnalytics.Services
 
                 return productDto;
             }
-            catch (NotFoundException ex)
+            catch (EntityNotFoundException ex)
             {
                 throw ex;
             }
@@ -187,7 +187,7 @@ namespace ReverseAnalytics.Services
             {
                 throw ex;
             }
-            catch (NotFoundException ex)
+            catch (EntityNotFoundException ex)
             {
                 throw ex;
             }

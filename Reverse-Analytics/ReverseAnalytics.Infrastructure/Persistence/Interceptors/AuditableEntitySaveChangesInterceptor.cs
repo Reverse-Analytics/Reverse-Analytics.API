@@ -31,14 +31,14 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Interceptors
                 {
                     // TODO implement createdBy && createdDate in a separate service
                     // entry.Entity.CreatedBy
-                    entry.Entity.Created = DateTime.Now;
+                    entry.Entity.CreatedAt = DateTime.Now;
                 }
 
                 if (entry.State == EntityState.Added || entry.State == EntityState.Modified || entry.HasChangedOwnedEntities())
                 {
                     // TODO implement createdBy && createdDate in a separate service
                     // entry.Entity.CreatedBy
-                    entry.Entity.LastModified = DateTime.Now;
+                    entry.Entity.LastModifiedAt = DateTime.Now;
                 }
             }
         }

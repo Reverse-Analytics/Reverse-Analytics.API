@@ -1,9 +1,10 @@
 ﻿using ReverseAnalytics.Domain.Entities;
+using ReverseAnalytics.Domain.ResourceParameters;
 
 namespace ReverseAnalytics.Domain.Interfaces.Repositories
 {
     public interface IProductRepository : IRepositoryBase<Product>
     {
-        Task<IEnumerable<Product>> FindAllProductsAsync(string? searchString, int? categoryId, int pageSize, int pageNumber);
+        Task<IEnumerable<Product>> FindAllAsync(ProductResourceParamters resourceParameters);
     }
 }

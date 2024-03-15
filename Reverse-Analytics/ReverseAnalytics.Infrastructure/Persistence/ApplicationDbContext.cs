@@ -14,6 +14,8 @@ namespace ReverseAnalytics.Infrastructure.Persistence
         public virtual DbSet<ProductCategory> ProductCategories { get; set; }
         public virtual DbSet<SaleItem> SaleItems { get; set; }
         public virtual DbSet<Sale> Sales { get; set; }
+        public virtual DbSet<Refund> Refunds { get; set; }
+        public virtual DbSet<Transaction> Transaction { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
                                     AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor)
@@ -37,7 +39,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence
             base.OnModelCreating(modelBuilder);
         }
 
-        private void ConfigureDecimalAndDouble(ModelBuilder modelBuilder)
+        private static void ConfigureDecimalAndDouble(ModelBuilder modelBuilder)
         {
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {

@@ -25,7 +25,7 @@ namespace ReverseAnalytics.Domain.Interfaces.Services
         /// <returns>
         /// A <see cref="CustomerDto"/> representing the customer with the specified ID.
         /// </returns>
-        /// <exception cref="NotFoundException">Thrown if the customer with the specified ID is not found.</exception>
+        /// <exception cref="EntityNotFoundException">Thrown if the customer with the specified ID is not found.</exception>
         Task<CustomerDto> GetCustomerByIdAsync(int id);
 
         /// <summary>
@@ -43,14 +43,14 @@ namespace ReverseAnalytics.Domain.Interfaces.Services
         /// </summary>
         /// <param name="customerToUpdate">The data for updating the customer.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="customerToUpdate"/> is null.</exception>
-        /// <exception cref="NotFoundException">Thrown if the customer to update is not found.</exception>
+        /// <exception cref="EntityNotFoundException">Thrown if the customer to update is not found.</exception>
         Task UpdateCustomerAsync(CustomerForUpdateDto customerToUpdate);
 
         /// <summary>
         /// Deletes a customer by their unique identifier.
         /// </summary>
         /// <param name="id">The unique identifier of the customer to delete.</param>
-        /// <exception cref="NotFoundException">Thrown if the customer with the specified ID is not found.</exception>
+        /// <exception cref="EntityNotFoundException">Thrown if the customer with the specified ID is not found.</exception>
         Task DeleteCustomerAsync(int id);
     }
 

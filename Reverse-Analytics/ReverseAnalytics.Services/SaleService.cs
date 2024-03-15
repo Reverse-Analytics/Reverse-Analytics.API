@@ -48,7 +48,7 @@ namespace ReverseAnalytics.Services
 
                 return saleDto;
             }
-            catch (NotFoundException ex)
+            catch (EntityNotFoundException ex)
             {
                 throw ex;
             }
@@ -97,7 +97,7 @@ namespace ReverseAnalytics.Services
                 _repository.Sale.Update(saleEntity);
                 await _repository.SaveChangesAsync();
             }
-            catch (NotFoundException ex)
+            catch (EntityNotFoundException ex)
             {
                 throw ex;
             }

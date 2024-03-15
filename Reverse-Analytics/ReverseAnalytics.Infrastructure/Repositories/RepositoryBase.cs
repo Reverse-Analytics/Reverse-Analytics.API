@@ -3,33 +3,13 @@ using ReverseAnalytics.Domain.Common;
 using ReverseAnalytics.Domain.Exceptions;
 using ReverseAnalytics.Domain.Interfaces.Repositories;
 using ReverseAnalytics.Domain.ResourceParameters;
-using ReverseAnalytics.Infrastructure.Helpers;
 using ReverseAnalytics.Infrastructure.Persistence;
 
 namespace ReverseAnalytics.Infrastructure.Repositories
 {
-    public class RepositoryBase<T>(ApplicationDbContext context) : IRepositoryBase<T> where T : BaseAuditableEntity
+    public abstract class RepositoryBase<T>(ApplicationDbContext context) : IRepositoryBase<T> where T : BaseAuditableEntity
     {
         protected readonly ApplicationDbContext _context = context ?? throw new ArgumentNullException(nameof(context));
-
-        public virtual async Task<IEnumerable<T>> FindAllAsync(ResourceParametersBase resourceParameters)
-        {
-            var entities = _context.Set<T>().AsQueryable();
-
-            return await PagedList<T>.CreateAsync(
-                entities,
-                resourceParameters.PageNumber,
-                resourceParameters.PageSize);
-        }
-
-        public async Task<IEnumerable<T>> FindAllAsync(Func<T, bool> predicate)
-        {
-            var entities = await _context.Set<T>()
-                .Where(x => predicate.Invoke(x))
-                .ToListAsync();
-
-            return entities;
-        }
 
         public async Task<T> FindByIdAsync(int id)
         {
@@ -53,7 +33,7 @@ namespace ReverseAnalytics.Infrastructure.Repositories
             return createdEntity.Entity;
         }
 
-        public async Task<IEnumerable<T>> CreateRange(IEnumerable<T> entities)
+        public async Task<IEnumerable<T>> Create(IEnumerable<T> entities)
         {
             ArgumentNullException.ThrowIfNull(entities);
 
@@ -81,7 +61,7 @@ namespace ReverseAnalytics.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateRange(IEnumerable<T> entities)
+        public async Task Update(IEnumerable<T> entities)
         {
             ArgumentNullException.ThrowIfNull(entities);
 
@@ -107,7 +87,7 @@ namespace ReverseAnalytics.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteRange(IEnumerable<int> ids)
+        public async Task Delete(IEnumerable<int> ids)
         {
             ArgumentNullException.ThrowIfNull(ids);
 
@@ -126,5 +106,10 @@ namespace ReverseAnalytics.Infrastructure.Repositories
             => _context.Set<T>().AnyAsync(e => e.Id == entity.Id);
 
         public Task<int> SaveChangesAsync() => _context.SaveChangesAsync();
+
+        public virtual Task<IEnumerable<T>> FindAllAsync<TParam>(TParam resourceParameters) where TParam : ResourceParametersBase
+        {
+            throw new NotImplementedException();
+        }
     }
 }

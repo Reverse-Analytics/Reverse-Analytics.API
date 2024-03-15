@@ -1,8 +1,7 @@
-﻿namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
+﻿namespace ReverseAnalytics.Infrastructure.Persistence.Configurations;
+
+internal static class ConfigurationConstants
 {
-    internal static class ConfigurationConstants
-    {
-        public const int DefaultStringMaxLength = 255;
-        public const int LargeStringMaxLength = 4000;
-    }
+    public const int DefaultStringMaxLength = 255;
+    public const int LargeStringMaxLength = 4000;
 }

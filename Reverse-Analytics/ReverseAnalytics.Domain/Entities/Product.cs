@@ -18,6 +18,7 @@ public class Product : BaseAuditableEntity
     public virtual ProductCategory Category { get; set; }
 
     public virtual ICollection<SaleItem> SaleItems { get; set; }
+    public virtual ICollection<SupplyItem> SupplyItems { get; set; }
 
     public Product()
     {
@@ -25,5 +26,6 @@ public class Product : BaseAuditableEntity
         Code = string.Empty;
 
         SaleItems = [];
+        SupplyItems = [];
     }
 }

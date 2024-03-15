@@ -5,8 +5,7 @@ namespace ReverseAnalytics.Domain.Entities;
 
 public class Sale : BaseAuditableEntity, ITransaction, IRefundable
 {
-    public DateTime SaleDate { get; set; }
-    public string? SoldBy { get; set; }
+    public DateTime Date { get; set; }
     public string? Comments { get; set; }
     public decimal TotalDue { get; set; }
     public decimal TotalPaid { get; set; }

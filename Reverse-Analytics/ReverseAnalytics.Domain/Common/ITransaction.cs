@@ -1,13 +1,12 @@
 ﻿using ReverseAnalytics.Domain.Enums;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ReverseAnalytics.Domain.Common
+namespace ReverseAnalytics.Domain.Common;
+
+public interface ITransaction
 {
-    internal interface ITransaction
-    {
-        [NotMapped]
-        TransactionType TransactionType { get; }
-        [NotMapped]
-        TransactionSource TransactionSource { get; }
-    }
+    [NotMapped]
+    TransactionType TransactionType { get; }
+    [NotMapped]
+    TransactionSource TransactionSource { get; }
 }

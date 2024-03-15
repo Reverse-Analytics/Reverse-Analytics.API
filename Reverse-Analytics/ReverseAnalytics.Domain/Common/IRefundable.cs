@@ -1,10 +1,9 @@
 ﻿using ReverseAnalytics.Domain.Enums;
 
-namespace ReverseAnalytics.Domain.Common
+namespace ReverseAnalytics.Domain.Common;
+
+public interface IRefundable
 {
-    public interface IRefundable
-    {
-        int RefundSourceId { get; }
-        RefundSource RefundSource { get; }
-    }
+    int RefundSourceId { get; }
+    RefundSource RefundSource { get; }
 }

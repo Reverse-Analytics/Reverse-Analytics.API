@@ -4,18 +4,19 @@ using ReverseAnalytics.Domain.Entities;
 
 namespace ReverseAnalytics.Infrastructure.Persistence.Configurations;
 
-internal class SaleConfiguration : IEntityTypeConfiguration<Sale>
+internal class SupplyConfiguration : IEntityTypeConfiguration<Supply>
 {
-    public void Configure(EntityTypeBuilder<Sale> builder)
+    public void Configure(EntityTypeBuilder<Supply> builder)
     {
-        builder.ToTable(nameof(Sale));
+        builder.ToTable(nameof(Supply));
+        builder.HasKey(s => s.Id);
 
-        builder.HasOne(s => s.Customer)
-            .WithMany(c => c.Sales)
-            .HasForeignKey(s => s.CustomerId);
-        builder.HasMany(s => s.SaleItems)
-            .WithOne(si => si.Sale)
-            .HasForeignKey(si => si.SaleId);
+        builder.HasOne(s => s.Supplier)
+            .WithMany(x => x.Supplies)
+            .HasForeignKey(x => x.SupplierId);
+        builder.HasMany(s => s.SupplyItems)
+            .WithOne(si => si.Supply)
+            .HasForeignKey(si => si.SupplyId);
 
         builder.Property(s => s.Date)
             .IsRequired();
@@ -27,17 +28,6 @@ internal class SaleConfiguration : IEntityTypeConfiguration<Sale>
             .IsRequired();
         builder.Property(s => s.TotalPaid)
             .HasPrecision(18, 2)
-            .IsRequired();
-        builder.Property(s => s.TotalDiscount)
-            .HasPrecision(18, 2)
-            .IsRequired();
-        builder.Property(s => s.SaleType)
-            .IsRequired();
-        builder.Property(s => s.Status)
-            .IsRequired();
-        builder.Property(s => s.PaymentType)
-            .IsRequired();
-        builder.Property(s => s.Currency)
             .IsRequired();
 
         builder.Ignore(x => x.TransactionSource);

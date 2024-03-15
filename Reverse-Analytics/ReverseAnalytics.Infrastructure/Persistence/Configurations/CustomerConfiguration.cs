@@ -28,6 +28,9 @@ internal class CustomerConfiguration : IEntityTypeConfiguration<Customer>
         builder.Property(c => c.Address)
             .HasMaxLength(ConfigurationConstants.LargeStringMaxLength)
             .IsRequired(false);
+        builder.Property(c => c.Company)
+            .HasMaxLength(ConfigurationConstants.LargeStringMaxLength)
+            .IsRequired(false);
         builder.Property(c => c.Balance)
             .HasPrecision(18, 2)
             .IsRequired();

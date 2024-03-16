@@ -3,11 +3,13 @@ using ReverseAnalytics.Domain.Enums;
 
 namespace ReverseAnalytics.Domain.Entities;
 
-public class Transaction : BaseAuditableEntity
+public class DebtPayment : BaseAuditableEntity, IDebtable
 {
     public DateTime Date { get; set; }
-    public int? SourceId { get; set; }
     public decimal Amount { get; set; }
-    public TransactionType Type { get; set; }
-    public TransactionSource? Source { get; set; }
+
+    public int DebtId { get; set; }
+    public Debt Debt { get; set; }
+
+    public DebtSource DebtSource => DebtSource.Debt;
 }

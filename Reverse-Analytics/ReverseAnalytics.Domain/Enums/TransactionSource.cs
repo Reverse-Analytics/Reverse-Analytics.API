@@ -6,6 +6,7 @@
         Supply,
         Refund,
         DebtPayment,
-        Payroll
+        Payroll,
+        None
     }
 }

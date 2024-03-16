@@ -3,7 +3,7 @@ using ReverseAnalytics.Domain.Enums;
 
 namespace ReverseAnalytics.Domain.Entities;
 
-public class Supply : BaseAuditableEntity, ITransaction, IRefundable
+public class Supply : BaseAuditableEntity, ITransaction, IRefundable, IDebtable
 {
     public DateTime Date { get; set; }
     public string? Comments { get; set; }
@@ -19,6 +19,7 @@ public class Supply : BaseAuditableEntity, ITransaction, IRefundable
     public TransactionSource TransactionSource => TransactionSource.Supply;
     public int RefundSourceId => Id;
     public RefundSource RefundSource => RefundSource.Supply;
+    public DebtSource DebtSource => DebtSource.Supply;
 
     public Supply()
     {

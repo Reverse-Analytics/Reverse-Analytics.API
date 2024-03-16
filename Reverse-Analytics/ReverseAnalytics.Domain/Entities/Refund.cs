@@ -3,7 +3,7 @@ using ReverseAnalytics.Domain.Enums;
 
 namespace ReverseAnalytics.Domain.Entities;
 
-public class Refund : BaseAuditableEntity, ITransaction
+public class Refund : BaseAuditableEntity, ITransaction, IDebtable
 {
     public DateTime Date { get; set; }
     public string ReceivedBy { get; set; }
@@ -17,4 +17,6 @@ public class Refund : BaseAuditableEntity, ITransaction
     public TransactionType TransactionType
         => Source == RefundSource.Sale ? TransactionType.Expense : TransactionType.Income;
     public TransactionSource TransactionSource => TransactionSource.Refund;
+    public DebtSource DebtSource
+        => Source == RefundSource.Sale ? DebtSource.SaleRefund : DebtSource.SupplyRefund;
 }

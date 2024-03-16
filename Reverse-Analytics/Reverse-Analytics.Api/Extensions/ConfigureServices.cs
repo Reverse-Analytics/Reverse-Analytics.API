@@ -9,14 +9,23 @@ namespace Reverse_Analytics.Api.Extensions
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<AuditableEntitySaveChangesInterceptor>();
+            var res = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+            {
+                services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlite(configuration.GetConnectionString("DefaultConnection")));
+            }
+            else
+            {
+                services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            }
 
 #if DEBUG
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite(configuration.GetConnectionString("DefaultConnection")));
+
 #else
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), builder =>
-                builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+            
 
             services.AddDbContext<ApplicationIdentityDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultIdentityConnection"), builder =>

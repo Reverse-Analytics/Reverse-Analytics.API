@@ -5,23 +5,25 @@ namespace ReverseAnalytics.Domain.Interfaces.Repositories;
 
 public interface IRepositoryBase<TEntity> where TEntity : BaseEntity
 {
-    Task<IEnumerable<TEntity>> FindAllAsync<TParam>(TParam resourceParameters) where TParam : BaseResourceParameters;
+    Task<IEnumerable<TEntity>> FindAllAsync();
+
+    Task<PaginatedList<TEntity>> FindAllAsync(PaginatedQueryParameters queryParameters);
 
     Task<TEntity> FindByIdAsync(int id);
 
-    Task<TEntity> Create(TEntity entity);
+    Task<TEntity> CreateAsync(TEntity entity);
 
-    Task<IEnumerable<TEntity>> Create(IEnumerable<TEntity> entities);
+    Task<IEnumerable<TEntity>> CreateRangeAsync(IEnumerable<TEntity> entities);
 
-    Task Update(TEntity entity);
+    Task UpdateAsync(TEntity entity);
 
-    Task Update(IEnumerable<TEntity> entities);
+    Task UpdateRangeAsync(IEnumerable<TEntity> entities);
 
-    Task Delete(int id);
+    Task DeleteAsync(int id);
 
-    Task Delete(IEnumerable<int> ids);
+    Task DeleteRangeAsync(IEnumerable<int> ids);
 
     Task<int> SaveChangesAsync();
 
-    Task<bool> EntityExistsAsync(TEntity entity);
+    Task<bool> EntityExistsAsync(int id);
 }

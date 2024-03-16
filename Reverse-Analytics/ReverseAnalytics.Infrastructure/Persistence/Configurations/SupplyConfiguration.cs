@@ -30,9 +30,7 @@ internal class SupplyConfiguration : IEntityTypeConfiguration<Supply>
             .HasPrecision(18, 2)
             .IsRequired();
 
-        builder.Ignore(x => x.TransactionSource);
-        builder.Ignore(x => x.TransactionType);
-        builder.Ignore(x => x.RefundSource);
-        builder.Ignore(x => x.RefundSourceId);
+        builder.Ignore(s => s.TransactionSource);
+        builder.Ignore(s => s.TransactionType);
     }
 }

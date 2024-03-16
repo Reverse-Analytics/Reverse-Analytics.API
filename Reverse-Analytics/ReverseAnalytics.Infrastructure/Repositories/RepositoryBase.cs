@@ -3,113 +3,124 @@ using ReverseAnalytics.Domain.Common;
 using ReverseAnalytics.Domain.Exceptions;
 using ReverseAnalytics.Domain.Interfaces.Repositories;
 using ReverseAnalytics.Domain.ResourceParameters;
+using ReverseAnalytics.Infrastructure.Extensions;
 using ReverseAnalytics.Infrastructure.Persistence;
 
-namespace ReverseAnalytics.Infrastructure.Repositories
+namespace ReverseAnalytics.Infrastructure.Repositories;
+
+public abstract class RepositoryBase<T>(ApplicationDbContext context) : IRepositoryBase<T> where T : BaseAuditableEntity
 {
-    public abstract class RepositoryBase<T>(ApplicationDbContext context) : IRepositoryBase<T> where T : BaseAuditableEntity
+    protected readonly ApplicationDbContext _context = context ?? throw new ArgumentNullException(nameof(context));
+
+    public async Task<IEnumerable<T>> FindAllAsync()
     {
-        protected readonly ApplicationDbContext _context = context ?? throw new ArgumentNullException(nameof(context));
+        var entities = await _context.Set<T>()
+            .ToListAsync();
 
-        public async Task<T> FindByIdAsync(int id)
+        return entities;
+    }
+
+    public async Task<PaginatedList<T>> FindAllAsync(PaginatedQueryParameters queryParameters)
+    {
+        var entities = await _context.Set<T>()
+            .ToPaginatedListAsync(queryParameters.PageNumber, queryParameters.PageSize);
+
+        return entities;
+    }
+
+    public async Task<T> FindByIdAsync(int id)
+    {
+        var entity = await _context.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
+
+        if (entity is null)
         {
-            var entity = await _context.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
-
-            if (entity is null)
-            {
-                throw new EntityNotFoundException($"Entity {typeof(T)} with id: {id} does not exist.");
-            }
-
-            return entity;
+            throw new EntityNotFoundException($"Entity {typeof(T)} with id: {id} does not exist.");
         }
 
-        public async Task<T> Create(T entity)
+        return entity;
+    }
+
+    public async Task<T> CreateAsync(T entity)
+    {
+        ArgumentNullException.ThrowIfNull(entity);
+
+        var createdEntity = await _context.Set<T>().AddAsync(entity);
+        await _context.SaveChangesAsync();
+
+        return createdEntity.Entity;
+    }
+
+    public async Task<IEnumerable<T>> CreateRangeAsync(IEnumerable<T> entities)
+    {
+        ArgumentNullException.ThrowIfNull(entities);
+
+        if (!entities.Any())
         {
-            ArgumentNullException.ThrowIfNull(entity);
-
-            var createdEntity = await _context.Set<T>().AddAsync(entity);
-            await _context.SaveChangesAsync();
-
-            return createdEntity.Entity;
+            return Enumerable.Empty<T>();
         }
 
-        public async Task<IEnumerable<T>> Create(IEnumerable<T> entities)
+        foreach (var entity in entities)
         {
-            ArgumentNullException.ThrowIfNull(entities);
-
-            if (!entities.Any())
-            {
-                return Enumerable.Empty<T>();
-            }
-
-            foreach (var entity in entities)
-            {
-                var attachedEntity = _context.Set<T>().Attach(entity);
-                attachedEntity.State = Microsoft.EntityFrameworkCore.EntityState.Added;
-            }
-
-            await _context.SaveChangesAsync();
-
-            return entities;
+            var attachedEntity = _context.Set<T>().Attach(entity);
+            attachedEntity.State = Microsoft.EntityFrameworkCore.EntityState.Added;
         }
 
-        public async Task Update(T entity)
-        {
-            ArgumentNullException.ThrowIfNull(entity);
+        await _context.SaveChangesAsync();
 
-            _context.Set<T>().Update(entity);
-            await _context.SaveChangesAsync();
+        return entities;
+    }
+
+    public async Task UpdateAsync(T entity)
+    {
+        ArgumentNullException.ThrowIfNull(entity);
+
+        _context.Set<T>().Update(entity);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task UpdateRangeAsync(IEnumerable<T> entities)
+    {
+        ArgumentNullException.ThrowIfNull(entities);
+
+        if (!entities.Any())
+        {
+            return;
         }
 
-        public async Task Update(IEnumerable<T> entities)
+        _context.Set<T>().UpdateRange(entities);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        var entityToDelete = await FindByIdAsync(id);
+
+        if (entityToDelete is null)
         {
-            ArgumentNullException.ThrowIfNull(entities);
-
-            if (!entities.Any())
-            {
-                return;
-            }
-
-            _context.Set<T>().UpdateRange(entities);
-            await _context.SaveChangesAsync();
+            throw new EntityNotFoundException($"Entity {typeof(T)} with id: {id} does not exist.");
         }
 
-        public async Task Delete(int id)
+        _context.Set<T>().Remove(entityToDelete);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteRangeAsync(IEnumerable<int> ids)
+    {
+        ArgumentNullException.ThrowIfNull(ids);
+
+        if (!ids.Any())
         {
-            var entityToDelete = await FindByIdAsync(id);
-
-            if (entityToDelete is null)
-            {
-                throw new EntityNotFoundException($"Entity {typeof(T)} with id: {id} does not exist.");
-            }
-
-            _context.Set<T>().Remove(entityToDelete);
-            await _context.SaveChangesAsync();
+            return;
         }
 
-        public async Task Delete(IEnumerable<int> ids)
+        foreach (var id in ids)
         {
-            ArgumentNullException.ThrowIfNull(ids);
-
-            if (!ids.Any())
-            {
-                return;
-            }
-
-            foreach (var id in ids)
-            {
-                await Delete(id);
-            }
-        }
-
-        public Task<bool> EntityExistsAsync(T entity)
-            => _context.Set<T>().AnyAsync(e => e.Id == entity.Id);
-
-        public Task<int> SaveChangesAsync() => _context.SaveChangesAsync();
-
-        public virtual Task<IEnumerable<T>> FindAllAsync<TParam>(TParam resourceParameters) where TParam : BaseResourceParameters
-        {
-            throw new NotImplementedException();
+            await DeleteAsync(id);
         }
     }
+
+    public async Task<bool> EntityExistsAsync(int id)
+        => await _context.Set<T>().AnyAsync(x => x.Id == id);
+
+    public Task<int> SaveChangesAsync() => _context.SaveChangesAsync();
 }

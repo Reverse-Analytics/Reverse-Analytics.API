@@ -6,5 +6,7 @@
         public DateTime? LastModifiedAt { get; set; }
         public string? CreatedBy { get; set; }
         public string? LastModifiedBy { get; set; }
+        public int? CreatedById { get; set; }
+        public int? LastModifiedById { get; set; }
     }
 }

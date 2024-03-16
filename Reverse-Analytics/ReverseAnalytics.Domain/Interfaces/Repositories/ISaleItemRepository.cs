@@ -2,6 +2,6 @@
 
 namespace ReverseAnalytics.Domain.Interfaces.Repositories;
 
-public interface IRefundRepository : IRepositoryBase<Refund>
+public interface ISaleItemRepository : IRepositoryBase<SaleItem>
 {
 }

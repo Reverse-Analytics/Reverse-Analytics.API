@@ -1,12 +1,13 @@
 ﻿using ReverseAnalytics.Domain.Enums;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ReverseAnalytics.Domain.Common;
 
 public interface ITransaction
 {
-    [NotMapped]
+    int TransactionSourceId();
+    decimal Amount();
     TransactionType TransactionType { get; }
-    [NotMapped]
     TransactionSource TransactionSource { get; }
+    PaymentType PaymentType { get; }
+    CurrencyType Currency { get; }
 }

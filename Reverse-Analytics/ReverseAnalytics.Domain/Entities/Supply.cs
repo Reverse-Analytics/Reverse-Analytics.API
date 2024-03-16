@@ -3,12 +3,14 @@ using ReverseAnalytics.Domain.Enums;
 
 namespace ReverseAnalytics.Domain.Entities;
 
-public class Supply : BaseAuditableEntity, ITransaction, IRefundable, IDebtable
+public class Supply : BaseAuditableEntity, ITransaction
 {
     public DateTime Date { get; set; }
     public string? Comments { get; set; }
     public decimal TotalDue { get; set; }
     public decimal TotalPaid { get; set; }
+    public PaymentType PaymentType { get; set; }
+    public CurrencyType Currency { get; set; }
 
     public int SupplierId { get; set; }
     public Supplier Supplier { get; set; }
@@ -17,9 +19,8 @@ public class Supply : BaseAuditableEntity, ITransaction, IRefundable, IDebtable
 
     public TransactionType TransactionType => TransactionType.Expense;
     public TransactionSource TransactionSource => TransactionSource.Supply;
-    public int RefundSourceId => Id;
-    public RefundSource RefundSource => RefundSource.Supply;
-    public DebtSource DebtSource => DebtSource.Supply;
+    public decimal Amount() => TotalPaid;
+    public int TransactionSourceId() => Id;
 
     public Supply()
     {

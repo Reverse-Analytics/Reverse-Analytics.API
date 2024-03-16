@@ -1,8 +1,7 @@
 ﻿using ReverseAnalytics.Domain.Entities;
 
-namespace ReverseAnalytics.Domain.Interfaces.Repositories
+namespace ReverseAnalytics.Domain.Interfaces.Repositories;
+
+public interface ICustomerRepository : IRepositoryBase<Customer>
 {
-    public interface ICustomerRepository : IRepositoryBase<Customer>
-    {
-    }
 }

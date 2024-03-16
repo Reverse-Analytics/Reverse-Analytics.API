@@ -1,10 +1,11 @@
-﻿using ReverseAnalytics.Domain.ResourceParameters;
+﻿using ReverseAnalytics.Domain.Common;
+using ReverseAnalytics.Domain.ResourceParameters;
 
 namespace ReverseAnalytics.Domain.Interfaces.Repositories;
 
-public interface IRepositoryBase<TEntity> where TEntity : class
+public interface IRepositoryBase<TEntity> where TEntity : BaseEntity
 {
-    Task<IEnumerable<TEntity>> FindAllAsync<TParam>(TParam resourceParameters) where TParam : ResourceParametersBase;
+    Task<IEnumerable<TEntity>> FindAllAsync<TParam>(TParam resourceParameters) where TParam : BaseResourceParameters;
 
     Task<TEntity> FindByIdAsync(int id);
 

@@ -107,7 +107,7 @@ namespace ReverseAnalytics.Infrastructure.Repositories
 
         public Task<int> SaveChangesAsync() => _context.SaveChangesAsync();
 
-        public virtual Task<IEnumerable<T>> FindAllAsync<TParam>(TParam resourceParameters) where TParam : ResourceParametersBase
+        public virtual Task<IEnumerable<T>> FindAllAsync<TParam>(TParam resourceParameters) where TParam : BaseResourceParameters
         {
             throw new NotImplementedException();
         }

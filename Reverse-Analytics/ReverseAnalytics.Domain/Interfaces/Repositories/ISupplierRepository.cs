@@ -2,6 +2,6 @@
 
 namespace ReverseAnalytics.Domain.Interfaces.Repositories;
 
-public interface IProductRepository : IRepositoryBase<Product>
+public interface ISupplierRepository : IRepositoryBase<Supplier>
 {
 }

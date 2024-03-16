@@ -1,6 +1,6 @@
 ﻿namespace ReverseAnalytics.Domain.ResourceParameters
 {
-    public abstract class ResourceParametersBase
+    public abstract class BaseResourceParameters
     {
         public string? SearchQuery { get; init; }
         public int PageNumber { get; init; }

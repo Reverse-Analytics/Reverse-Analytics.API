@@ -7,13 +7,13 @@ using ReverseAnalytics.Infrastructure.Persistence;
 
 namespace ReverseAnalytics.Infrastructure.Repositories;
 
-public class CustomerRepository(ApplicationDbContext context) : RepositoryBase<Customer>(context), ICustomerRepository
+public class SupplierRepository(ApplicationDbContext context) : RepositoryBase<Supplier>(context), ISupplierRepository
 {
-    public Task<PaginatedList<Customer>> FindAllAsync(CustomerQueryParameters queryParameters)
+    public Task<PaginatedList<Supplier>> FindAllAsync(SupplierQueryParameters queryParameters)
     {
         ArgumentNullException.ThrowIfNull(queryParameters);
 
-        var query = _context.Customers.AsQueryable();
+        var query = _context.Suppliers.AsQueryable();
 
         if (queryParameters.Balance.HasValue)
         {
@@ -24,8 +24,8 @@ public class CustomerRepository(ApplicationDbContext context) : RepositoryBase<C
         {
             query = query.Where(x => x.FirstName.Contains(queryParameters.SearchQuery, StringComparison.OrdinalIgnoreCase) ||
                 x.LastName.Contains(queryParameters.SearchQuery, StringComparison.OrdinalIgnoreCase) ||
-                (x.Company != null && x.Company.Contains(queryParameters.SearchQuery, StringComparison.OrdinalIgnoreCase)) ||
-                (x.Address != null && x.Address.Contains(queryParameters.SearchQuery, StringComparison.OrdinalIgnoreCase)));
+                x.PhoneNumber.Contains(queryParameters.SearchQuery, StringComparison.OrdinalIgnoreCase) ||
+                x.Company.Contains(queryParameters.SearchQuery, StringComparison.OrdinalIgnoreCase));
         }
 
         return query.ToPaginatedListAsync(queryParameters.PageNumber, queryParameters.PageSize);

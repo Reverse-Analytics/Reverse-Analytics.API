@@ -1,8 +1,9 @@
 ﻿using ReverseAnalytics.Domain.Enums;
+using ReverseAnalytics.Domain.ResourceParameters;
 
 namespace ReverseAnalytics.Domain.QueryParameters;
 
-public class SaleQueryParameters : BaseQueryParameters
+public class SaleQueryParameters : PaginatedQueryParameters
 {
     public DateTime? SaleDate { get; set; }
     public decimal? TotalDue { get; set; }

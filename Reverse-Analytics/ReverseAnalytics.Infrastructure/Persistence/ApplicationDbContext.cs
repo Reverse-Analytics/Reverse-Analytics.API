@@ -7,7 +7,8 @@ namespace ReverseAnalytics.Infrastructure.Persistence;
 
 public class ApplicationDbContext : DbContext
 {
-    private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
+    private readonly AuditInterceptor _auditInterceptor;
+    private readonly TransactionsInterceptor _transactionsInterceptor;
 
     public virtual DbSet<Customer> Customers { get; set; }
     public virtual DbSet<Product> Products { get; set; }
@@ -20,16 +21,20 @@ public class ApplicationDbContext : DbContext
     public virtual DbSet<Transaction> Transaction { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
-                                AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor)
+                                AuditInterceptor auditableInterceptor,
+                                TransactionsInterceptor transactionsInterceptor)
         : base(options)
     {
-        _auditableEntitySaveChangesInterceptor = auditableEntitySaveChangesInterceptor;
-        Database.Migrate();
+        _auditInterceptor = auditableInterceptor;
+        _transactionsInterceptor = transactionsInterceptor;
+
+        Database.EnsureCreated();
+        // Database.Migrate();
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.AddInterceptors(_auditableEntitySaveChangesInterceptor);
+        optionsBuilder.AddInterceptors(_auditInterceptor, _transactionsInterceptor);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -54,7 +59,7 @@ public class ApplicationDbContext : DbContext
             {
                 modelBuilder.Entity(entityType.Name)
                     .Property(property.Name)
-                    .HasColumnType("decimal(18, 2)");
+                    .HasPrecision(18, 2);
             }
         }
     }

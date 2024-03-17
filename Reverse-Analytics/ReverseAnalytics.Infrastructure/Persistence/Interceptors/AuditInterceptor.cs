@@ -5,7 +5,7 @@ using ReverseAnalytics.Domain.Common;
 
 namespace ReverseAnalytics.Infrastructure.Persistence.Interceptors;
 
-public class AuditableEntitySaveChangesInterceptor : SaveChangesInterceptor
+public class AuditInterceptor : SaveChangesInterceptor
 {
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {

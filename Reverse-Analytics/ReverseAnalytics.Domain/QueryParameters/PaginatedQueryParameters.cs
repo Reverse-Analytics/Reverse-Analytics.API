@@ -1,6 +1,8 @@
-﻿namespace ReverseAnalytics.Domain.ResourceParameters;
+﻿using ReverseAnalytics.Domain.QueryParameters;
 
-public class PaginatedQueryParameters
+namespace ReverseAnalytics.Domain.ResourceParameters;
+
+public class PaginatedQueryParameters : BaseQueryParameters
 {
     public int PageNumber { get; init; }
     public int PageSize { get; init; }

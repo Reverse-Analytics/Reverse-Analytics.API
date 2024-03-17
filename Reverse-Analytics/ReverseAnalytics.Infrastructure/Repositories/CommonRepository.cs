@@ -1,26 +1,36 @@
 ﻿using ReverseAnalytics.Domain.Interfaces.Repositories;
+using ReverseAnalytics.Infrastructure.Persistence;
 
 namespace ReverseAnalytics.Infrastructure.Repositories;
 
-public class CommonRepository : ICommonRepository
+public class CommonRepository(ApplicationDbContext context) : ICommonRepository
 {
-    public ICustomerRepository Customer => throw new NotImplementedException();
+    private ICustomerRepository _customer = new CustomerRepository(context);
+    public ICustomerRepository Customer => _customer ??= new CustomerRepository(context);
 
-    public IProductCategoryRepository ProductCategory => throw new NotImplementedException();
+    private IProductCategoryRepository _productCategory = new ProductCategoryRepository(context);
+    public IProductCategoryRepository ProductCategory => _productCategory ??= new ProductCategoryRepository(context);
 
-    public IProductRepository Product => throw new NotImplementedException();
+    private IProductRepository _product = new ProductRepository(context);
+    public IProductRepository Product => _product ??= new ProductRepository(context);
 
-    public ISaleItemRepository SaleItem => throw new NotImplementedException();
+    private ISaleItemRepository _saleItem = new SaleItemRepository(context);
+    public ISaleItemRepository SaleItem => _saleItem ??= new SaleItemRepository(context);
 
-    public ISaleRepository Sale => throw new NotImplementedException();
+    private ISaleRepository _sale = new SaleRepository(context);
+    public ISaleRepository Sale => _sale ??= new SaleRepository(context);
 
-    public ISupplierRepository Supplier => throw new NotImplementedException();
+    private ISupplierRepository _supplier = new SupplierRepository(context);
+    public ISupplierRepository Supplier => _supplier ??= new SupplierRepository(context);
 
-    public ISupplyItemRepository SupplyItem => throw new NotImplementedException();
+    private ISupplyItemRepository _supplyItem = new SupplyItemRepository(context);
+    public ISupplyItemRepository SupplyItem => _supplyItem ??= new SupplyItemRepository(context);
 
-    public ISupplyRepository Supply => throw new NotImplementedException();
+    private ISupplyRepository _supply = new SupplyRepository(context);
+    public ISupplyRepository Supply => _supply ??= new SupplyRepository(context);
 
-    public ITransactionRepository Transaction => throw new NotImplementedException();
+    private ITransactionRepository _transaction = new TransactionRepository(context);
+    public ITransactionRepository Transaction => _transaction ??= new TransactionRepository(context);
 
     public Task<int> SaveChangesAsync()
     {

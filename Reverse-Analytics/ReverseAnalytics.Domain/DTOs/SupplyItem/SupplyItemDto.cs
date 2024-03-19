@@ -1,12 +1,12 @@
 ﻿using ReverseAnalytics.Domain.DTOs.Product;
-using ReverseAnalytics.Domain.DTOs.Sale;
+using ReverseAnalytics.Domain.DTOs.Supply;
 
-namespace ReverseAnalytics.Domain.DTOs.SaleItem;
+namespace ReverseAnalytics.Domain.DTOs.SupplyItem;
 
-public record SaleItemDto(
+public record SupplyItemDto(
     int Id,
     int Quantity,
     decimal UnitPrice,
     decimal Discount,
-    SaleDto Sale,
+    SupplyDto Sale,
     ProductDto Product);

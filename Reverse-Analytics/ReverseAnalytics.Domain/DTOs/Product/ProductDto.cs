@@ -1,20 +1,20 @@
 ﻿using ReverseAnalytics.Domain.DTOs.ProductCategory;
+using ReverseAnalytics.Domain.DTOs.SaleItem;
+using ReverseAnalytics.Domain.DTOs.SupplyItem;
 using ReverseAnalytics.Domain.Enums;
 
-namespace ReverseAnalytics.Domain.DTOs.Product
-{
-    public class ProductDto
-    {
-        public int Id { get; set; }
-        public string ProductName { get; set; }
-        public string ProductCode { get; set; }
-        public UnitOfMeasurement UnitOfMeasurement { get; set; }
-        public double? Volume { get; set; }
-        public double? Weight { get; set; }
-        public decimal SupplyPrice { get; set; }
-        public decimal SalePrice { get; set; }
+namespace ReverseAnalytics.Domain.DTOs.Product;
 
-        public int CategoryId { get; set; }
-        public virtual ProductCategoryDto Category { get; set; }
-    }
-}
+public record ProductDto(
+    int Id,
+    string ProductName,
+    string ProductCode,
+    string? Description,
+    decimal SalePrice,
+    decimal SupplyPrice,
+    double? Volume,
+    double? Weight,
+    UnitOfMeasurement UnitOfMeasurement,
+    ProductCategoryDto Category,
+    ICollection<SaleItemDto> SaleItems,
+    ICollection<SupplyItemDto> SupplyItems);

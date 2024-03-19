@@ -1,24 +1,13 @@
 ﻿using ReverseAnalytics.Domain.DTOs.Sale;
 
-namespace ReverseAnalytics.Domain.DTOs.Customer
-{
-    public class CustomerDto
-    {
-        public int Id { get; set; }
-        public string FullName { get; set; }
-        public string? Company { get; set; }
-        public string? Address { get; set; }
-        public string? PhoneNumber { get; set; }
-        public decimal Balance { get; set; }
-        public double Discount { get; set; }
-        public bool IsActive { get; set; }
+namespace ReverseAnalytics.Domain.DTOs.Customer;
 
-        public virtual ICollection<SaleDto> Sales { get; set; }
-
-        public CustomerDto()
-        {
-            FullName = string.Empty;
-            Sales = new List<SaleDto>();
-        }
-    }
-}
+public record CustomerDto(
+    int Id,
+    string FullName,
+    string PhoneNumber,
+    string? Address,
+    string? Company,
+    decimal Balance,
+    double Discount,
+    ICollection<SupplyDto> Sales);

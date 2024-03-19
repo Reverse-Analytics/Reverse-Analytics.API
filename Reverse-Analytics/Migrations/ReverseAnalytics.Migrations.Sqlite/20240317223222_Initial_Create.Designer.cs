@@ -8,16 +8,17 @@ using ReverseAnalytics.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
+namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240316210042_Initial_Create")]
+    [Migration("20240317223222_Initial_Create")]
     partial class Initial_Create
     {
+        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.5");
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.3");
 
             modelBuilder.Entity("ReverseAnalytics.Domain.Entities.Customer", b =>
                 {
@@ -31,7 +32,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
 
                     b.Property<decimal>("Balance")
                         .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Company")
                         .HasMaxLength(4000)
@@ -48,8 +49,8 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
 
                     b.Property<double>("Discount")
                         .ValueGeneratedOnAdd()
-                        .HasPrecision(18)
-                        .HasColumnType("decimal(18, 2)")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("REAL")
                         .HasDefaultValue(0.0);
 
                     b.Property<string>("FirstName")
@@ -123,11 +124,11 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
 
                     b.Property<decimal>("SalePrice")
                         .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("SupplyPrice")
                         .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("UnitOfMeasurement")
                         .HasColumnType("INTEGER");
@@ -161,6 +162,11 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
 
                     b.Property<int?>("CreatedById")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(4000)
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("LastModifiedAt")
                         .HasColumnType("TEXT");
@@ -234,15 +240,15 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
 
                     b.Property<decimal>("TotalDiscount")
                         .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("TotalDue")
                         .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("TotalPaid")
                         .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -268,7 +274,8 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
 
                     b.Property<decimal>("Discount")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("decimal(18, 2)")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("TEXT")
                         .HasDefaultValue(0m);
 
                     b.Property<DateTime?>("LastModifiedAt")
@@ -291,7 +298,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
 
                     b.Property<decimal>("UnitPrice")
                         .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -310,7 +317,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
 
                     b.Property<decimal>("Balance")
                         .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Company")
                         .HasMaxLength(4000)
@@ -395,11 +402,11 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
 
                     b.Property<decimal>("TotalDue")
                         .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("TotalPaid")
                         .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -443,7 +450,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
 
                     b.Property<decimal>("UnitPrice")
                         .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -462,7 +469,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
 
                     b.Property<decimal>("Amount")
                         .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");

@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
+namespace ReverseAnalytics.Infrastructure.Persistence.Migrations
 {
+    /// <inheritdoc />
     public partial class Initial_Create : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -20,8 +22,8 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
                     PhoneNumber = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     Address = table.Column<string>(type: "TEXT", maxLength: 4000, nullable: true),
                     Company = table.Column<string>(type: "TEXT", maxLength: 4000, nullable: true),
-                    Balance = table.Column<decimal>(type: "decimal(18, 2)", precision: 18, scale: 2, nullable: false),
-                    Discount = table.Column<double>(type: "decimal(18, 2)", precision: 18, nullable: false, defaultValue: 0.0),
+                    Balance = table.Column<decimal>(type: "TEXT", precision: 18, scale: 2, nullable: false),
+                    Discount = table.Column<double>(type: "REAL", precision: 18, scale: 2, nullable: false, defaultValue: 0.0),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     LastModifiedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
                     CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
@@ -41,6 +43,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", maxLength: 255, nullable: false),
+                    Description = table.Column<string>(type: "TEXT", maxLength: 4000, nullable: false),
                     ParentId = table.Column<int>(type: "INTEGER", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     LastModifiedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
@@ -69,7 +72,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
                     LastName = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
                     PhoneNumber = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     Company = table.Column<string>(type: "TEXT", maxLength: 4000, nullable: true),
-                    Balance = table.Column<decimal>(type: "decimal(18, 2)", precision: 18, scale: 2, nullable: false),
+                    Balance = table.Column<decimal>(type: "TEXT", precision: 18, scale: 2, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     LastModifiedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
                     CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
@@ -90,7 +93,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
                         .Annotation("Sqlite:Autoincrement", true),
                     Date = table.Column<DateTime>(type: "TEXT", nullable: false),
                     SourceId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18, 2)", precision: 18, scale: 2, nullable: false),
+                    Amount = table.Column<decimal>(type: "TEXT", precision: 18, scale: 2, nullable: false),
                     Type = table.Column<int>(type: "INTEGER", nullable: false),
                     Source = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
@@ -113,9 +116,9 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
                         .Annotation("Sqlite:Autoincrement", true),
                     Date = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Comments = table.Column<string>(type: "TEXT", maxLength: 4000, nullable: true),
-                    TotalDue = table.Column<decimal>(type: "decimal(18, 2)", precision: 18, scale: 2, nullable: false),
-                    TotalPaid = table.Column<decimal>(type: "decimal(18, 2)", precision: 18, scale: 2, nullable: false),
-                    TotalDiscount = table.Column<decimal>(type: "decimal(18, 2)", precision: 18, scale: 2, nullable: false),
+                    TotalDue = table.Column<decimal>(type: "TEXT", precision: 18, scale: 2, nullable: false),
+                    TotalPaid = table.Column<decimal>(type: "TEXT", precision: 18, scale: 2, nullable: false),
+                    TotalDiscount = table.Column<decimal>(type: "TEXT", precision: 18, scale: 2, nullable: false),
                     SaleType = table.Column<int>(type: "INTEGER", nullable: false),
                     Status = table.Column<int>(type: "INTEGER", nullable: false),
                     PaymentType = table.Column<int>(type: "INTEGER", nullable: false),
@@ -148,8 +151,8 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
                     Name = table.Column<string>(type: "TEXT", maxLength: 255, nullable: false),
                     Code = table.Column<string>(type: "TEXT", maxLength: 255, nullable: false),
                     Description = table.Column<string>(type: "TEXT", maxLength: 4000, nullable: true),
-                    SalePrice = table.Column<decimal>(type: "decimal(18, 2)", precision: 18, scale: 2, nullable: false),
-                    SupplyPrice = table.Column<decimal>(type: "decimal(18, 2)", precision: 18, scale: 2, nullable: false),
+                    SalePrice = table.Column<decimal>(type: "TEXT", precision: 18, scale: 2, nullable: false),
+                    SupplyPrice = table.Column<decimal>(type: "TEXT", precision: 18, scale: 2, nullable: false),
                     Volume = table.Column<double>(type: "REAL", precision: 18, scale: 2, nullable: true),
                     Weight = table.Column<double>(type: "REAL", precision: 18, scale: 2, nullable: true),
                     UnitOfMeasurement = table.Column<int>(type: "INTEGER", nullable: false),
@@ -180,8 +183,8 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
                         .Annotation("Sqlite:Autoincrement", true),
                     Date = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Comments = table.Column<string>(type: "TEXT", maxLength: 4000, nullable: true),
-                    TotalDue = table.Column<decimal>(type: "decimal(18, 2)", precision: 18, scale: 2, nullable: false),
-                    TotalPaid = table.Column<decimal>(type: "decimal(18, 2)", precision: 18, scale: 2, nullable: false),
+                    TotalDue = table.Column<decimal>(type: "TEXT", precision: 18, scale: 2, nullable: false),
+                    TotalPaid = table.Column<decimal>(type: "TEXT", precision: 18, scale: 2, nullable: false),
                     PaymentType = table.Column<int>(type: "INTEGER", nullable: false),
                     Currency = table.Column<int>(type: "INTEGER", nullable: false),
                     SupplierId = table.Column<int>(type: "INTEGER", nullable: false),
@@ -210,8 +213,8 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Quantity = table.Column<int>(type: "INTEGER", nullable: false),
-                    UnitPrice = table.Column<decimal>(type: "decimal(18, 2)", precision: 18, scale: 2, nullable: false),
-                    Discount = table.Column<decimal>(type: "decimal(18, 2)", nullable: false, defaultValue: 0m),
+                    UnitPrice = table.Column<decimal>(type: "TEXT", precision: 18, scale: 2, nullable: false),
+                    Discount = table.Column<decimal>(type: "TEXT", precision: 18, scale: 2, nullable: false, defaultValue: 0m),
                     SaleId = table.Column<int>(type: "INTEGER", nullable: false),
                     ProductId = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
@@ -245,7 +248,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Quantity = table.Column<int>(type: "INTEGER", nullable: false),
-                    UnitPrice = table.Column<decimal>(type: "decimal(18, 2)", precision: 18, scale: 2, nullable: false),
+                    UnitPrice = table.Column<decimal>(type: "TEXT", precision: 18, scale: 2, nullable: false),
                     SupplyId = table.Column<int>(type: "INTEGER", nullable: false),
                     ProductId = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
@@ -313,6 +316,7 @@ namespace ReverseAnalytics.Infrastructure.Persistence.Migrations.SQLite
                 column: "SupplyId");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

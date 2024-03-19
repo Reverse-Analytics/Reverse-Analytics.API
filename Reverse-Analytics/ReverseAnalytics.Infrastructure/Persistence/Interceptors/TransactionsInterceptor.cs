@@ -9,13 +9,13 @@ public class TransactionsInterceptor : SaveChangesInterceptor
 {
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
-        UpdateTransactions(eventData.Context as ApplicationDbContext);
+        // UpdateTransactions(eventData.Context as ApplicationDbContext);
         return base.SavingChanges(eventData, result);
     }
 
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = default)
     {
-        UpdateTransactions(eventData.Context as ApplicationDbContext);
+        // UpdateTransactions(eventData.Context as ApplicationDbContext);
         return base.SavingChangesAsync(eventData, result, cancellationToken);
     }
 
@@ -39,9 +39,9 @@ public class TransactionsInterceptor : SaveChangesInterceptor
             if (entry.State == EntityState.Modified || entry.HasChangedOwnedEntities())
             {
                 var transaction = context.Transaction
-                    .FirstOrDefault(x => x.SourceId == entity.TransactionSourceId() && x.Source == entity.TransactionSource) ?? throw new Exception();
+                    .FirstOrDefault(x => x.SourceId == entity.GetTransactionSourceId() && x.Source == entity.TransactionSource) ?? throw new Exception();
 
-                transaction.Amount = entity.Amount();
+                transaction.Amount = entity.GetTransactionAmount();
             }
         }
     }
@@ -50,10 +50,10 @@ public class TransactionsInterceptor : SaveChangesInterceptor
     {
         return new Transaction
         {
-            Amount = transaction.Amount(),
+            Amount = transaction.GetTransactionAmount(),
             Date = DateTime.Now,
             Source = transaction.TransactionSource,
-            SourceId = transaction.TransactionSourceId(),
+            SourceId = transaction.GetTransactionSourceId(),
             Type = transaction.TransactionType,
         };
     }

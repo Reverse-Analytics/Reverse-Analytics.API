@@ -19,8 +19,8 @@ public class Supply : BaseAuditableEntity, ITransaction
 
     public TransactionType TransactionType => TransactionType.Expense;
     public TransactionSource TransactionSource => TransactionSource.Supply;
-    public decimal Amount() => TotalPaid;
-    public int TransactionSourceId() => Id;
+    public decimal GetTransactionAmount() => TotalDue;
+    public int GetTransactionSourceId() => Id;
 
     public Supply()
     {

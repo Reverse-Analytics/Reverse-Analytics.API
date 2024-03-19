@@ -22,8 +22,8 @@ public class Sale : BaseAuditableEntity, ITransaction
 
     public TransactionType TransactionType => TransactionType.Income;
     public TransactionSource TransactionSource => TransactionSource.Sale;
-    public decimal Amount() => TotalPaid;
-    public int TransactionSourceId() => Id;
+    public decimal GetTransactionAmount() => TotalDue;
+    public int GetTransactionSourceId() => Id;
 
     public Sale()
     {

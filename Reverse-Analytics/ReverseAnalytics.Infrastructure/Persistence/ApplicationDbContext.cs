@@ -28,7 +28,7 @@ public class ApplicationDbContext : DbContext
         _auditInterceptor = auditableInterceptor;
         _transactionsInterceptor = transactionsInterceptor;
 
-        Database.EnsureCreated();
+        // Database.EnsureCreated();
         // Database.Migrate();
     }
 

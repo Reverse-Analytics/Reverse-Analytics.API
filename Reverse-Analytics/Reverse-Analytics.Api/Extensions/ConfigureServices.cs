@@ -10,17 +10,21 @@ public static class ConfigureServices
     {
         services.AddScoped<AuditInterceptor>();
         services.AddScoped<TransactionsInterceptor>();
+        var provider = configuration.GetValue("Provider", "SqlServer");
 
-        if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
-        {
-            services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlite(configuration.GetConnectionString("DefaultConnection")));
-        }
-        else
-        {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-        }
+        services.AddDbContext<ApplicationDbContext>(
+            options => _ = provider switch
+            {
+                "Sqlite" => options.UseSqlite(
+                    configuration.GetConnectionString("DefaultConnection"),
+                    x => x.MigrationsAssembly("ReverseAnalytics.Migrations.Sqlite")),
+
+                "SqlServer" => options.UseSqlServer(
+                    configuration.GetConnectionString("DefaultConnection"),
+                    x => x.MigrationsAssembly("ReverseAnalytics.Migrations.SqlServer")),
+
+                _ => throw new InvalidOperationException($"Unsupported provider: {provider}.")
+            });
 
 #if DEBUG
 

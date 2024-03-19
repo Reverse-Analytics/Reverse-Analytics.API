@@ -5,6 +5,7 @@ namespace ReverseAnalytics.Domain.Entities;
 public class ProductCategory : BaseAuditableEntity
 {
     public string Name { get; set; }
+    public string? Description { get; set; }
 
     public int? ParentId { get; set; }
     public ProductCategory? Parent { get; set; }

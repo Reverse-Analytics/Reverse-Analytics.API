@@ -2,6 +2,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Reverse_Analytics.Api.Extensions;
 using Reverse_Analytics.Api.Middlewares;
+using ReverseAnalytics.Infrastructure.Persistence;
+using ReverseAnalytics.TestDataCreator;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
@@ -37,11 +39,16 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
     app.SeedDatabase();
+
+    using var scope = app.Services.CreateScope();
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var seeder = new DatabaseSeeder(context);
+    seeder.Seed();
 }
 
 app.UseMiddleware<ErrorHandlerMiddeware>();

@@ -37,7 +37,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Migrations\ReverseAnalytics.Migrations.Sqlite\ReverseAnalytics.Migrations.Sqlite.csproj" />
+    <ProjectReference Include="..\Migrations\ReverseAnalytics.Migrations.SqlServer\ReverseAnalytics.Migrations.SqlServer.csproj" />
+    <ProjectReference Include="..\ReverseAnalytics.Domain\ReverseAnalytics.Domain.csproj" />
     <ProjectReference Include="..\ReverseAnalytics.Infrastructure\ReverseAnalytics.Infrastructure.csproj" />
+    <ProjectReference Include="..\ReverseAnalytics.TestDataCreator\ReverseAnalytics.TestDataCreator.csproj" />
   </ItemGroup>
 
   <ItemGroup>

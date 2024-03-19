@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReverseAnalytics.Migrations
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReverseAnalytics.Migrations.SqlServer", "Migrations\ReverseAnalytics.Migrations.SqlServer\ReverseAnalytics.Migrations.SqlServer.csproj", "{BFDF8903-DF51-46A8-8436-D7054A61B47D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Migrations", "Migrations", "{E83F6F45-0BBA-48B6-9D31-A4749A435983}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,6 +50,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6863C9D3-3718-468C-90E6-CFF14663E70B} = {E83F6F45-0BBA-48B6-9D31-A4749A435983}
+		{BFDF8903-DF51-46A8-8436-D7054A61B47D} = {E83F6F45-0BBA-48B6-9D31-A4749A435983}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AB93A27F-394C-45FF-B005-7DDE4ED5800A}

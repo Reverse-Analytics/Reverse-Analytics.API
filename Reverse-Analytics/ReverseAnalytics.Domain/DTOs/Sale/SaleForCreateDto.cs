@@ -1,4 +1,5 @@
-﻿using ReverseAnalytics.Domain.Enums;
+﻿using ReverseAnalytics.Domain.DTOs.SaleItem;
+using ReverseAnalytics.Domain.Enums;
 
 namespace ReverseAnalytics.Domain.DTOs.Sale;
 
@@ -11,4 +12,5 @@ public record SaleForCreateDto(
     SaleStatus Status,
     PaymentType PaymentType,
     CurrencyType CurrencyType,
-    int CustomerId);
+    int CustomerId,
+    ICollection<SaleItemForCreateDto> SaleItems);

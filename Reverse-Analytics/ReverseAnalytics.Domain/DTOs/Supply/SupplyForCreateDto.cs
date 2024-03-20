@@ -1,4 +1,5 @@
-﻿using ReverseAnalytics.Domain.Enums;
+﻿using ReverseAnalytics.Domain.DTOs.SupplyItem;
+using ReverseAnalytics.Domain.Enums;
 
 namespace ReverseAnalytics.Domain.DTOs.Sale;
 
@@ -8,4 +9,5 @@ public record SupplyForCreateDto(
     decimal TotalPaid,
     PaymentType PaymentType,
     CurrencyType CurrencyType,
-    int SupplierId);
+    int SupplierId,
+    ICollection<SupplyItemForCreateDto> SupplyItems);

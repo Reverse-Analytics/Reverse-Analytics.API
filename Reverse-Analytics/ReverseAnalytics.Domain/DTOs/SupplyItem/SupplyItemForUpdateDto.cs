@@ -1,12 +1,9 @@
-﻿namespace ReverseAnalytics.Domain.DTOs.SupplyItem
-{
-    public class SupplyItemForUpdateDto
-    {
-        public int Id { get; set; }
-        public int Quantity { get; set; }
-        public decimal UnitPrice { get; set; }
+﻿namespace ReverseAnalytics.Domain.DTOs.SupplyItem;
 
-        public int SupplyId { get; set; }
-        public int ProductId { get; set; }
-    }
-}
+public record SupplyItemForUpdateDto(
+    int Id,
+    int Quantity,
+    decimal UnitPrice,
+    decimal Discount,
+    int SupplyId,
+    int ProductId);

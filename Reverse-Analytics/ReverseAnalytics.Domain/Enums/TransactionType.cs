@@ -1,8 +1,7 @@
-﻿namespace ReverseAnalytics.Domain.Enums
+﻿namespace ReverseAnalytics.Domain.Enums;
+
+public enum TransactionType
 {
-    public enum TransactionType
-    {
-        Income,
-        Expense,
-    }
+    Income,
+    Expense
 }

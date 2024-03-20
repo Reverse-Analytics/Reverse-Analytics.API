@@ -1,14 +1,12 @@
-﻿namespace ReverseAnalytics.Domain.DTOs.Supply
-{
-    public class SupplyForUpdateDto
-    {
-        public int Id { get; set; }
-        public string? ReceivedBy { get; set; }
-        public string? Comment { get; set; }
-        public DateTime? SupplyDate { get; set; }
-        public decimal TotalDue { get; set; }
-        public decimal TotalPaid { get; set; }
+﻿using ReverseAnalytics.Domain.Enums;
 
-        public int SupplierId { get; set; }
-    }
-}
+namespace ReverseAnalytics.Domain.DTOs.Sale;
+
+public record SupplyForUpdateDto(
+    int Id,
+    DateTime Date,
+    string? Comments,
+    decimal TotalPaid,
+    PaymentType PaymentType,
+    CurrencyType CurrencyType,
+    int SupplierId);

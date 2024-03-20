@@ -1,18 +1,12 @@
 ﻿using ReverseAnalytics.Domain.DTOs.Product;
 using ReverseAnalytics.Domain.DTOs.Supply;
 
-namespace ReverseAnalytics.Domain.DTOs.SupplyItem
-{
-    public class SupplyItemDto
-    {
-        public int Id { get; set; }
-        public int Quantity { get; set; }
-        public decimal UnitPrice { get; set; }
+namespace ReverseAnalytics.Domain.DTOs.SupplyItem;
 
-        public int SupplyId { get; set; }
-        public SupplyDto Supply { get; set; }
-
-        public int ProductId { get; set; }
-        public ProductDto Product { get; set; }
-    }
-}
+public record SupplyItemDto(
+    int Id,
+    int Quantity,
+    decimal UnitPrice,
+    decimal Discount,
+    SupplyDto Sale,
+    ProductDto Product);

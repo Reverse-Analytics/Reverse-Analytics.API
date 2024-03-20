@@ -2,25 +2,26 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ReverseAnalytics.Domain.Entities;
 
-namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
+namespace ReverseAnalytics.Infrastructure.Persistence.Configurations;
+
+internal class SupplyItemConfiguration : IEntityTypeConfiguration<SupplyItem>
 {
-    internal class SupplyItemsConfiguration : IEntityTypeConfiguration<SupplyItem>
+    public void Configure(EntityTypeBuilder<SupplyItem> builder)
     {
-        public void Configure(EntityTypeBuilder<SupplyItem> builder)
-        {
-            builder.ToTable("Supply_Item");
+        builder.ToTable(nameof(SupplyItem));
+        builder.HasKey(si => si.Id);
 
-            builder.HasKey(sd => sd.Id);
+        builder.HasOne(si => si.Supply)
+            .WithMany(s => s.SupplyItems)
+            .HasForeignKey(si => si.SupplyId);
+        builder.HasOne(si => si.Product)
+            .WithMany(p => p.SupplyItems)
+            .HasForeignKey(si => si.ProductId);
 
-            builder.HasOne(sd => sd.Supply)
-                .WithMany(s => s.SupplyItems)
-                .HasForeignKey(sd => sd.SupplyId);
-            builder.HasOne(sd => sd.Product)
-                .WithMany(p => p.PurchaseItems)
-                .HasForeignKey(sd => sd.ProductId);
-
-            builder.Property(sd => sd.Quantity)
-                .IsRequired();
-        }
+        builder.Property(si => si.Quantity)
+            .IsRequired();
+        builder.Property(si => si.UnitPrice)
+            .HasPrecision(18, 2)
+            .IsRequired();
     }
 }

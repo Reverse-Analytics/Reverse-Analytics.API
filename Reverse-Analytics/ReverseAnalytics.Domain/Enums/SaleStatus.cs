@@ -2,10 +2,10 @@
 {
     public enum SaleStatus
     {
+        Completed,
         Pending,
-        Paid,
         PartiallyPaid,
         Refunded,
-        Cancelled
+        Cancelled,
     }
 }

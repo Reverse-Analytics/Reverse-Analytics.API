@@ -1,17 +1,15 @@
 ﻿using ReverseAnalytics.Domain.DTOs.Supplier;
+using ReverseAnalytics.Domain.DTOs.SupplyItem;
+using ReverseAnalytics.Domain.Enums;
 
-namespace ReverseAnalytics.Domain.DTOs.Supply
-{
-    public class SupplyDto
-    {
-        public int Id { get; set; }
-        public string? ReceivedBy { get; set; }
-        public string? Comment { get; set; }
-        public DateTime? SupplyDate { get; set; }
-        public decimal TotalDue { get; set; }
-        public decimal TotalPaid { get; set; }
+namespace ReverseAnalytics.Domain.DTOs.Supply;
 
-        public int SupplierId { get; set; }
-        public SupplierDto Supplier { get; set; }
-    }
-}
+public record SupplyDto(
+    int Id,
+    DateTime Date,
+    string? Comments,
+    decimal TotalPaid,
+    PaymentType PaymentType,
+    CurrencyType CurrencyType,
+    SupplierDto Customer,
+    ICollection<SupplyItemDto> SupplyItems);

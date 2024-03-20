@@ -1,10 +1,10 @@
-﻿using ReverseAnalytics.Domain.Entities;
+﻿using ReverseAnalytics.Domain.Common;
+using ReverseAnalytics.Domain.Entities;
+using ReverseAnalytics.Domain.QueryParameters;
 
-namespace ReverseAnalytics.Domain.Interfaces.Repositories
+namespace ReverseAnalytics.Domain.Interfaces.Repositories;
+
+public interface ISaleRepository : IRepositoryBase<Sale>
 {
-    public interface ISaleRepository : IRepositoryBase<Sale>
-    {
-        public Task<IEnumerable<Sale>> FindAllAsync();
-        public Task<IEnumerable<Sale>> FindAllByCustomerIdAsync(int customerId);
-    }
+    Task<PaginatedList<Sale>> FindAllAsync(SaleQueryParameters queryParameters);
 }

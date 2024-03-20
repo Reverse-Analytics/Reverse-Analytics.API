@@ -40,7 +40,7 @@ namespace ReverseAnalytics.Services
 
                 return productCategoriesDto;
             }
-            catch (NotFoundException ex)
+            catch (EntityNotFoundException ex)
             {
                 throw;
             }
@@ -72,7 +72,7 @@ namespace ReverseAnalytics.Services
 
                 return productCategoriesDto;
             }
-            catch (NotFoundException ex)
+            catch (EntityNotFoundException ex)
             {
                 throw ex;
             }
@@ -106,7 +106,7 @@ namespace ReverseAnalytics.Services
 
                 return productCategoryDto;
             }
-            catch (NotFoundException ex)
+            catch (EntityNotFoundException ex)
             {
                 throw ex;
             }
@@ -189,7 +189,7 @@ namespace ReverseAnalytics.Services
             {
                 throw ex;
             }
-            catch (NotFoundException ex)
+            catch (EntityNotFoundException ex)
             {
                 throw ex;
             }
@@ -206,7 +206,7 @@ namespace ReverseAnalytics.Services
                 _repository.ProductCategory.Delete(productCategoryId);
                 await _repository.ProductCategory.SaveChangesAsync();
             }
-            catch (NotFoundException ex)
+            catch (EntityNotFoundException ex)
             {
                 throw ex;
             }

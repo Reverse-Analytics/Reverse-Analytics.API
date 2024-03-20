@@ -1,88 +1,54 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Reverse_Analytics.Api.Filters;
-using ReverseAnalytics.Domain.Interfaces.Repositories;
-using ReverseAnalytics.Infrastructure.Configurations;
+﻿using Microsoft.EntityFrameworkCore;
 using ReverseAnalytics.Infrastructure.Persistence;
 using ReverseAnalytics.Infrastructure.Persistence.Interceptors;
-using ReverseAnalytics.Repositories;
-using System.Text;
 
-namespace Reverse_Analytics.Api.Extensions
+namespace Reverse_Analytics.Api.Extensions;
+
+public static class ConfigureServices
 {
-    public static class ConfigureServices
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddScoped<ICommonRepository, CommonRepository>();
-            services.AddScoped<ICustomerRepository, CustomerRepository>();
-            services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
-            services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<IRefundRepository, RefundRepository>();
-            services.AddScoped<IRefundItemRepository, RefundItemRepository>();
-            services.AddScoped<ISaleItemRepository, SaleItemRepository>();
-            services.AddScoped<ISaleRepository, SaleRepository>();
-            services.AddScoped<ISupplyDebtRepository, SupplyDebtRepository>();
-            services.AddScoped<ISupplyItemRepository, SupplyItemRepository>();
-            services.AddScoped<ISupplyRepository, SupplyRepository>();
-            services.AddScoped<ISupplierRepository, SupplierRepository>();
+        services.AddScoped<AuditInterceptor>();
+        services.AddScoped<TransactionsInterceptor>();
+        var provider = configuration.GetValue("Provider", "SqlServer");
 
-            services.AddScoped<AuditableEntitySaveChangesInterceptor>();
+        services.AddDbContext<ApplicationDbContext>(
+            options => _ = provider switch
+            {
+                "Sqlite" => options.UseSqlite(
+                    configuration.GetConnectionString("DefaultConnection"),
+                    x => x.MigrationsAssembly("ReverseAnalytics.Migrations.Sqlite")),
+
+                "SqlServer" => options.UseSqlServer(
+                    configuration.GetConnectionString("DefaultConnection"),
+                    x => x.MigrationsAssembly("ReverseAnalytics.Migrations.SqlServer")),
+
+                _ => throw new InvalidOperationException($"Unsupported provider: {provider}.")
+            });
 
 #if DEBUG
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite(configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDbContext<ApplicationIdentityDbContext>(options =>
-                options.UseSqlite(configuration.GetConnectionString("DefaultIdentityConnection")));
 #else
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), builder =>
-                builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+        
 
-            services.AddDbContext<ApplicationIdentityDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultIdentityConnection"), builder =>
-                builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+        services.AddDbContext<ApplicationIdentityDbContext>(options =>
+            options.UseSqlServer(configuration.GetConnectionString("DefaultIdentityConnection"), builder =>
+            builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 #endif
+        //services.AddScoped<ICommonRepository, CommonRepository>();
+        //services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
+        //services.AddScoped<IProductRepository, ProductRepository>();
+        //services.AddScoped<ICustomerRepository, CustomerRepository>();
+        //services.AddScoped<ISaleRepository, SaleRepository>();
+        //services.AddScoped<ISaleItemRepository, SaleItemRepository>();
 
-            return services;
-        }
+        return services;
+    }
 
-        public static IServiceCollection ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)
-        {
-            var tokenOptions = configuration.GetSection("TokenOptions").Get<CustomTokenOptions>();
+    public static IServiceCollection AddMappers(this IServiceCollection services)
+    {
+        services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidIssuer = tokenOptions.Issuer,
-                        ValidateAudience = true,
-                        ValidAudience = tokenOptions.Audience,
-                        RequireExpirationTime = false,
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenOptions.SecurityKey))
-                    };
-                });
-
-            return services;
-        }
-
-        public static IServiceCollection ConfigureValidationFilter(this IServiceCollection services)
-        {
-            services.Configure<ApiBehaviorOptions>(options =>
-                options.SuppressModelStateInvalidFilter = true);
-            services.AddScoped<ValidationFilterAttribute>();
-
-            return services;
-        }
+        return services;
     }
 }

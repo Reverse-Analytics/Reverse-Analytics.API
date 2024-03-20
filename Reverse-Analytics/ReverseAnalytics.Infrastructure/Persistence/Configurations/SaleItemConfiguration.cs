@@ -2,22 +2,30 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ReverseAnalytics.Domain.Entities;
 
-namespace ReverseAnalytics.Infrastructure.Persistence.Configurations
+namespace ReverseAnalytics.Infrastructure.Persistence.Configurations;
+
+internal class SaleItemsConfiguration : IEntityTypeConfiguration<SaleItem>
 {
-    internal class SaleItemsConfiguration : IEntityTypeConfiguration<SaleItem>
+    public void Configure(EntityTypeBuilder<SaleItem> builder)
     {
-        public void Configure(EntityTypeBuilder<SaleItem> builder)
-        {
-            builder.ToTable("Sale_Item");
+        builder.ToTable(nameof(SaleItem));
 
-            builder.HasKey(sd => sd.Id);
+        builder.HasKey(si => si.Id);
 
-            builder.HasOne(sd => sd.Sale)
-                .WithMany(o => o.SaleItems)
-                .HasForeignKey(sd => sd.SaleId);
-            builder.HasOne(sd => sd.Product)
-                .WithMany(p => p.SaleItems)
-                .HasForeignKey(sd => sd.ProductId);
-        }
+        builder.HasOne(si => si.Sale)
+            .WithMany(s => s.SaleItems)
+            .HasForeignKey(si => si.SaleId);
+        builder.HasOne(si => si.Product)
+            .WithMany(p => p.SaleItems)
+            .HasForeignKey(sd => sd.ProductId);
+
+        builder.Property(si => si.Quantity)
+            .IsRequired();
+        builder.Property(si => si.UnitPrice)
+            .HasPrecision(18, 2)
+            .IsRequired();
+        builder.Property(si => si.Discount)
+            .HasDefaultValue(0)
+            .IsRequired();
     }
 }

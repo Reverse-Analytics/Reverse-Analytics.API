@@ -29,7 +29,7 @@ namespace ReverseAnalytics.Services
         /// <inheritdoc />
         public async Task<CustomerDto> GetCustomerByIdAsync(int id)
         {
-            var customer = await _repository.Customer.FindByIdAsync(id) ?? throw new NotFoundException($"Customer with id {id} was not found.");
+            var customer = await _repository.Customer.FindByIdAsync(id) ?? throw new EntityNotFoundException($"Customer with id {id} was not found.");
             var customerDto = _mapper.Map<CustomerDto>(customer);
 
             return customerDto is null

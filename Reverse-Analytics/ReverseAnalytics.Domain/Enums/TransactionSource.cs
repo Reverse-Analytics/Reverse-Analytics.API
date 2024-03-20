@@ -3,9 +3,10 @@
     public enum TransactionSource
     {
         Sale,
-        SaleRefund,
-        Debt,
         Supply,
-        SupplyRefund,
+        Refund,
+        DebtPayment,
+        Payroll,
+        None
     }
 }

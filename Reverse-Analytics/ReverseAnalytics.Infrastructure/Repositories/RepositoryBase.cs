@@ -20,7 +20,7 @@ public abstract class RepositoryBase<T>(ApplicationDbContext context) : IReposit
         return entities;
     }
 
-    public async Task<PaginatedList<T>> FindAllAsync(PaginatedQueryParameters queryParameters)
+    public virtual async Task<PaginatedList<T>> FindAllAsync(PaginatedQueryParameters queryParameters)
     {
         var entities = await _context.Set<T>()
             .ToPaginatedListAsync(queryParameters.PageNumber, queryParameters.PageSize);

@@ -9,7 +9,7 @@ namespace ReverseAnalytics.Infrastructure.Repositories;
 
 public class ProductRepository(ApplicationDbContext context) : RepositoryBase<Product>(context), IProductRepository
 {
-    public Task<PaginatedList<Product>> FindAllAsync(ProductQueryParameters queryParameters)
+    public async Task<PaginatedList<Product>> FindAllAsync(ProductQueryParameters queryParameters)
     {
         ArgumentNullException.ThrowIfNull(queryParameters);
 
@@ -32,6 +32,6 @@ public class ProductRepository(ApplicationDbContext context) : RepositoryBase<Pr
                 (x.Description != null && x.Description.Contains(queryParameters.SearchQuery, StringComparison.OrdinalIgnoreCase)));
         }
 
-        return query.ToPaginatedListAsync(queryParameters.PageNumber, queryParameters.PageSize);
+        return await query.ToPaginatedListAsync(queryParameters.PageNumber, queryParameters.PageSize);
     }
 }

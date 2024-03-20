@@ -1,4 +1,4 @@
-﻿using ReverseAnalytics.Domain.DTOs.Sale;
+﻿using ReverseAnalytics.Domain.DTOs.Supply;
 
 namespace ReverseAnalytics.Domain.DTOs.Customer;
 

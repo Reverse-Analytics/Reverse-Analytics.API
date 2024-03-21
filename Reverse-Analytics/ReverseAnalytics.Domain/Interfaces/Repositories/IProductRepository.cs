@@ -7,4 +7,5 @@ namespace ReverseAnalytics.Domain.Interfaces.Repositories;
 public interface IProductRepository : IRepositoryBase<Product>
 {
     Task<PaginatedList<Product>> FindAllAsync(ProductQueryParameters queryParameters);
+    Task<Product> FindByCategoryIdAsync(int categoryId);
 }

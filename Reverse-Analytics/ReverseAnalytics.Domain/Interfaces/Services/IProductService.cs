@@ -6,9 +6,10 @@ namespace ReverseAnalytics.Domain.Interfaces.Services;
 public interface IProductService
 {
     Task<IEnumerable<ProductDto>> GetAllAsync();
-    Task<IEnumerable<ProductDto>> GetAsync(ProductQueryParameters queryParameters);
+    Task<IEnumerable<ProductDto>> GetAllAsync(ProductQueryParameters queryParameters);
+    Task<IEnumerable<ProductDto>> GetByCategoryAsync(int categoryId);
     Task<ProductDto> GetByIdAsync(int id);
     Task<ProductDto> CreateAsync(ProductForCreateDto productToCreate);
     Task<ProductDto> UpdateAsync(ProductForUpdateDto productToUpdate);
-    Task<ProductDto> DeleteAsync(int id);
+    Task DeleteAsync(int id);
 }

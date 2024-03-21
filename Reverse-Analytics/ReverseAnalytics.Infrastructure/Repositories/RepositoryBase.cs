@@ -70,12 +70,14 @@ public abstract class RepositoryBase<T>(ApplicationDbContext context) : IReposit
         return entities;
     }
 
-    public async Task UpdateAsync(T entity)
+    public async Task<T> UpdateAsync(T entity)
     {
         ArgumentNullException.ThrowIfNull(entity);
 
-        _context.Set<T>().Update(entity);
+        var updatedEntity = _context.Set<T>().Update(entity);
         await _context.SaveChangesAsync();
+
+        return updatedEntity.Entity;
     }
 
     public async Task UpdateRangeAsync(IEnumerable<T> entities)

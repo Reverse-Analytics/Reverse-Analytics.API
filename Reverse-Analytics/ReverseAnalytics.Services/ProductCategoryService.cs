@@ -1,0 +1,56 @@
+﻿using AutoMapper;
+using ReverseAnalytics.Domain.DTOs.ProductCategory;
+using ReverseAnalytics.Domain.Entities;
+using ReverseAnalytics.Domain.Interfaces.Repositories;
+using ReverseAnalytics.Domain.Interfaces.Services;
+using ReverseAnalytics.Domain.ResourceParameters;
+
+namespace ReverseAnalytics.Services;
+
+public class ProductCategoryService(ICommonRepository repository, IMapper mapper) : IProductCategoryService
+{
+    private readonly ICommonRepository _repository = repository;
+    private readonly IMapper _mapper = mapper;
+
+    public async Task<IEnumerable<ProductCategoryDto>> GetAllAsync()
+    {
+        var entities = await _repository.ProductCategory.FindAllAsync();
+
+        return _mapper.Map<IEnumerable<ProductCategoryDto>>(entities);
+    }
+
+    public async Task<IEnumerable<ProductCategoryDto>> GetAllAsync(PaginatedQueryParameters queryParameters)
+    {
+        var entities = await _repository.ProductCategory.FindAllAsync(queryParameters);
+
+        return _mapper.Map<IEnumerable<ProductCategoryDto>>(entities);
+    }
+
+    public async Task<ProductCategoryDto> GetByIdAsync(int id)
+    {
+        var entity = await _repository.ProductCategory.FindByIdAsync(id);
+
+        return _mapper.Map<ProductCategoryDto>(entity);
+    }
+
+    public async Task<ProductCategoryDto> CreateAsync(ProductCategoryForCreateDto categoryToCreate)
+    {
+        var entity = _mapper.Map<ProductCategory>(categoryToCreate);
+        var createdEntity = await _repository.ProductCategory.CreateAsync(entity);
+
+        return _mapper.Map<ProductCategoryDto>(createdEntity);
+    }
+
+    public async Task<ProductCategoryDto> UpdateAsync(ProductCategoryForUpdateDto categoryToUpdate)
+    {
+        var entity = _mapper.Map<ProductCategory>(categoryToUpdate);
+        var updatedEntity = await _repository.ProductCategory.UpdateAsync(entity);
+
+        return _mapper.Map<ProductCategoryDto>(updatedEntity);
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        await _repository.ProductCategory.DeleteAsync(id);
+    }
+}

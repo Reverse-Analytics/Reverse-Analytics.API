@@ -15,7 +15,7 @@ public interface IRepositoryBase<TEntity> where TEntity : BaseEntity
 
     Task<IEnumerable<TEntity>> CreateRangeAsync(IEnumerable<TEntity> entities);
 
-    Task UpdateAsync(TEntity entity);
+    Task<TEntity> UpdateAsync(TEntity entity);
 
     Task UpdateRangeAsync(IEnumerable<TEntity> entities);
 

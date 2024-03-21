@@ -12,12 +12,16 @@ public class ProductCategoryForUpdateValidator : AbstractValidator<ProductCatego
         RuleFor(x => x.Name)
             .NotEmpty()
             .WithMessage("Category name cannot be empty.")
-            .MinimumLength(5)
+            .MinimumLength(ValidationConstants.DEFAULT_MIN_STRING_LENGTH)
             .WithMessage("Category name must contain at least 5 characters.")
-            .MaximumLength(255)
+            .MaximumLength(ValidationConstants.DEFAULT_MAX_STRING_LENGTH)
             .WithMessage("Category name must contain max 255 characters.");
         RuleFor(x => x.Description)
-            .MaximumLength(4000)
+            .MaximumLength(ValidationConstants.DEFAULT_LARGE_STRING_LENGTH)
             .WithMessage("Description can contain 4000 max characters");
+        RuleFor(x => x.ParentId)
+            .GreaterThan(0)
+            .When(x => x.ParentId != null)
+            .WithMessage(x => $"Parent id: {x.ParentId} is invalid");
     }
 }

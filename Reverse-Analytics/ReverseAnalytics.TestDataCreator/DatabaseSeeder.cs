@@ -23,6 +23,8 @@ public class DatabaseSeeder(ApplicationDbContext context)
 
     private void GenerateProductCategories()
     {
+        if (_context.ProductCategories.Any()) return;
+
         HashSet<string> categoryNames = [];
 
         // try to generate only unique values
@@ -45,6 +47,8 @@ public class DatabaseSeeder(ApplicationDbContext context)
 
     private void GenerateProducts()
     {
+        if (_context.Products.Any()) return;
+
         HashSet<string> productNames = [];
         var categories = _context.ProductCategories.Select(x => x.Id).ToArray();
 
@@ -68,6 +72,8 @@ public class DatabaseSeeder(ApplicationDbContext context)
 
     private void GenerateCustomers()
     {
+        if (_context.Customers.Any()) return;
+
         var customers = _faker.Customer().Generate(250);
 
         _context.Customers.AddRange(customers);
@@ -76,6 +82,8 @@ public class DatabaseSeeder(ApplicationDbContext context)
 
     private void GenerateSales()
     {
+        if (_context.Sales.Any()) return;
+
         var customers = _context.Customers.Select(x => x.Id).ToArray();
         var sales = _faker.Sale(customers).Generate(7_500);
 
@@ -85,6 +93,8 @@ public class DatabaseSeeder(ApplicationDbContext context)
 
     private void GenerateSaleItems()
     {
+        if (_context.SaleItems.Any()) return;
+
         var sales = _context.Sales.Select(x => x.Id).ToArray();
         var products = _context.Products.Select(x => x.Id).ToArray();
         var saleItems = _faker.SaleItems(sales, products).Generate(100_000);
@@ -95,6 +105,8 @@ public class DatabaseSeeder(ApplicationDbContext context)
 
     private void GenerateSuppliers()
     {
+        if (_context.Suppliers.Any()) return;
+
         var suppliers = _faker.Supplier().Generate(150);
 
         _context.Suppliers.AddRange(suppliers);
@@ -103,6 +115,8 @@ public class DatabaseSeeder(ApplicationDbContext context)
 
     private void GenerateSupplies()
     {
+        if (_context.Supplies.Any()) return;
+
         var suppliers = _context.Suppliers.Select(x => x.Id).ToArray();
         var suppplies = _faker.Supply(suppliers).Generate(5_000);
 
@@ -112,6 +126,8 @@ public class DatabaseSeeder(ApplicationDbContext context)
 
     private void GenerateSupplyItems()
     {
+        if (_context.SupplyItems.Any()) return;
+
         var supplies = _context.Supplies.Select(x => x.Id).ToArray();
         var products = _context.Products.Select(x => x.Id).ToArray();
         var supplyItems = _faker.SupplyItems(supplies, products).Generate(75_000);
@@ -122,6 +138,8 @@ public class DatabaseSeeder(ApplicationDbContext context)
 
     private void GenerateTransactions()
     {
+        if (_context.Transactions.Any()) return;
+
         var sales = _context.Sales.ToArray();
         var supplies = _context.Supplies.ToArray();
 
@@ -136,7 +154,7 @@ public class DatabaseSeeder(ApplicationDbContext context)
                 SourceId = sale.GetTransactionSourceId()
             };
 
-            _context.Transaction.Add(transaction);
+            _context.Transactions.Add(transaction);
         }
 
         foreach (var supply in supplies)
@@ -150,7 +168,7 @@ public class DatabaseSeeder(ApplicationDbContext context)
                 SourceId = supply.GetTransactionSourceId()
             };
 
-            _context.Transaction.Add(transaction);
+            _context.Transactions.Add(transaction);
         }
 
         _context.SaveChanges();

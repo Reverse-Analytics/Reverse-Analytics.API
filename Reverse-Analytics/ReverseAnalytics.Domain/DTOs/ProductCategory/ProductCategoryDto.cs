@@ -7,6 +7,6 @@ public record ProductCategoryDto(
     string Name,
     string? Description,
     int NumberOfProducts,
-    ProductCategoryDto? ParentCategory,
-    ICollection<ProductCategoryDto> SubCategories,
-    ICollection<ProductDto> Products);
+    ProductCategoryDto? Parent,
+    ICollection<ProductDto> Products,
+    ICollection<ProductCategoryDto> SubCategories);

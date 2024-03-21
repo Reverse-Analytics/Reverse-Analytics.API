@@ -8,7 +8,8 @@ public class ProductCategoryMappings : Profile
 {
     public ProductCategoryMappings()
     {
-        CreateMap<ProductCategory, ProductCategoryDto>();
+        CreateMap<ProductCategory, ProductCategoryDto>()
+            .ForCtorParam(nameof(ProductCategoryDto.NumberOfProducts), r => r.MapFrom(e => e.Products.Count));
         CreateMap<ProductCategoryForCreateDto, ProductCategory>();
         CreateMap<ProductCategoryForUpdateDto, ProductCategory>();
     }

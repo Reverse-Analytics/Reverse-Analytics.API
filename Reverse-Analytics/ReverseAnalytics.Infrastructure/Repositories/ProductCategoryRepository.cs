@@ -12,13 +12,15 @@ public class ProductCategoryRepository(ApplicationDbContext context) : Repositor
 {
     public override async Task<PaginatedList<ProductCategory>> FindAllAsync(PaginatedQueryParameters queryParameters)
     {
-        if (string.IsNullOrWhiteSpace(queryParameters.SearchQuery))
+        var query = _context.ProductCategories.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(queryParameters.SearchQuery))
         {
-            return await base.FindAllAsync(queryParameters);
+            query = query.Where(x => x.Name.Contains(queryParameters.SearchQuery, StringComparison.OrdinalIgnoreCase));
         }
 
-        var entities = await _context.ProductCategories
-            .Where(x => x.Name.Contains(queryParameters.SearchQuery))
+        var entities = await query
+            .Include(x => x.Products)
             .AsNoTracking()
             .ToPaginatedListAsync(queryParameters.PageNumber, queryParameters.PageSize);
 

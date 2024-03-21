@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using ReverseAnalytics.Domain.Interfaces.Repositories;
 using ReverseAnalytics.Domain.Interfaces.Services;
@@ -74,6 +75,7 @@ public static class ConfigureServices
 
     public static IServiceCollection AddValidators(this IServiceCollection services)
     {
+        services.AddFluentValidationAutoValidation();
         services.AddValidatorsFromAssemblyContaining<ProductForCreateValidator>();
 
         return services;

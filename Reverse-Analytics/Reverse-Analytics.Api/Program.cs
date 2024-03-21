@@ -1,10 +1,10 @@
+using Serilog;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Reverse_Analytics.Api.Extensions;
 using Reverse_Analytics.Api.Middlewares;
 using ReverseAnalytics.Infrastructure.Persistence;
 using ReverseAnalytics.TestDataCreator;
-using Serilog;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()

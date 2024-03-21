@@ -1,4 +1,5 @@
-﻿using ReverseAnalytics.Domain.Common;
+﻿using Microsoft.EntityFrameworkCore;
+using ReverseAnalytics.Domain.Common;
 using ReverseAnalytics.Domain.Entities;
 using ReverseAnalytics.Domain.Interfaces.Repositories;
 using ReverseAnalytics.Domain.QueryParameters;
@@ -32,6 +33,18 @@ public class ProductRepository(ApplicationDbContext context) : RepositoryBase<Pr
                 (x.Description != null && x.Description.Contains(queryParameters.SearchQuery, StringComparison.OrdinalIgnoreCase)));
         }
 
-        return await query.ToPaginatedListAsync(queryParameters.PageNumber, queryParameters.PageSize);
+        var products = await query.AsNoTracking().ToPaginatedListAsync(queryParameters.PageNumber, queryParameters.PageSize);
+
+        return products;
+    }
+
+    public async Task<IEnumerable<Product>> FindByCategoryIdAsync(int categoryId)
+    {
+        var products = await _context.Products
+            .Where(x => x.CategoryId == categoryId)
+            .AsNoTracking()
+            .ToListAsync();
+
+        return products;
     }
 }

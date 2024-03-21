@@ -18,7 +18,7 @@ public class ApplicationDbContext : DbContext
     public virtual DbSet<Supplier> Suppliers { get; set; }
     public virtual DbSet<SupplyItem> SupplyItems { get; set; }
     public virtual DbSet<Supply> Supplies { get; set; }
-    public virtual DbSet<Transaction> Transaction { get; set; }
+    public virtual DbSet<Transaction> Transactions { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
                                 AuditInterceptor auditableInterceptor,

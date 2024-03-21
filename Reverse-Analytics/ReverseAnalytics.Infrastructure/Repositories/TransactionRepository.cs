@@ -1,4 +1,5 @@
-﻿using ReverseAnalytics.Domain.Common;
+﻿using Microsoft.EntityFrameworkCore;
+using ReverseAnalytics.Domain.Common;
 using ReverseAnalytics.Domain.Entities;
 using ReverseAnalytics.Domain.Interfaces.Repositories;
 using ReverseAnalytics.Domain.QueryParameters;
@@ -13,7 +14,7 @@ public class TransactionRepository(ApplicationDbContext context) : RepositoryBas
     {
         ArgumentNullException.ThrowIfNull(queryParameters);
 
-        var query = _context.Transaction.AsQueryable();
+        var query = _context.Transactions.AsQueryable();
 
         if (queryParameters.Source.HasValue)
         {
@@ -35,6 +36,9 @@ public class TransactionRepository(ApplicationDbContext context) : RepositoryBas
             query = query.Where(x => x.Type == queryParameters.Type);
         }
 
-        return await query.ToPaginatedListAsync(queryParameters.PageNumber, queryParameters.PageSize);
+        var transactions = await query.AsNoTracking()
+            .ToPaginatedListAsync(queryParameters.PageNumber, queryParameters.PageSize);
+
+        return transactions;
     }
 }

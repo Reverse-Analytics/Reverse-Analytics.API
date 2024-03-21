@@ -1,4 +1,5 @@
-﻿using ReverseAnalytics.Domain.Common;
+﻿using Microsoft.EntityFrameworkCore;
+using ReverseAnalytics.Domain.Common;
 using ReverseAnalytics.Domain.Entities;
 using ReverseAnalytics.Domain.Interfaces.Repositories;
 using ReverseAnalytics.Domain.QueryParameters;
@@ -9,7 +10,7 @@ namespace ReverseAnalytics.Infrastructure.Repositories;
 
 public class CustomerRepository(ApplicationDbContext context) : RepositoryBase<Customer>(context), ICustomerRepository
 {
-    public Task<PaginatedList<Customer>> FindAllAsync(CustomerQueryParameters queryParameters)
+    public async Task<PaginatedList<Customer>> FindAllAsync(CustomerQueryParameters queryParameters)
     {
         ArgumentNullException.ThrowIfNull(queryParameters);
 
@@ -28,6 +29,9 @@ public class CustomerRepository(ApplicationDbContext context) : RepositoryBase<C
                 (x.Address != null && x.Address.Contains(queryParameters.SearchQuery, StringComparison.OrdinalIgnoreCase)));
         }
 
-        return query.ToPaginatedListAsync(queryParameters.PageNumber, queryParameters.PageSize);
+        var customers = await query.AsNoTracking()
+            .ToPaginatedListAsync(queryParameters.PageNumber, queryParameters.PageSize);
+
+        return customers;
     }
 }

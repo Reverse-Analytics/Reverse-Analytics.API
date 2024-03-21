@@ -33,12 +33,12 @@ public class TransactionsInterceptor : SaveChangesInterceptor
             if (entry.State == EntityState.Added)
             {
                 var transaction = CreateTransaction(entity);
-                context.Transaction.Add(transaction);
+                context.Transactions.Add(transaction);
             }
 
             if (entry.State == EntityState.Modified || entry.HasChangedOwnedEntities())
             {
-                var transaction = context.Transaction
+                var transaction = context.Transactions
                     .FirstOrDefault(x => x.SourceId == entity.GetTransactionSourceId() && x.Source == entity.TransactionSource) ?? throw new Exception();
 
                 transaction.Amount = entity.GetTransactionAmount();

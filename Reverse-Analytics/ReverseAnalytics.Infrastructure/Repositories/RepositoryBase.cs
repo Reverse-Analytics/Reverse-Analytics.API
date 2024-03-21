@@ -15,6 +15,7 @@ public abstract class RepositoryBase<T>(ApplicationDbContext context) : IReposit
     public async Task<IEnumerable<T>> FindAllAsync()
     {
         var entities = await _context.Set<T>()
+            .AsNoTracking()
             .ToListAsync();
 
         return entities;
@@ -23,6 +24,7 @@ public abstract class RepositoryBase<T>(ApplicationDbContext context) : IReposit
     public virtual async Task<PaginatedList<T>> FindAllAsync(PaginatedQueryParameters queryParameters)
     {
         var entities = await _context.Set<T>()
+            .AsNoTracking()
             .ToPaginatedListAsync(queryParameters.PageNumber, queryParameters.PageSize);
 
         return entities;

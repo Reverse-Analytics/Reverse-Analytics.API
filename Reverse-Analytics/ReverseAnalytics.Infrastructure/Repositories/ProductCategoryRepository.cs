@@ -1,4 +1,5 @@
-﻿using ReverseAnalytics.Domain.Common;
+﻿using Microsoft.EntityFrameworkCore;
+using ReverseAnalytics.Domain.Common;
 using ReverseAnalytics.Domain.Entities;
 using ReverseAnalytics.Domain.Interfaces.Repositories;
 using ReverseAnalytics.Domain.ResourceParameters;
@@ -18,6 +19,7 @@ public class ProductCategoryRepository(ApplicationDbContext context) : Repositor
 
         var entities = await _context.ProductCategories
             .Where(x => x.Name.Contains(queryParameters.SearchQuery))
+            .AsNoTracking()
             .ToPaginatedListAsync(queryParameters.PageNumber, queryParameters.PageSize);
 
         return entities;

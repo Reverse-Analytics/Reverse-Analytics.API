@@ -1,11 +1,22 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
+using ReverseAnalytics.Domain.Interfaces.Repositories;
+using ReverseAnalytics.Domain.Interfaces.Services;
+using ReverseAnalytics.Domain.Validators.Product;
 using ReverseAnalytics.Infrastructure.Persistence;
 using ReverseAnalytics.Infrastructure.Persistence.Interceptors;
+using ReverseAnalytics.Infrastructure.Repositories;
+using ReverseAnalytics.Services;
 
 namespace Reverse_Analytics.Api.Extensions;
 
 public static class ConfigureServices
 {
+    public static IServiceCollection AddLogger(this IServiceCollection services)
+    {
+        return services;
+    }
+
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<AuditInterceptor>();
@@ -45,9 +56,47 @@ public static class ConfigureServices
         return services;
     }
 
+    public static IServiceCollection AddRepositories(this IServiceCollection services)
+    {
+        services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
+        services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<ICustomerRepository, CustomerRepository>();
+        services.AddScoped<ISaleRepository, SaleRepository>();
+        services.AddScoped<ISaleItemRepository, SaleItemRepository>();
+        services.AddScoped<ISupplierRepository, SupplierRepository>();
+        services.AddScoped<ISupplyRepository, SupplyRepository>();
+        services.AddScoped<ISupplyItemRepository, SupplyItemRepository>();
+        services.AddScoped<ITransactionRepository, TransactionRepository>();
+        services.AddScoped<ICommonRepository, CommonRepository>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddValidators(this IServiceCollection services)
+    {
+        services.AddValidatorsFromAssemblyContaining<ProductForCreateValidator>();
+
+        return services;
+    }
+
     public static IServiceCollection AddMappers(this IServiceCollection services)
     {
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+        return services;
+    }
+
+    public static IServiceCollection AddServices(this IServiceCollection services)
+    {
+        services.AddScoped<IProductCategoryService, ProductCategoryService>();
+        services.AddScoped<IProductService, ProductService>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddSwagger(this IServiceCollection services)
+    {
+        services.AddSwaggerGen();
 
         return services;
     }

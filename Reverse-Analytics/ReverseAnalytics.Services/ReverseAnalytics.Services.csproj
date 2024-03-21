@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ReverseAnalytics.Infrastructure\ReverseAnalytics.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -18,9 +18,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog();
 
-// Add services to the container.
-builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.RegisterDependencyInjection();
+builder.Services.AddLogger()
+    .AddInfrastructure(builder.Configuration)
+    .AddRepositories()
+    .AddValidators()
+    .AddMappers()
+    .AddServices()
+    .AddSwagger();
 
 builder.Services.AddControllers(options =>
 {
@@ -33,8 +37,6 @@ builder.Services.AddControllers(options =>
         options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
     })
     .AddXmlDataContractSerializerFormatters();
-
-builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 

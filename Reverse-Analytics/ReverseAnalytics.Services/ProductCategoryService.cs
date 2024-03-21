@@ -3,7 +3,7 @@ using ReverseAnalytics.Domain.DTOs.ProductCategory;
 using ReverseAnalytics.Domain.Entities;
 using ReverseAnalytics.Domain.Interfaces.Repositories;
 using ReverseAnalytics.Domain.Interfaces.Services;
-using ReverseAnalytics.Domain.ResourceParameters;
+using ReverseAnalytics.Domain.QueryParameters;
 
 namespace ReverseAnalytics.Services;
 
@@ -12,16 +12,23 @@ public class ProductCategoryService(ICommonRepository repository, IMapper mapper
     private readonly ICommonRepository _repository = repository;
     private readonly IMapper _mapper = mapper;
 
-    public async Task<IEnumerable<ProductCategoryDto>> GetAllAsync()
+    public async Task<IEnumerable<ProductCategoryDto>> GetAsync()
     {
         var entities = await _repository.ProductCategory.FindAllAsync();
 
         return _mapper.Map<IEnumerable<ProductCategoryDto>>(entities);
     }
 
-    public async Task<IEnumerable<ProductCategoryDto>> GetAllAsync(PaginatedQueryParameters queryParameters)
+    public async Task<IEnumerable<ProductCategoryDto>> GetAsync(ProductCategoryQueryParameters queryParameters)
     {
-        var entities = await _repository.ProductCategory.FindAllAsync(queryParameters);
+        var paginatedResult = await _repository.ProductCategory.FindAllAsync(queryParameters);
+
+        return _mapper.Map<IEnumerable<ProductCategoryDto>>(paginatedResult); ;
+    }
+
+    public async Task<IEnumerable<ProductCategoryDto>> GetAllByParentIdAsync(int parentId)
+    {
+        var entities = await _repository.ProductCategory.FindByParentIdAsync(parentId);
 
         return _mapper.Map<IEnumerable<ProductCategoryDto>>(entities);
     }

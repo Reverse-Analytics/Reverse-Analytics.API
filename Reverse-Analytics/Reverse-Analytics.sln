@@ -11,11 +11,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReverseAnalytics.Infrastruc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReverseAnalytics.TestDataCreator", "ReverseAnalytics.TestDataCreator\ReverseAnalytics.TestDataCreator.csproj", "{BC2C2A53-2414-4CC4-B89A-1A0889516F10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReverseAnalytics.Migrations.Sqlite", "Migrations\ReverseAnalytics.Migrations.Sqlite\ReverseAnalytics.Migrations.Sqlite.csproj", "{6863C9D3-3718-468C-90E6-CFF14663E70B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReverseAnalytics.Migrations.Sqlite", "Migrations\ReverseAnalytics.Migrations.Sqlite\ReverseAnalytics.Migrations.Sqlite.csproj", "{6863C9D3-3718-468C-90E6-CFF14663E70B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReverseAnalytics.Migrations.SqlServer", "Migrations\ReverseAnalytics.Migrations.SqlServer\ReverseAnalytics.Migrations.SqlServer.csproj", "{BFDF8903-DF51-46A8-8436-D7054A61B47D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReverseAnalytics.Migrations.SqlServer", "Migrations\ReverseAnalytics.Migrations.SqlServer\ReverseAnalytics.Migrations.SqlServer.csproj", "{BFDF8903-DF51-46A8-8436-D7054A61B47D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Migrations", "Migrations", "{E83F6F45-0BBA-48B6-9D31-A4749A435983}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReverseAnalytics.Services", "ReverseAnalytics.Services\ReverseAnalytics.Services.csproj", "{E8F4610B-0CDB-491C-A260-8DAE4025522E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{BFDF8903-DF51-46A8-8436-D7054A61B47D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFDF8903-DF51-46A8-8436-D7054A61B47D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BFDF8903-DF51-46A8-8436-D7054A61B47D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8F4610B-0CDB-491C-A260-8DAE4025522E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8F4610B-0CDB-491C-A260-8DAE4025522E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8F4610B-0CDB-491C-A260-8DAE4025522E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8F4610B-0CDB-491C-A260-8DAE4025522E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

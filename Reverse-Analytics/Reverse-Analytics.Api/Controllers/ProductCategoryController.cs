@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ReverseAnalytics.Domain.Common;
 using ReverseAnalytics.Domain.DTOs.Product;
 using ReverseAnalytics.Domain.DTOs.ProductCategory;
 using ReverseAnalytics.Domain.Interfaces.Services;
-using ReverseAnalytics.Domain.ResourceParameters;
+using ReverseAnalytics.Domain.QueryParameters;
 
 namespace Reverse_Analytics.Api.Controllers;
 
@@ -14,9 +15,9 @@ public class ProductCategoryController(IProductService productService, IProductC
     private readonly IProductCategoryService _productCategoryService = productCategoryService;
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ProductCategoryDto>>> GetAsync([FromQuery] PaginatedQueryParameters queryParameters)
+    public async Task<ActionResult<PaginatedList<ProductCategoryDto>>> GetAsync([FromQuery] ProductCategoryQueryParameters queryParameters)
     {
-        var categories = await _productCategoryService.GetAllAsync(queryParameters);
+        var categories = await _productCategoryService.GetAsync(queryParameters);
 
         return Ok(categories);
     }
@@ -35,6 +36,14 @@ public class ProductCategoryController(IProductService productService, IProductC
         var products = await _productService.GetByCategoryAsync(id);
 
         return Ok(products);
+    }
+
+    [HttpGet("{id}/children")]
+    public async Task<ActionResult<IEnumerable<ProductCategoryDto>>> GetChildrenAsync(int id)
+    {
+        var subCategories = await _productCategoryService.GetAllByParentIdAsync(id);
+
+        return Ok(subCategories);
     }
 
     [HttpPost]

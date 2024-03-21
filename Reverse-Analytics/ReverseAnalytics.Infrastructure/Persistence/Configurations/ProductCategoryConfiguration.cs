@@ -24,6 +24,6 @@ internal class ProductCategoryConfiguration : IEntityTypeConfiguration<ProductCa
             .IsRequired();
         builder.Property(pc => pc.Description)
             .HasMaxLength(ConfigurationConstants.LargeStringMaxLength)
-            .IsRequired();
+            .IsRequired(false);
     }
 }

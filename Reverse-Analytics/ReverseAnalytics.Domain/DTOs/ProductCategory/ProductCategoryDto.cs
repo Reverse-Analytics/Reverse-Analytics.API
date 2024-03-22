@@ -2,11 +2,22 @@
 
 namespace ReverseAnalytics.Domain.DTOs.ProductCategory;
 
-public record ProductCategoryDto(
-    int Id,
-    string Name,
-    string? Description,
-    int NumberOfProducts,
-    ProductCategoryDto? Parent,
-    ICollection<ProductDto> Products,
-    ICollection<ProductCategoryDto> SubCategories);
+public class ProductCategoryDto
+{
+    public int Id { get; init; }
+    public string Name { get; init; }
+    public string? Description { get; init; }
+
+    public int? ParentId { get; init; }
+    public ProductCategoryDto? Parent { get; init; }
+
+    public ICollection<ProductDto> Products { get; init; }
+    public ICollection<ProductCategoryDto> SubCategories { get; init; }
+
+    public ProductCategoryDto()
+    {
+        Name = string.Empty;
+        Products = [];
+        SubCategories = [];
+    }
+}

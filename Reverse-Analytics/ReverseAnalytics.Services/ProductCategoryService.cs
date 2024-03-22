@@ -23,7 +23,7 @@ public class ProductCategoryService(ICommonRepository repository, IMapper mapper
     {
         var paginatedResult = await _repository.ProductCategory.FindAllAsync(queryParameters);
 
-        return _mapper.Map<IEnumerable<ProductCategoryDto>>(paginatedResult); ;
+        return _mapper.Map<IEnumerable<ProductCategoryDto>>(paginatedResult);
     }
 
     public async Task<IEnumerable<ProductCategoryDto>> GetAllByParentIdAsync(int parentId)

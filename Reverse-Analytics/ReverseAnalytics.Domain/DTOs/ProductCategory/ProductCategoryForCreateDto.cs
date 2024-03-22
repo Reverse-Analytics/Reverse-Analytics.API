@@ -3,4 +3,5 @@
 public record ProductCategoryForCreateDto(
     string Name,
     string? Description,
-    int? ParentId);
+    int? ParentId,
+    ICollection<ProductCategoryForCreateDto>? SubCategories);

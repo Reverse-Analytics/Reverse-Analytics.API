@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ReverseAnalytics.Domain.Common;
 using ReverseAnalytics.Domain.DTOs.ProductCategory;
 using ReverseAnalytics.Domain.Entities;
 using ReverseAnalytics.Domain.Interfaces.Repositories;
@@ -19,11 +20,11 @@ public class ProductCategoryService(ICommonRepository repository, IMapper mapper
         return _mapper.Map<IEnumerable<ProductCategoryDto>>(entities);
     }
 
-    public async Task<IEnumerable<ProductCategoryDto>> GetAsync(ProductCategoryQueryParameters queryParameters)
+    public async Task<(IEnumerable<ProductCategoryDto>, PaginationMetaData)> GetAsync(ProductCategoryQueryParameters queryParameters)
     {
         var paginatedResult = await _repository.ProductCategory.FindAllAsync(queryParameters);
 
-        return _mapper.Map<IEnumerable<ProductCategoryDto>>(paginatedResult);
+        return (_mapper.Map<List<ProductCategoryDto>>(paginatedResult), paginatedResult.ToMetaData());
     }
 
     public async Task<IEnumerable<ProductCategoryDto>> GetAllByParentIdAsync(int parentId)

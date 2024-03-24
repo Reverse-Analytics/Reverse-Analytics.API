@@ -17,4 +17,15 @@ public class PaginatedList<T> : List<T>
         PagesCount = (int)Math.Ceiling(totalCount / (double)pageSize);
         AddRange(items);
     }
+
+    public PaginationMetaData ToMetaData()
+    {
+        return new PaginationMetaData(
+            TotalCount,
+            PageSize,
+            CurrentPage,
+            PagesCount,
+            HasNext,
+            HasPrevious);
+    }
 }

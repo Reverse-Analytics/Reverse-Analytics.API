@@ -32,7 +32,9 @@ public abstract class RepositoryBase<T>(ApplicationDbContext context) : IReposit
 
     public async Task<T> FindByIdAsync(int id)
     {
-        var entity = await _context.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
+        var entity = await _context.Set<T>()
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == id);
 
         if (entity is null)
         {

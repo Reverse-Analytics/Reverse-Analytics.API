@@ -3,6 +3,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Reverse_Analytics.Api.Helpers;
 using ReverseAnalytics.Domain.Common;
 using ReverseAnalytics.Domain.DTOs.Product;
 using ReverseAnalytics.Domain.DTOs.ProductCategory;
@@ -22,14 +23,20 @@ public class ProductCategoryController(
     private readonly IProductCategoryService _productCategoryService = productCategoryService;
     private readonly IValidator<ProductCategoryForUpdateDto> _validator = validator;
 
-    [HttpGet]
+    [HttpGet(Name = nameof(GetCategoriesAsync))]
     [HttpHead]
-    public async Task<ActionResult<PaginatedList<ProductCategoryDto>>> GetAsync([FromQuery] ProductCategoryQueryParameters queryParameters)
+    public async Task<ActionResult<PaginatedList<ProductCategoryDto>>> GetCategoriesAsync([FromQuery] ProductCategoryQueryParameters queryParameters)
     {
-        var (categories, metadata) = await _productCategoryService.GetAsync(queryParameters);
+        var (categories, metadata) = await _productCategoryService.GetAllAsync(queryParameters);
         Response.Headers.Append("X-Pagination", JsonConvert.SerializeObject(metadata));
 
-        return Ok(categories);
+        var result = new
+        {
+            data = categories,
+            links = GetCategoriesResourceLinks(queryParameters, metadata.HasNext, metadata.HasPrevious)
+        };
+
+        return Ok(result);
     }
 
     [HttpGet("{id}")]
@@ -123,5 +130,65 @@ public class ProductCategoryController(
     {
         Response.Headers.Append("Allow", "GET,HEAD,POST,OPTIONS");
         return Ok();
+    }
+
+    private List<ResourceLink> GetCategoriesResourceLinks(ProductCategoryQueryParameters queryParameters, bool hasNext, bool hasPrevious)
+    {
+        var links = new List<ResourceLink>
+        {
+            new(CreateCategoryResourceUri(queryParameters, ResourceUriType.Current),
+            "self",
+            "GET")
+        };
+
+        if (hasNext)
+        {
+            links.Add(new(CreateCategoryResourceUri(queryParameters, ResourceUriType.NextPage),
+                "nextPage",
+                "GET"));
+        }
+
+        if (hasPrevious)
+        {
+            links.Add(new(CreateCategoryResourceUri(queryParameters, ResourceUriType.PreviousPage),
+                "previousPage",
+                "GET"));
+        }
+
+        return links;
+    }
+
+    private string? CreateCategoryResourceUri(ProductCategoryQueryParameters queryParameters, ResourceUriType uriType)
+    {
+        return uriType switch
+        {
+            ResourceUriType.NextPage => Url.Link(
+                nameof(GetCategoriesAsync),
+                new
+                {
+                    pageNubmer = queryParameters.PageNumber + 1,
+                    queryParameters.PageSize,
+                    queryParameters.SearchQuery,
+                    queryParameters.ParentId
+                }),
+            ResourceUriType.PreviousPage => Url.Link(
+                nameof(GetCategoriesAsync),
+                new
+                {
+                    pageNumber = queryParameters.PageNumber - 1,
+                    queryParameters.PageSize,
+                    queryParameters.SearchQuery,
+                    queryParameters.ParentId
+                }),
+            _ => Url.Link(
+                nameof(GetCategoriesAsync),
+                new
+                {
+                    queryParameters.PageNumber,
+                    queryParameters.PageSize,
+                    queryParameters.SearchQuery,
+                    queryParameters.ParentId
+                })
+        };
     }
 }

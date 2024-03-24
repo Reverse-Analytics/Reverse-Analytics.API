@@ -13,14 +13,14 @@ public class ProductCategoryService(ICommonRepository repository, IMapper mapper
     private readonly ICommonRepository _repository = repository;
     private readonly IMapper _mapper = mapper;
 
-    public async Task<IEnumerable<ProductCategoryDto>> GetAsync()
+    public async Task<IEnumerable<ProductCategoryDto>> GetAllAsync()
     {
         var entities = await _repository.ProductCategory.FindAllAsync();
 
         return _mapper.Map<IEnumerable<ProductCategoryDto>>(entities);
     }
 
-    public async Task<(IEnumerable<ProductCategoryDto>, PaginationMetaData)> GetAsync(ProductCategoryQueryParameters queryParameters)
+    public async Task<(IEnumerable<ProductCategoryDto>, PaginationMetaData)> GetAllAsync(ProductCategoryQueryParameters queryParameters)
     {
         var paginatedResult = await _repository.ProductCategory.FindAllAsync(queryParameters);
 

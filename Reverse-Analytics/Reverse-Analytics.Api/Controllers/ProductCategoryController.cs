@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using ReverseAnalytics.Domain.Common;
 using ReverseAnalytics.Domain.DTOs.Product;
 using ReverseAnalytics.Domain.DTOs.ProductCategory;
@@ -9,15 +13,21 @@ namespace Reverse_Analytics.Api.Controllers;
 
 [Route("api/categories")]
 [ApiController]
-public class ProductCategoryController(IProductService productService, IProductCategoryService productCategoryService) : ControllerBase
+public class ProductCategoryController(
+    IProductService productService,
+    IProductCategoryService productCategoryService,
+    IValidator<ProductCategoryForUpdateDto> validator) : ControllerBase
 {
     private readonly IProductService _productService = productService;
     private readonly IProductCategoryService _productCategoryService = productCategoryService;
+    private readonly IValidator<ProductCategoryForUpdateDto> _validator = validator;
 
     [HttpGet]
+    [HttpHead]
     public async Task<ActionResult<PaginatedList<ProductCategoryDto>>> GetAsync([FromQuery] ProductCategoryQueryParameters queryParameters)
     {
-        var categories = await _productCategoryService.GetAsync(queryParameters);
+        var (categories, metadata) = await _productCategoryService.GetAsync(queryParameters);
+        Response.Headers.Append("X-Pagination", JsonConvert.SerializeObject(metadata));
 
         return Ok(categories);
     }
@@ -47,7 +57,7 @@ public class ProductCategoryController(IProductService productService, IProductC
     }
 
     [HttpPost]
-    public async Task<ActionResult<ProductCategoryDto>> CreateAsync(ProductCategoryForCreateDto categoryToCreate)
+    public async Task<ActionResult<ProductCategoryDto>> CreateAsync([FromBody] ProductCategoryForCreateDto categoryToCreate)
     {
         var createdCategory = await _productCategoryService.CreateAsync(categoryToCreate);
 
@@ -67,11 +77,51 @@ public class ProductCategoryController(IProductService productService, IProductC
         return Ok(updatedCategory);
     }
 
+    [HttpPatch("{id}")]
+    public async Task<ActionResult> PatchAsync(int id, JsonPatchDocument<ProductCategoryForUpdateDto> patchDocument)
+    {
+        var categoryToUpdate = await _productCategoryService.GetByIdAsync(id);
+
+        if (categoryToUpdate is null)
+        {
+            return NotFound($"Category with id: {id} does not exist.");
+        }
+
+        var categoryDto = new ProductCategoryForUpdateDto(id, categoryToUpdate.Name, categoryToUpdate.Description, categoryToUpdate.ParentId);
+
+        patchDocument.ApplyTo(categoryDto, ModelState);
+
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var result = _validator.Validate(categoryDto);
+
+        if (!result.IsValid)
+        {
+            result.AddToModelState(ModelState);
+
+            return BadRequest(ModelState);
+        }
+
+        await _productCategoryService.UpdateAsync(categoryDto);
+
+        return NoContent();
+    }
+
     [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(int id)
     {
         await _productCategoryService.DeleteAsync(id);
 
         return NoContent();
+    }
+
+    [HttpOptions]
+    public IActionResult GetOptions()
+    {
+        Response.Headers.Append("Allow", "GET,HEAD,POST,OPTIONS");
+        return Ok();
     }
 }

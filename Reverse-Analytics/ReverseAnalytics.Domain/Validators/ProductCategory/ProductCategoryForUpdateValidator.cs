@@ -13,7 +13,7 @@ public class ProductCategoryForUpdateValidator : AbstractValidator<ProductCatego
             .NotEmpty()
             .WithMessage("Category name cannot be empty.")
             .MinimumLength(ValidationConstants.DEFAULT_MIN_STRING_LENGTH)
-            .WithMessage("Category name must contain at least 5 characters.")
+            .WithMessage("Category name must contain at least 3 characters.")
             .MaximumLength(ValidationConstants.DEFAULT_MAX_STRING_LENGTH)
             .WithMessage("Category name must contain max 255 characters.");
         RuleFor(x => x.Description)

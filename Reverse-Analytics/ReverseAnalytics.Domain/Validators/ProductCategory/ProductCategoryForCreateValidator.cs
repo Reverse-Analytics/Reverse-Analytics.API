@@ -12,12 +12,12 @@ public class ProductCategoryForCreateValidator : AbstractValidator<ProductCatego
             .NotEmpty()
             .WithMessage("Category name cannot be empty.")
             .MinimumLength(ValidationConstants.DEFAULT_MIN_STRING_LENGTH)
-            .WithMessage("Category name must contain at least 5 characters.")
+            .WithMessage($"Category name must contain at least {ValidationConstants.DEFAULT_MIN_STRING_LENGTH} characters.")
             .MaximumLength(ValidationConstants.DEFAULT_MAX_STRING_LENGTH)
-            .WithMessage("Category name must contain max 255 characters.");
+            .WithMessage($"Category name must contain max {ValidationConstants.DEFAULT_MAX_STRING_LENGTH} characters.");
         RuleFor(x => x.Description)
             .MaximumLength(ValidationConstants.DEFAULT_LARGE_STRING_LENGTH)
-            .WithMessage("Description can contain 4000 max characters");
+            .WithMessage($"Description can contain {ValidationConstants.DEFAULT_LARGE_STRING_LENGTH} max characters");
         RuleFor(x => x.ParentId)
             .GreaterThan(0)
             .When(x => x.ParentId != null)

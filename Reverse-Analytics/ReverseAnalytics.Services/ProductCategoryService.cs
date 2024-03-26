@@ -10,8 +10,8 @@ namespace ReverseAnalytics.Services;
 
 public class ProductCategoryService(ICommonRepository repository, IMapper mapper) : IProductCategoryService
 {
-    private readonly ICommonRepository _repository = repository;
-    private readonly IMapper _mapper = mapper;
+    private readonly ICommonRepository _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+    private readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
     public async Task<IEnumerable<ProductCategoryDto>> GetAllAsync()
     {

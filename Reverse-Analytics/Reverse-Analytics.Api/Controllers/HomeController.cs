@@ -6,14 +6,9 @@ namespace Reverse_Analytics.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class HomeController : ControllerBase
+public class HomeController(ApplicationDbContext context) : CommonControllerBase
 {
-    private readonly ApplicationDbContext _context;
-
-    public HomeController(ApplicationDbContext context)
-    {
-        _context = context;
-    }
+    private readonly ApplicationDbContext _context = context ?? throw new ArgumentNullException(nameof(context));
 
     // GET: api/<HomeController>
     [HttpGet]

@@ -17,11 +17,11 @@ namespace Reverse_Analytics.Api.Controllers;
 public class ProductCategoryController(
     IProductService productService,
     IProductCategoryService productCategoryService,
-    IValidator<ProductCategoryForUpdateDto> validator) : ControllerBase
+    IValidator<ProductCategoryForUpdateDto> validator) : CommonControllerBase
 {
-    private readonly IProductService _productService = productService;
-    private readonly IProductCategoryService _productCategoryService = productCategoryService;
-    private readonly IValidator<ProductCategoryForUpdateDto> _validator = validator;
+    private readonly IProductService _productService = productService ?? throw new ArgumentNullException(nameof(productService));
+    private readonly IProductCategoryService _productCategoryService = productCategoryService ?? throw new ArgumentNullException(nameof(productCategoryService));
+    private readonly IValidator<ProductCategoryForUpdateDto> _validator = validator ?? throw new ArgumentNullException(nameof(validator));
 
     [HttpGet(Name = nameof(GetCategoriesAsync))]
     [HttpHead]

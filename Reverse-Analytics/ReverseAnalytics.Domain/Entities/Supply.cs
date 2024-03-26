@@ -13,7 +13,7 @@ public class Supply : BaseAuditableEntity, ITransaction
     public CurrencyType Currency { get; set; }
 
     public int SupplierId { get; set; }
-    public Supplier Supplier { get; set; }
+    public virtual Supplier Supplier { get; set; }
 
     public virtual ICollection<SupplyItem> SupplyItems { get; set; }
 

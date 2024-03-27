@@ -8,7 +8,7 @@ using ReverseAnalytics.Domain.QueryParameters;
 
 namespace ReverseAnalytics.Services;
 
-public class ProductCategoryService(ICommonRepository repository, IMapper mapper) : IProductCategoryService
+public sealed class ProductCategoryService(ICommonRepository repository, IMapper mapper) : IProductCategoryService
 {
     private readonly ICommonRepository _repository = repository ?? throw new ArgumentNullException(nameof(repository));
     private readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -20,11 +20,13 @@ public class ProductCategoryService(ICommonRepository repository, IMapper mapper
         return _mapper.Map<IEnumerable<ProductCategoryDto>>(entities);
     }
 
-    public async Task<(IEnumerable<ProductCategoryDto>, PaginationMetaData)> GetAllAsync(ProductCategoryQueryParameters queryParameters)
+    public async Task<(IEnumerable<ProductCategoryDto> Data, PaginationMetaData PaginationMetaData)> GetAllAsync(ProductCategoryQueryParameters queryParameters)
     {
+        ArgumentNullException.ThrowIfNull(queryParameters);
+
         var paginatedResult = await _repository.ProductCategory.FindAllAsync(queryParameters);
 
-        return (_mapper.Map<List<ProductCategoryDto>>(paginatedResult), paginatedResult.ToMetaData());
+        return (_mapper.Map<IEnumerable<ProductCategoryDto>>(paginatedResult), paginatedResult.ToMetaData());
     }
 
     public async Task<IEnumerable<ProductCategoryDto>> GetAllByParentIdAsync(int parentId)
@@ -43,6 +45,8 @@ public class ProductCategoryService(ICommonRepository repository, IMapper mapper
 
     public async Task<ProductCategoryDto> CreateAsync(ProductCategoryForCreateDto categoryToCreate)
     {
+        ArgumentNullException.ThrowIfNull(nameof(categoryToCreate));
+
         var entity = _mapper.Map<ProductCategory>(categoryToCreate);
         var createdEntity = await _repository.ProductCategory.CreateAsync(entity);
 
@@ -51,6 +55,8 @@ public class ProductCategoryService(ICommonRepository repository, IMapper mapper
 
     public async Task<ProductCategoryDto> UpdateAsync(ProductCategoryForUpdateDto categoryToUpdate)
     {
+        ArgumentNullException.ThrowIfNull(nameof(categoryToUpdate));
+
         var entity = _mapper.Map<ProductCategory>(categoryToUpdate);
         var updatedEntity = await _repository.ProductCategory.UpdateAsync(entity);
 

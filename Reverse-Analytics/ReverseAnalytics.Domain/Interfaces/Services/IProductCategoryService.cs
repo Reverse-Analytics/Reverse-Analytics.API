@@ -7,7 +7,7 @@ namespace ReverseAnalytics.Domain.Interfaces.Services;
 public interface IProductCategoryService
 {
     Task<IEnumerable<ProductCategoryDto>> GetAllAsync();
-    Task<(IEnumerable<ProductCategoryDto>, PaginationMetaData)> GetAllAsync(ProductCategoryQueryParameters queryParameters);
+    Task<(IEnumerable<ProductCategoryDto> Data, PaginationMetaData PaginationMetaData)> GetAllAsync(ProductCategoryQueryParameters queryParameters);
     Task<IEnumerable<ProductCategoryDto>> GetAllByParentIdAsync(int parentId);
     Task<ProductCategoryDto> GetByIdAsync(int id);
     Task<ProductCategoryDto> CreateAsync(ProductCategoryForCreateDto categoryToCreate);

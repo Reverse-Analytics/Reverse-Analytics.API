@@ -1,28 +1,18 @@
-﻿using ReverseAnalytics.Tests.Unit.Domain;
+﻿using FluentAssertions;
+using ReverseAnalytics.Tests.Unit.Domain;
 
 namespace ReverseAnalytics.Tests.Unit.Services;
 
 public class CommonServicesFixture : DomainBaseFixture
 {
     [Fact]
-    public void Services_ShouldNotContain_NonPrivateMembersExceptConstructorsAndInterfaces()
+    public void Services_ShouldBeSealed()
     {
         var services = GetServices();
 
         foreach (var service in services)
         {
-            var methods = service.GetMembers().ToList();
-            var basea = service.GetInterfaces();
-            var metds = basea.SelectMany(s => s.GetMethods());
-            var mm = service.GetMethods();
-
-
+            service.IsSealed.Should().BeTrue($"Service: {service.Name} should be sealed.");
         }
-    }
-
-    [Fact]
-    public void Services_ShouldBeSealed()
-    {
-
     }
 }

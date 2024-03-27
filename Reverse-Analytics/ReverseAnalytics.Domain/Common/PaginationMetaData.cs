@@ -4,6 +4,6 @@ public record PaginationMetaData(
     int TotalCount,
     int PageSize,
     int CurrentPage,
-    int TotalPages,
+    int PagesCount,
     bool HasNext,
     bool HasPrevious);

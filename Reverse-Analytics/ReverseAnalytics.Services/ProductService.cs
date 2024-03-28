@@ -7,7 +7,7 @@ using ReverseAnalytics.Domain.QueryParameters;
 
 namespace ReverseAnalytics.Services;
 
-public class ProductService(ICommonRepository repository, IMapper mapper) : IProductService
+public sealed class ProductService(ICommonRepository repository, IMapper mapper) : IProductService
 {
     private readonly ICommonRepository _repository = repository ?? throw new ArgumentNullException(nameof(repository));
     private readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));

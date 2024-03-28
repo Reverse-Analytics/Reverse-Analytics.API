@@ -45,7 +45,7 @@ public sealed class ProductCategoryService(ICommonRepository repository, IMapper
 
     public async Task<ProductCategoryDto> CreateAsync(ProductCategoryForCreateDto categoryToCreate)
     {
-        ArgumentNullException.ThrowIfNull(nameof(categoryToCreate));
+        ArgumentNullException.ThrowIfNull(categoryToCreate);
 
         var entity = _mapper.Map<ProductCategory>(categoryToCreate);
         var createdEntity = await _repository.ProductCategory.CreateAsync(entity);
@@ -55,7 +55,7 @@ public sealed class ProductCategoryService(ICommonRepository repository, IMapper
 
     public async Task<ProductCategoryDto> UpdateAsync(ProductCategoryForUpdateDto categoryToUpdate)
     {
-        ArgumentNullException.ThrowIfNull(nameof(categoryToUpdate));
+        ArgumentNullException.ThrowIfNull(categoryToUpdate);
 
         var entity = _mapper.Map<ProductCategory>(categoryToUpdate);
         var updatedEntity = await _repository.ProductCategory.UpdateAsync(entity);
